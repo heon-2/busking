@@ -1,4 +1,4 @@
-package org.comfort42.busking.persistence.adapter;
+package org.comfort42.busking.persistence.adapter.outbound;
 
 import java.util.Optional;
 

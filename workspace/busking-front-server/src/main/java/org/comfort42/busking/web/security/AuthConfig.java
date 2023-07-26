@@ -1,8 +1,8 @@
-package org.comfort42.busking.web.auth;
+package org.comfort42.busking.web.security;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import org.comfort42.busking.application.port.outbound.LoadUserPort;
-import org.comfort42.busking.web.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,7 +47,18 @@ class AuthConfig {
     }
 
     @Bean
-    TokenGenerator
+    TokenGenerator tokenGenerator(
+            @Value("${busking.security.token.issuer}") final String tokenIssuer,
+            @Value("${busking.security.token.access-token-lifetime}") final long accessTokenLifetime,
+            @Value("${busking.security.token.refresh-token-lifetime}") final long refreshTokenLifetime) throws NoSuchAlgorithmException {
+        final TokenGenerator.GenerationOptions generationOptions = new TokenGenerator.GenerationOptions(
+                tokenCryptoAlgorithm(),
+                tokenIssuer,
+                tokenIssuer,
+                accessTokenLifetime,
+                refreshTokenLifetime);
+        return new TokenGenerator(generationOptions);
+    }
 
     @Bean
     AuthenticationResultHandler authenticationResultHandler() {

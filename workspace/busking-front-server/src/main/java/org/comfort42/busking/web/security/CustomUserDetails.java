@@ -1,4 +1,4 @@
-package org.comfort42.busking.web;
+package org.comfort42.busking.web.security;
 
 import java.util.Collection;
 import java.util.EnumSet;
@@ -8,7 +8,7 @@ import org.comfort42.busking.application.domain.model.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private String id;
     private String password;

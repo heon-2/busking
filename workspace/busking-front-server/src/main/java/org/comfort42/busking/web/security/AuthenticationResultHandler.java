@@ -1,4 +1,4 @@
-package org.comfort42.busking.web;
+package org.comfort42.busking.web.auth;
 
 import java.io.IOException;
 
@@ -18,13 +18,13 @@ class AuthenticationResultHandler implements AuthenticationSuccessHandler, Authe
             final HttpServletRequest req,
             final HttpServletResponse resp,
             final Authentication authentication) throws IOException, ServletException {
-        // TODO(meo-s): Auto-generated method stub
+
     }
 
     @Override
     public void onAuthenticationFailure(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
+            final HttpServletRequest req,
+            final HttpServletResponse resp,
             final AuthenticationException exception) throws IOException, ServletException {
         // TODO(meo-s): Auto-generated method stub
     }

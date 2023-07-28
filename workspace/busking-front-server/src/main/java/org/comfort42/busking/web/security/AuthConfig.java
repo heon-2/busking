@@ -1,8 +1,12 @@
 package org.comfort42.busking.web.security;
 
-import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.JWTVerifier;
+import org.comfort42.busking.application.port.inbound.IssueTokenUseCase;
+import org.comfort42.busking.application.port.outbound.LoadTokenPort;
 import org.comfort42.busking.application.port.outbound.LoadUserPort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,16 +15,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
 
 @Configuration
 @EnableWebSecurity
 class AuthConfig {
+
+    @Autowired
+    private ApplicationContext context;
 
     @Bean
     UserDetailsService userDetailsService(final LoadUserPort loadUserPort) {
@@ -33,46 +38,36 @@ class AuthConfig {
     }
 
     @Bean
-    KeyPair rsaKeyPair() throws NoSuchAlgorithmException {
-        final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("rsa");
-        return keyPairGenerator.generateKeyPair();
+    AuthorizationHeaderFilter authorizationHeaderFilter(final LoadTokenPort loadTokenPort, final JWTVerifier accessTokenVerifier) {
+        return new AuthorizationHeaderFilter(loadTokenPort, accessTokenVerifier);
     }
 
     @Bean
-    Algorithm tokenCryptoAlgorithm() throws NoSuchAlgorithmException {
-        final KeyPair rsaKeyPair = rsaKeyPair();
-        final RSAPublicKey rsaPublicKey = (RSAPublicKey) rsaKeyPair.getPublic();
-        final RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) rsaKeyPair.getPrivate();
-        return Algorithm.RSA256(rsaPublicKey, rsaPrivateKey);
-    }
-
-    @Bean
-    TokenGenerator tokenGenerator(
-            @Value("${busking.security.token.issuer}") final String tokenIssuer,
+    AuthenticationResultHandler authenticationResultHandler(
+            final IssueTokenUseCase issueTokenUseCase,
+            final JWTGenerator jwtGenerator,
             @Value("${busking.security.token.access-token-lifetime}") final long accessTokenLifetime,
-            @Value("${busking.security.token.refresh-token-lifetime}") final long refreshTokenLifetime) throws NoSuchAlgorithmException {
-        final TokenGenerator.GenerationOptions generationOptions = new TokenGenerator.GenerationOptions(
-                tokenCryptoAlgorithm(),
-                tokenIssuer,
-                tokenIssuer,
-                accessTokenLifetime,
-                refreshTokenLifetime);
-        return new TokenGenerator(generationOptions);
-    }
-
-    @Bean
-    AuthenticationResultHandler authenticationResultHandler() {
-        return new AuthenticationResultHandler();
+            @Value("${busking.security.token.refresh-token-lifetime}") final long refreshTokenLifetime) {
+        return new AuthenticationResultHandler(
+                issueTokenUseCase,
+                jwtGenerator,
+                Duration.ofSeconds(accessTokenLifetime),
+                Duration.ofSeconds(refreshTokenLifetime)
+        );
     }
 
     @Bean
     SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+        final AuthenticationResultHandler authenticationResultHandler = context.getBean(AuthenticationResultHandler.class);
+        final AuthorizationHeaderFilter authorizationHeaderFilter = context.getBean(AuthorizationHeaderFilter.class);
+
         return http
                 .csrf(csrf -> csrf.disable())
+                .addFilterAfter(authorizationHeaderFilter, ExceptionTranslationFilter.class)
                 .formLogin(formLogin -> formLogin
                         .loginProcessingUrl("/api/v1/auth/signin")
-                        .successHandler(authenticationResultHandler())
-                        .failureHandler(authenticationResultHandler()))
+                        .successHandler(authenticationResultHandler)
+                        .failureHandler(authenticationResultHandler))
                 .build();
     }
 

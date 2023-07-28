@@ -27,7 +27,7 @@ class LoadUserPersistenceAdapter implements LoadUserPort {
                     .createQuery("SELECT u FROM UserJpaEntity u WHERE u.id=:userId", UserJpaEntity.class)
                     .setParameter("userId", userId)
                     .getSingleResult();
-            return Optional.of(userMapper.mapJpaEntityToDomainEntity(userJpaEntity));
+            return Optional.of(userMapper.mapJpaEntityToDomainModel(userJpaEntity));
         } catch (final NoResultException e) {
             return Optional.empty();
         }

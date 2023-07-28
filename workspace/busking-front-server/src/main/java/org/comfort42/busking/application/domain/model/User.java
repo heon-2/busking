@@ -1,21 +1,32 @@
 package org.comfort42.busking.application.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public class User {
+import java.util.EnumSet;
 
-    @Getter
-    private final String id;
+public record User(
+        UserId id,
+        String password,
+        String email,
+        String phone,
+        EnumSet<UserRole> roles
+) {
+    public static class UserId {
+        private final String value;
 
-    @Getter
-    private final String password;
+        private UserId(final String value) {
+            this.value = value;
+        }
 
-    @Getter
-    private final String phone;
+        public static UserId of(final String value) {
+            return new UserId(value);
+        }
 
-    @Getter
-    private final String email;
-
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
 }

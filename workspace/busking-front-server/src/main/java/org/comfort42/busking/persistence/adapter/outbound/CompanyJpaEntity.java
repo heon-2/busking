@@ -1,9 +1,11 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "company")
+@Getter
 public class CompanyJpaEntity {
     @Id
     @GeneratedValue

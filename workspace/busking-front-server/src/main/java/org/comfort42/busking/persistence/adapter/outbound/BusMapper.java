@@ -11,7 +11,7 @@ public class BusMapper {
     ) {
         return Bus.withId(
                 new Bus.BusId(bus.getId()),
-                bus.getBusNum()
+                bus.getId().getBusNum()
         );
     }
 }

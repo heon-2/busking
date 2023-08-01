@@ -14,7 +14,7 @@ import { Report } from "./pages/Report/Report";
 }
 import { KnightMap } from "./pages/Knight/KnightMap";
 import { KnightQuit, knightQuit } from "./pages/Knight/KnightQuit";
-import { RTC } from "./pages/Knight/RTC";
+import  RTC  from "./pages/Knight/RTC";
 import { KnightSelect } from "./pages/Knight/KnightSelect";
 
 function App() {

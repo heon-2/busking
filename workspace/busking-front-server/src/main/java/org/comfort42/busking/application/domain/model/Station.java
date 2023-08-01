@@ -2,7 +2,9 @@ package org.comfort42.busking.application.domain.model;
 
 import lombok.*;
 import org.comfort42.busking.persistence.adapter.outbound.RouteStationJpaEntity;
+import org.comfort42.busking.persistence.adapter.outbound.RouteStationMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Value
@@ -10,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Station {
-    private StationId stationId;
+    private StationId id;
 
     @NonNull
     private final String name;
@@ -21,10 +23,8 @@ public class Station {
     @NonNull
     private final Double lat;
 
-//    @OneToMany(mappedBy = "station")
-//    private List<RouteStation> routes = new ArrayList<>();
-    @NonNull
-    private final List<RouteStationJpaEntity> route;
+//    @NonNull
+//    private final List<RouteStation> route;
 
     @Value
     public static class StationId {
@@ -34,8 +34,9 @@ public class Station {
     public static Station withId(StationId stationId,
                                  String name,
                                  Double lng,
-                                 Double lat,
-                                 List<RouteStationJpaEntity> route) {
-        return new Station(stationId,name,lng,lat,route);
+                                 Double lat
+                                 ) {
+
+        return new Station(stationId,name,lng,lat);
     }
 }

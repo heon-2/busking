@@ -23,6 +23,6 @@ public class StationJpaEntity {
 
     private Double lat;
 
-    @OneToMany(mappedBy = "station")
+    @OneToMany(mappedBy = "station",cascade = CascadeType.REMOVE)
     private List<RouteStationJpaEntity> routes = new ArrayList<>();
 }

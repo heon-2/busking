@@ -12,7 +12,7 @@ public class StationMapper {
                 new Station.StationId(station.getId()),
                 station.getName(),
                 station.getLng(),
-                station.getLng(),
-                station.getRoutes());
+                station.getLng()
+        );
     }
 }

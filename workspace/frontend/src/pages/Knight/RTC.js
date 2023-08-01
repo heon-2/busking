@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import "./../../App.css";
 import UserVideoComponent from "./../../components/RTC/UserVideoComponent";
+import { Button } from "@material-tailwind/react";
 
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
@@ -18,7 +19,7 @@ class RTC extends Component {
     this.state = {
       mySessionId: "ssafy_1",
       //   myUserName: Math.floor(Math.random() * 50) + "번째 러지",
-      myUserName: "SSAFY " + Math.floor(Math.random() * 50),
+      myUserName: "SSAFY",
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
@@ -192,8 +193,8 @@ class RTC extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionId: "ssafy_1",
+      myUserName: "SSAFY",
       mainStreamManager: undefined,
       publisher: undefined,
     });
@@ -245,15 +246,15 @@ class RTC extends Component {
       <div className="container">
         {this.state.session === undefined ? (
           <div id="join">
-            <div id="img-div">
+            {/* <div id="img-div">
               <img src="resources/images/ssabus.png" alt="OpenVidu logo" />
-            </div>
+            </div> */}
             <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> 대성이와 러지들 </h1>
-              <h3 className="subTitle"> 못난놈들은 서로 얼굴만 봐도 흥겹다.</h3>
+              {/* <h1> 대성이와 러지들 </h1>
+              <h3 className="subTitle"> 못난놈들은 서로 얼굴만 봐도 흥겹다.</h3> */}
 
               <form className="form-group" onSubmit={this.joinSession}>
-                <p>
+                {/* <p>
                   <label>닉네임을 입력하세요 </label>
                   <input
                     className="form-control"
@@ -274,7 +275,7 @@ class RTC extends Component {
                     onChange={this.handleChangeSessionId}
                     required
                   />
-                </p>
+                </p> */}
                 <p className="text-center">
                   <input
                     className="btn btn-lg btn-success"

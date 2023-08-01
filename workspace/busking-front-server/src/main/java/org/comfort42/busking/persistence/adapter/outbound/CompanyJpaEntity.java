@@ -2,10 +2,14 @@ package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
-@Getter
+@Getter @Setter
 public class CompanyJpaEntity {
     @Id
     @GeneratedValue
@@ -14,6 +18,6 @@ public class CompanyJpaEntity {
 
     private String name;
 
-//    @OneToMany(mappedBy = "company")
-//    private List<Bus> buses =new ArrayList<>();
+    @OneToMany(mappedBy = "company")
+    private List<BusJpaEntity> buses =new ArrayList<>();
 }

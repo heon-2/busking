@@ -23,7 +23,6 @@ function App() {
       <Route path="/scanQR" element={<ScanQR />} />
       <Route path="/setQR" element={<SetQR />} />
       <Route path="/report" element={<Report />} />
-      
     </Routes>
     </div>
   );

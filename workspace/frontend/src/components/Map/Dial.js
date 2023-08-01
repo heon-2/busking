@@ -4,15 +4,18 @@ import {
     SpeedDialHandler,
     SpeedDialContent,
     SpeedDialAction,
-  } from "@material-tailwind/react";
-  import {
+} from "@material-tailwind/react";
+import {
     PlusIcon,
     HomeIcon,
     CogIcon,
     Square3Stack3DIcon,
-  } from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/outline";
+import { useMapStore } from '../../store.js';
   
   export function Dial() {
+    const { toggleMapType } = useMapStore();
+
     return (
       <div className="fixed top-6 right-6" style={{ zIndex: 1000}}>
         <SpeedDial placement="bottom">
@@ -29,7 +32,7 @@ import {
               <CogIcon className="h-5 w-5" />
             </SpeedDialAction>
             <SpeedDialAction>
-              <Square3Stack3DIcon className="h-5 w-5" />
+              <Square3Stack3DIcon className="h-5 w-5" onClick={() => toggleMapType()}/>
             </SpeedDialAction>
           </SpeedDialContent>
         </SpeedDial>

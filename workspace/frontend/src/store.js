@@ -44,9 +44,11 @@ export const useUserStore = create(userStore)
     center: [26, 25],
     busPath: [1],
     busInfo: [1],
+    mapType: false,
     setCenter: (payload) => set({ center: payload }),
     setBusPath: (payload) => set({ busPath: payload }),
     setBusInfo: (payload) => set({ busInfo: payload }),
+    toggleMapType: () => set((state) => ({ mapType: !state.mapType }))
 })
 
 // mapStore = devtools(mapStore);

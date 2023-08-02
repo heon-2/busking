@@ -7,16 +7,23 @@ import { useMapStore } from '../../store.js';
 import { Dial } from './Dial.js';
 import { BusNum } from './BusNum.js'
 import { TopBar } from './TopBar.js'
+import useLocation from '../../common/Mylocation.js';
 
 export function MapLayer() {
 
     const { mapType, center, busPath, busInfo, setCenter, setBusPath, setBusInfo } = useMapStore()
-
-    console.log(center)
-    // //mount 될 때 데이터 불러오는 과정
+    const [location, setLocation] = useState();
+    const locationData = useLocation(); // useLocation Hook을 함수 컴포넌트 내에서 호출하여 위치 정보 가져옴
+  
     useEffect(() => {
-
-    }, [])
+      // 1초마다 위치 정보 갱신
+      const intervalId = setInterval(() => {
+        const newLocationData = locationData;
+        setLocation(newLocationData);
+      }, 1000);
+  
+      return () => clearInterval(intervalId);
+    }, []);
 
 
     return (
@@ -38,11 +45,11 @@ export function MapLayer() {
     attribution='Tiles &copy; Esri'
     />
 }
-    <TopBar style={{ zIndex: 1000 }}/>
 {/* 위성 맵 */}
 
     </MapContainer>
     <Dial />   
+    <TopBar style={{ zIndex: 1000 }}/>
     <BusNum/>  
 </div>
     )

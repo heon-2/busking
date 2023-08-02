@@ -1,6 +1,8 @@
 import { MapLayer } from "./../../components/Map/MapLayer";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+
+import RTC from "./../../components/RTC/RTC";
 export function KnightMap() {
   const navigate = useNavigate();
   return (
@@ -11,13 +13,15 @@ export function KnightMap() {
       </div>
       {/* 나중에 zindex 조정하기 */}
       <div className="flex fixed bottom-6 left-20" style={{ zIndex: 1000 }}>
-        <Button
+        {/* <Button
           onClick={() => {
             navigate("/RTC");
           }}
         >
           관리자와의 화상통화 연결
-        </Button>
+        </Button> */}
+        <RTC></RTC>
+
         <Button
           onClick={() => {
             navigate("/knightquit");

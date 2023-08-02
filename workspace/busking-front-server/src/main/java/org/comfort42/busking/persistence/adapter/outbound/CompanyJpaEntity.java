@@ -1,23 +1,29 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "company")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompanyJpaEntity {
-    @Id
-    @GeneratedValue
-    @Column(name="company_id")
-    private Long id;
 
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "company_id")
+    private Long id = null;
+
+    private String name = null;
 
     @OneToMany(mappedBy = "company")
-    private List<BusJpaEntity> buses =new ArrayList<>();
+    private List<BusJpaEntity> buses = null;
+
 }

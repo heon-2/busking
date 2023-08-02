@@ -13,18 +13,31 @@ export function MapLayer() {
 
     const { mapType, center, busPath, busInfo, setCenter, setBusPath, setBusInfo } = useMapStore()
     const [location, setLocation] = useState();
-    const locationData = useLocation(); // useLocation Hook을 함수 컴포넌트 내에서 호출하여 위치 정보 가져옴
+    const locationHook = useLocation();
+    const updatedLocation = locationHook.getLocation();
   
     useEffect(() => {
-      // 1초마다 위치 정보 갱신
-      const intervalId = setInterval(() => {
-        const newLocationData = locationData;
-        setLocation(newLocationData);
+      setLocation(updatedLocation); // 가져온 위치 정보를 상태로 저장
+  
+      const timer = setInterval(() => {
+        const updatedLocation = locationHook.getLocation(); // 업데이트된 위치 정보를 가져옴
+        setLocation(updatedLocation); // 업데이트된 위치 정보를 상태로 저장
       }, 1000);
   
-      return () => clearInterval(intervalId);
+      return () => clearInterval(timer);
     }, []);
 
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setCount((prev) => prev + 1);
+      }, 1000);
+  
+      return () => {
+        clearInterval(timer);
+      };
+    }, []);
 
     return (
         <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
@@ -51,6 +64,7 @@ export function MapLayer() {
     <Dial />   
     <TopBar style={{ zIndex: 1000 }}/>
     <BusNum/>  
+    {count}
 </div>
     )
 }

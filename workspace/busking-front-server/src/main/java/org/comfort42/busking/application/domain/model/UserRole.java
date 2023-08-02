@@ -4,7 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 public enum UserRole implements GrantedAuthority {
 
-    NORMAL("NORMAL");
+    EMPLOYEE("EMPLOYEE"),
+    COMPANY_ADMIN("COMPANY_ADMIN");
 
     private String role;
 
@@ -14,6 +15,21 @@ public enum UserRole implements GrantedAuthority {
 
     public String getAuthority() {
         return role;
+    }
+
+    public String value() {
+        return role;
+    }
+
+    public static UserRole of(final String role) {
+        if (EMPLOYEE.value().equals(role)) {
+            return EMPLOYEE;
+        }
+        if (COMPANY_ADMIN.value().equals(role)) {
+            return COMPANY_ADMIN;
+        }
+
+        throw new IllegalArgumentException();
     }
 
 }

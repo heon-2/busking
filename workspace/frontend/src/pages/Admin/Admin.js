@@ -29,11 +29,6 @@ const TABLE_ROWS = [
     role: "Developer",
     mobile: "010-1234-5678",
   },
-  {
-    name: "최지수",
-    role: "GF",
-    mobile: "010-1999-0411",
-  },
 ]
 
 

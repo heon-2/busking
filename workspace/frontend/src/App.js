@@ -8,7 +8,8 @@ import { Map } from "./pages/Map/Map";
 import { ScanQR } from "./pages/QRcode/ScanQR";
 import { SetQR } from "./pages/QRcode/SetQR";
 import { Report } from "./pages/Report/Report";
-// import { Page404 } from "./pages/Page404";
+import { Page404 } from "./pages/Page404";
+import { Admin } from "./pages/Admin/Admin";
 {
   /* 지헌 import 추가한 부분 (Merge 할 때 주의) */
 }
@@ -32,10 +33,12 @@ function App() {
         <Route path="/RTC" element={<RTC />} />
         <Route path="/knightmap" element={<KnightMap />} />
         <Route path="/knightquit" element={<KnightQuit />} />
+        <Route path="/admin" element={<Admin/>}/>
+        <Route path="*" element={<Page404/>}/>
       </Routes>
 
       {/* 상제형 404페이지 추가 */}
-      {/* <Route path="/404" element={<Page404/>}/> */}
+      
     </div>
   );
 }

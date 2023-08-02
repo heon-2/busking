@@ -18,7 +18,7 @@ class LoadUserPersistenceAdapter implements LoadUserPort {
     @PersistenceContext
     private EntityManager em;
 
-    private final UserMapper userMapper = new UserMapper();
+    private final UserMapper userMapper = UserMapper.getInstance();
 
     @Override
     public Optional<User> loadUserById(final String userId) {
@@ -27,7 +27,7 @@ class LoadUserPersistenceAdapter implements LoadUserPort {
                     .createQuery("SELECT u FROM UserJpaEntity u WHERE u.id=:userId", UserJpaEntity.class)
                     .setParameter("userId", userId)
                     .getSingleResult();
-            return Optional.of(userMapper.mapJpaEntityToDomainModel(userJpaEntity));
+            return Optional.of(userMapper.mapToDomainEntity(userJpaEntity));
         } catch (final NoResultException e) {
             return Optional.empty();
         }

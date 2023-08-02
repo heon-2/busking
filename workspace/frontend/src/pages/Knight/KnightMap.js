@@ -2,7 +2,7 @@ import { MapLayer } from "./../../components/Map/MapLayer";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
-import RTC from "./../../components/RTC/RTC";
+import RTC from "../../components/RTC/RTC";
 export function KnightMap() {
   const navigate = useNavigate();
   return (

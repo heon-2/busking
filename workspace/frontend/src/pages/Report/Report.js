@@ -9,9 +9,10 @@ import {
 } from "@material-tailwind/react";
 
 import React, { useState } from "react";
+import axios from "axios";
 
 export function Report() {
-  const [report, setReport] = useState("");
+  const [reportContent, setReportContent] = useState("");
   const serverUrl = "서버주소";
 
   // 신고 항목들 변수로 담기
@@ -22,6 +23,27 @@ export function Report() {
     "응급 상황 발생 ( 교통사고, 환자 발생 등 )",
   ]);
 
+
+  function sendReport(reportContent) {
+    console.log(reportContent)
+    // post 테스트할 수 있는 사이트.
+    axios.post('https://jsonplaceholder.typicode.com/posts', {
+        reportContent : reportContent,
+    })
+    .then((response) => {
+        console.log("성공")
+        // console.log(response)
+        // console.log(222)
+        console.log(response.data)
+        // console.log(response.data.reportContent)
+        // localStorage.setItem('accessToken', response.data.accessToken)
+        // setUser(response.data.user)
+    })
+    .catch((error) => {
+        console.log("되겠냐")
+        console.log(error)
+    })
+}
   return (
     <div className="bg-gray-100">
       <div>
@@ -36,7 +58,7 @@ export function Report() {
                   key={idx}
                   className="p-0"
                   onClick={() => {
-                    setReport(item);
+                    setReportContent(item);
                   }}
                 >
                   <label
@@ -52,6 +74,7 @@ export function Report() {
                           className: "p-0",
                         }}
                       />
+              
                     </ListItemPrefix>
                     <Typography color="blue-gray" className="font-medium">
                       {/* 신고 내용 각각을 list라는 이름으로 출력함 */}
@@ -65,7 +88,7 @@ export function Report() {
         </Card>
         <Button
           onClick={() => {
-            console.log(report);
+            sendReport(reportContent);
           }}
           className="bg-red-400 mt-10"
         >
@@ -75,3 +98,5 @@ export function Report() {
     </div>
   );
 }
+
+

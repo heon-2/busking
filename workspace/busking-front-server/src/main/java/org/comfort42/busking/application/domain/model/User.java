@@ -11,7 +11,8 @@ public record User(
         String password,
         String email,
         String phone,
-        EnumSet<UserRole> roles
+        Company.CompanyId companyId,
+        UserRole role
 ) {
     public static class UserId {
         private final String value;

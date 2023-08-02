@@ -30,7 +30,8 @@ public class UserMapper {
                 userDetails.getPassword(),
                 null,
                 null,
-                EnumSet.of(UserRole.NORMAL)
+                null,
+                UserRole.of(userDetails.getAuthorities().stream().findFirst().get().toString())
         );
     }
 

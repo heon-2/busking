@@ -27,8 +27,7 @@ export function Page404() {
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your
-            spelling.
+            해당 페이지를 찾을 수 없습니다.
           </Typography>
 
           <Box
@@ -38,7 +37,7 @@ export function Page404() {
           />
 
           <Button to="/" size="large" variant="contained" component={RouterLink}>
-            Go to Home
+            홈으로
           </Button>
         </StyledContent>
       </Container>

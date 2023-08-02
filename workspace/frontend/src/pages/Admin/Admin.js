@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Card,
   Typography,
@@ -6,17 +7,21 @@ import {
   ListItemPrefix,
   ListItemSuffix,
   Chip,
+  Button,
+  Dialog,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Input,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
-  ShoppingBagIcon,
   UserCircleIcon,
-  Cog6ToothIcon,
   InboxIcon,
-  PowerIcon,
 } from "@heroicons/react/24/solid";
+// import { UserCreate } from "../../components/Admin/UserCreate";
 
-const TABLE_HEAD = ["Name", "Role", "Mobile"];
+const TABLE_HEAD = ["Name", "Role", "Mobile", "Edit"];
 
 const TABLE_ROWS = [
   {
@@ -33,13 +38,22 @@ const TABLE_ROWS = [
 
 
 export function Admin() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => { setOpen(!open); };
+
+  const registerUser = () => {
+    console.log("registerUser");
+  };
+
   return (
     <div className="admin">
+      <div className="flex">
     <div className="LeftsideBar">
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-      <div className="mb-2 p-4">
+      <div className="mb-2 p-4 bg-blue-100 rounded-xl">
         <Typography variant="h5" color="blue-gray">
-          Sidebar
+          관리자 메뉴
         </Typography>
       </div>
       <List>
@@ -47,46 +61,60 @@ export function Admin() {
           <ListItemPrefix>
             <PresentationChartBarIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Dashboard
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <ShoppingBagIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          E-Commerce
+          교육생 전체 조회
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <InboxIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Inbox
-          <ListItemSuffix>
-            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-          </ListItemSuffix>
+          버스 노선 조회 ???
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Profile
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <Cog6ToothIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Settings
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <PowerIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Log Out
+          신고 내역 조회
+          <ListItemSuffix>
+            <Chip value="3" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+          </ListItemSuffix>
         </ListItem>
       </List>
     </Card>
     </div>
 
-    <Card className="h-full w-full overflow-scroll">
+    <div className="flex flex-col flex-grow pl-4 pr-8 mt-2 p-4">
+    <Button onClick={handleOpen} variant="gradient" className="self-end">
+        교육생 등록
+      </Button>
+      <Dialog
+        size="xs"
+        open={open}
+        handler={handleOpen}
+        className="bg-transparent shadow-none"
+      >
+        <Card className="mx-auto w-full max-w-[24rem]">
+          <CardHeader
+            variant="gradient"
+            color="blue"
+            className="mb-4 grid h-28 place-items-center"
+          >
+            <Typography variant="h3" color="white">
+              교육생 등록
+            </Typography>
+          </CardHeader>
+          <CardBody className="flex flex-col gap-4">
+            <Input label="Name" size="lg" />
+            <Input label="Password" size="lg" />
+            <Input label="Mobile" size="lg" />
+          </CardBody>
+          <CardFooter className="pt-0">
+            <Button variant="gradient" onClick={() => {handleOpen(); registerUser()}} fullWidth>
+              등록
+            </Button>
+          </CardFooter>
+        </Card>
+      </Dialog>
+    <Card className="h-full w-full overflow-scroll mt-4">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>
@@ -123,7 +151,9 @@ export function Admin() {
               </td>
               <td className="p-4">
                 <Typography as="a" href="#" variant="small" color="blue" className="font-medium">
-                  Edit
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
                 </Typography>
               </td>
             </tr>
@@ -131,6 +161,8 @@ export function Admin() {
         </tbody>
       </table>
     </Card>
+    </div>
+    </div>
     </div>
   );
 }

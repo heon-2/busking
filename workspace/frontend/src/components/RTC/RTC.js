@@ -222,41 +222,7 @@ export default function RTC() {
     <div>
       {session === undefined ? (
         <div>
-          <div>
             <Button onClick={joinSession}>관리자와의 화상채팅</Button>
-            {/* <form className="form-group" onSubmit={joinSession}>
-              <p>
-                <label>Participant: </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="userName"
-                  value={myUserName}
-                  onChange={handleChangeUserName}
-                  required
-                />
-              </p>
-              <p>
-                <label> Session: </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="sessionId"
-                  value={mySessionId}
-                  onChange={handleChangeSessionId}
-                  required
-                />
-              </p>
-              <p className="text-center">
-                <input
-                  className="btn btn-lg btn-success"
-                  name="commit"
-                  type="submit"
-                  value="JOIN"
-                />
-              </p>
-            </form> */}
-          </div>
         </div>
       ) : null}
 
@@ -267,23 +233,9 @@ export default function RTC() {
             <Button color="red" onClick={leaveSession}>
               화상 채팅 종료
             </Button>
-            {/* <input
-              className="btn btn-large btn-danger"
-              type="button"
-              id="buttonLeaveSession"
-              onClick={leaveSession}
-              value="Leave session"
-            /> */}
             <Button onClick={switchCamera}>카메라 전환</Button>
-            {/* <input
-              className="btn btn-large btn-success"
-              type="button"
-              id="buttonSwitchCamera"
-              onClick={switchCamera}
-              value="Switch Camera"
-            /> */}
-          </div>
 
+          </div>
           {/* {mainStreamManager !== undefined ? (
             <div id="main-video" className="col-md-6">
               <UserVideoComponent streamManager={mainStreamManager} />

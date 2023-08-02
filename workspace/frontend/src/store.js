@@ -22,7 +22,7 @@ let userStore = (set) => ({
     user: {
         name: null,
         role: null,
-    },
+    },// JIRA..... 
     accessToken: null,
     refreshToken: null,
     setUser: (payload) => set({ user: payload }),

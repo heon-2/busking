@@ -1,27 +1,18 @@
 package org.comfort42.busking.application.domain.model;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+public record Company(@Getter CompanyId id, @Getter String name) {
 
-@Value
-@RequiredArgsConstructor
-@Getter @Setter
-public class Company {
+    public record CompanyId(long value) {
+        public static CompanyId of(final long value) {
+            return new CompanyId(value);
+        }
 
-    private CompanyId id;
-
-    @NonNull
-    private final String name;
-
-    @Value
-    public static class CompanyId {
-        private final Long value;
     }
 
-    public static Company withId(CompanyId companyId,String name) {
-        return new Company(companyId,name);
+    public static Company withId(final CompanyId companyId, final String name) {
+        return new Company(companyId, name);
     }
+
 }

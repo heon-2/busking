@@ -5,7 +5,7 @@ Checkbox,
 Button,
 Typography,
 } from "@material-tailwind/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useUserStore } from '../../store.js'
 
@@ -46,9 +46,9 @@ return (
         <Button className="mt-6" onClick={() => onLogin({name, password, setUser})}>
         Login
         </Button>
-        <Button className="mt-6" onClick={() => onLogout({name, password, setUser})}>
+        {/* <Button className="mt-6" onClick={() => onLogout({name, password, setUser})}>
         LogOut
-        </Button>
+        </Button> */}
         <Typography color="gray" className="mt-4 text-center font-normal">
         Already have an account?{" "}
         <a
@@ -79,18 +79,18 @@ function onLogin({name, password, setUser}) {
     })
 }
 
-function onLogout({name, password, setUser}) {
-    console.log(name)
-    axios.post('http://localhost:3001/logout', {
-        name: name,
-        password: password
-    })
-    .then((response) => {
-        console.log(response)
-        localStorage.removeItem('accessToken')
-        setUser(response.data.user)
-    })
-    .catch((error) => {
-        console.log(error)
-    })
-}
+// function onLogout({name, password, setUser}) {
+//     console.log(name)
+//     axios.post('http://localhost:3001/logout', {
+//         name: name,
+//         password: password
+//     })
+//     .then((response) => {
+//         console.log(response)
+//         localStorage.removeItem('accessToken')
+//         setUser(response.data.user)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+// }

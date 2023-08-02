@@ -3,7 +3,7 @@ import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import React, { Component } from "react";
 import "./../../App.css";
-import UserVideoComponent from "./../../components/RTC/UserVideoComponent";
+import UserVideoComponent from "./UserVideoComponent";
 import { Button } from "@material-tailwind/react";
 
 const APPLICATION_SERVER_URL =
@@ -18,7 +18,6 @@ class RTC extends Component {
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
       mySessionId: "ssafy_1",
-      //   myUserName: Math.floor(Math.random() * 50) + "번째 러지",
       myUserName: "SSAFY",
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
@@ -78,6 +77,7 @@ class RTC extends Component {
     }
   }
 
+  // 세션 만드는 과정
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -140,7 +140,7 @@ class RTC extends Component {
                 resolution: "640x480", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                mirror: true, // Whether to mirror your local video or not
+                mirror: false, // Whether to mirror your local video or not
               });
 
               // --- 6) Publish your stream ---
@@ -163,6 +163,7 @@ class RTC extends Component {
               // Set the main video in the page to display our webcam and store our Publisher
               this.setState({
                 currentVideoDevice: currentVideoDevice,
+                // 처음 세션을 만든 사람이 mainStreamManager와 publisher를 둘다 함.
                 mainStreamManager: publisher,
                 publisher: publisher,
               });
@@ -179,9 +180,9 @@ class RTC extends Component {
     );
   }
 
-  leaveSession() {
-    // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+  // 여기서부터 종료 버튼
 
+  leaveSession() {
     const mySession = this.state.session;
 
     if (mySession) {
@@ -189,6 +190,7 @@ class RTC extends Component {
     }
 
     // Empty all properties...
+    // 내생각에 여기는 초기화 하는 곳인듯.
     this.OV = null;
     this.setState({
       session: undefined,
@@ -202,34 +204,41 @@ class RTC extends Component {
 
   async switchCamera() {
     try {
+      // 1. 사용 가능한 비디오 장치들을 가져옴. (전면,후면 카메라 같은 거 말하는 듯)
       const devices = await this.OV.getDevices();
       var videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
-
+      // 2. 현재 선택된 비디오 장치가 2개 이상이고, 다른 비디오 장치들도 있을 경우
       if (videoDevices && videoDevices.length > 1) {
+        // 3. 기존에 선택된 비디오 장치를 제외하고 다른 비디오 장치들을 추출할 수 있음. -> newVideoDevice에 담기
         var newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
-
+        //4. 다른 비디오 장치들이 존재하는 경우
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
+          // 5. 새로운 비디오 소스를 사용하여 새로운 퍼블리셔를 생성함.
+          // 모바일 기기에서는 기본으로 첫 번째 카메라가 전면 카메라ㅓ
           var newPublisher = this.OV.initPublisher(undefined, {
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: true,
             publishVideo: true,
-            mirror: true,
+            mirror: false,
           });
 
+          // 6. 이전 퍼블리셔를 언퍼블리시 -> 스트림 중지 ( 전면에서 후면으로 전환할 경우, 전면카메라 중지)
           //newPublisher.once("accessAllowed", () => {
           await this.state.session.unpublish(this.state.mainStreamManager);
-
+          // 7. 새로 추출한 퍼블리셔를 퍼블리시 : 새로운 비디오 소스 사용.
           await this.state.session.publish(newPublisher);
+
+          // 8. 상태 업데이트하여 현재 비디오 장치 정보와 퍼블리셔 업데이트
           this.setState({
-            currentVideoDevice: newVideoDevice[0],
-            mainStreamManager: newPublisher,
-            publisher: newPublisher,
+            currentVideoDevice: newVideoDevice[0], // 새 비디오 장치로 업데이트
+            mainStreamManager: newPublisher, // 메인 스트림 매니저를 새로운 퍼블리셔로 업데이트 -> 이게 필요한가? 아닐거같은데
+            publisher: newPublisher, // 퍼블리셔를 새로운 퍼블리셔로 업데이트
           });
         }
       }
@@ -243,48 +252,11 @@ class RTC extends Component {
     const myUserName = this.state.myUserName;
 
     return (
-      <div className="container">
+      <div>
         {this.state.session === undefined ? (
           <div id="join">
-            {/* <div id="img-div">
-              <img src="resources/images/ssabus.png" alt="OpenVidu logo" />
-            </div> */}
-            <div id="join-dialog" className="jumbotron vertical-center">
-              {/* <h1> 대성이와 러지들 </h1>
-              <h3 className="subTitle"> 못난놈들은 서로 얼굴만 봐도 흥겹다.</h3> */}
-
-              <form className="form-group" onSubmit={this.joinSession}>
-                {/* <p>
-                  <label>닉네임을 입력하세요 </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> 접속할 세션을 입력하세요 </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p> */}
-                <p className="text-center">
-                  <input
-                    className="btn btn-lg btn-success"
-                    name="commit"
-                    type="submit"
-                    value="입장하기"
-                  />
-                </p>
-              </form>
+            <div id="join-dialog" className="">
+              <Button onClick={this.joinSession}>관리자와의 화상통화</Button>
             </div>
           </div>
         ) : null}
@@ -292,30 +264,21 @@ class RTC extends Component {
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">
-              <h1 id="session-title">C108 : 편안한42</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="빨간색 버튼"
-              />
-              <input
-                className="btn btn-large btn-success"
-                type="button"
-                id="buttonSwitchCamera"
-                onClick={this.switchCamera}
-                value="초록색 버튼"
-              />
-            </div>
+              {/* <h1 id="session-title">관리자와의 화상통화 페이지</h1> */}
+              <Button onClick={this.leaveSession} color="red">
+                화상채팅종료
+              </Button>
 
-            {this.state.mainStreamManager !== undefined ? (
+              <Button onClick={this.switchCamera}>카메라 전환</Button>
+            </div>
+            {/* 메인 스트림 매니저 */}
+            {/* {this.state.mainStreamManager !== undefined ? (
               <div id="main-video" className="col-md-6">
                 <UserVideoComponent
                   streamManager={this.state.mainStreamManager}
                 />
               </div>
-            ) : null}
+            ) : null} */}
             <div id="video-container" className="col-md-6">
               {this.state.publisher !== undefined ? (
                 <div

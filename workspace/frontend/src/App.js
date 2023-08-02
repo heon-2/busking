@@ -15,7 +15,7 @@ import { Admin } from "./pages/Admin/Admin";
 }
 import { KnightMap } from "./pages/Knight/KnightMap";
 import { KnightQuit, knightQuit } from "./pages/Knight/KnightQuit";
-import  RTC  from "./pages/Knight/RTC";
+// import  RTC  from "./pages/Knight/RTC";
 import { KnightSelect } from "./pages/Knight/KnightSelect";
 
 function App() {
@@ -30,15 +30,14 @@ function App() {
         <Route path="/setQR" element={<SetQR />} />
         <Route path="/report" element={<Report />} />
         <Route path="/knightselect" element={<KnightSelect />} />
-        <Route path="/RTC" element={<RTC />} />
+        {/* <Route path="/RTC" element={<RTC />} /> */}
         <Route path="/knightmap" element={<KnightMap />} />
         <Route path="/knightquit" element={<KnightQuit />} />
-        <Route path="/admin" element={<Admin/>}/>
-        <Route path="*" element={<Page404/>}/>
+        <Route path="/admin" element={<Admin />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
 
       {/* 상제형 404페이지 추가 */}
-      
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Button, Typography, Container, Box } from '@mui/material';
+import { useUserStore } from '../store';
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,9 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export function Page404() {
+
+  const { user } = useUserStore();
+
   return (
     <>
       <Container>
@@ -36,11 +40,21 @@ export function Page404() {
             sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
           />
 
-          <Button to="/" size="large" variant="contained" component={RouterLink}>
-            홈으로
-          </Button>
+          {/* 삼항연산자 사용해서 루트 분리해요 */}
+          {
+            user?.role ? (
+              <Button to="/map" size="large" variant="contained" component={RouterLink}>
+                홈으로
+              </Button>
+            ) : ( 
+              <Button to="/" size="large" variant="contained" component={RouterLink}>
+                로그인 페이지로
+              </Button>
+            )
+          }
         </StyledContent>
       </Container>
     </>
+
   );
 }

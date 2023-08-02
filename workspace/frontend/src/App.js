@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from "react";
 import "./App.css";
-import { Button } from "@material-tailwind/react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { Login } from "./pages/Auth/Login";
 import { Map } from "./pages/Map/Map";

@@ -1,12 +1,10 @@
 package org.comfort42.busking.application.domain.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.validator.constraints.Length;
+
 
 import java.time.LocalDateTime;
 
@@ -23,9 +21,9 @@ public class Report {
 
     private final LocalDateTime created_at;
 
-    private final Double lat;
-
     private final Double lng;
+
+    private final Double lat;
 
     private final Bus bus;
 
@@ -38,10 +36,10 @@ public class Report {
                                 User user,
                                 String description,
                                 LocalDateTime created_at,
-                                Double lat,
                                 Double lng,
+                                Double lat,
                                 Bus bus
     ) {
-        return new Report(reportId,user,description,created_at,lat,lng,bus);
+        return new Report(reportId,user,description,created_at,lng,lat,bus);
     }
 }

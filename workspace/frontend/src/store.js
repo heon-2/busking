@@ -45,7 +45,7 @@ export const useUserStore = create(userStore)
     busPath: [1],
     busInfo: [1],
     mapType: false,
-    location: [],
+    location: [20, 20],
     setCenter: (payload) => set({ center: payload }),
     setBusPath: (payload) => set({ busPath: payload }),
     setBusInfo: (payload) => set({ busInfo: payload }),
@@ -54,7 +54,7 @@ export const useUserStore = create(userStore)
 })
 
 // mapStore = devtools(mapStore);
-// mapStore = persist(mapStore, { name: 'map_settings' });
+mapStore = persist(mapStore, { name: 'map_settings' });
 
 export const useMapStore = create(mapStore)
 

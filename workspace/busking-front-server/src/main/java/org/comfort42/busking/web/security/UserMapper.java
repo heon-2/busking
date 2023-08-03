@@ -31,6 +31,7 @@ public class UserMapper {
                 null,
                 null,
                 null,
+                null,
                 UserRole.of(userDetails.getAuthorities().stream().findFirst().get().toString())
         );
     }

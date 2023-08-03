@@ -24,6 +24,9 @@ class UserJpaEntity {
     private String password = null;
 
     @Column
+    private String name = null;
+
+    @Column
     private String email = null;
 
     @Column

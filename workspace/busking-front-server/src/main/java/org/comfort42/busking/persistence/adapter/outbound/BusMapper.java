@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BusMapper {
-    public Bus mapToDomainEntity(
+    Bus mapToDomainEntity(
             BusJpaEntity bus
     ) {
         return Bus.withId(

@@ -1,11 +1,13 @@
 package org.comfort42.busking.application.domain.model;
 
+import jakarta.annotation.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum UserRole implements GrantedAuthority {
 
     EMPLOYEE("EMPLOYEE"),
-    COMPANY_ADMIN("COMPANY_ADMIN");
+    COMPANY_ADMIN("COMPANY_ADMIN"),
+    DRIVER("DRIVER");
 
     private String role;
 
@@ -21,15 +23,19 @@ public enum UserRole implements GrantedAuthority {
         return role;
     }
 
+
     public static UserRole of(final String role) {
-        if (EMPLOYEE.value().equals(role)) {
-            return EMPLOYEE;
-        }
+
         if (COMPANY_ADMIN.value().equals(role)) {
             return COMPANY_ADMIN;
+        }else if (DRIVER.value().equals(role)) {
+            return DRIVER;
+        }else {
+            return EMPLOYEE;
+
         }
 
-        throw new IllegalArgumentException();
+        //throw new IllegalArgumentException();
     }
 
 }

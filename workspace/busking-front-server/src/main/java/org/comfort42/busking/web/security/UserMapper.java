@@ -22,7 +22,6 @@ public class UserMapper {
     }
 
     User mapToDomainModel(final CustomUserDetails userDetails) {
-        // TODO(meo-s): UserDetails에 저장된 authorities에서 EnumSet 만들어서 전달하기
         return new User(
                 userDetails.getId(),
                 userDetails.getUsername(),

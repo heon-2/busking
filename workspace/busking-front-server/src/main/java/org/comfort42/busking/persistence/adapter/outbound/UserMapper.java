@@ -30,8 +30,7 @@ class UserMapper {
                 jpaEntity.getEmail(),
                 jpaEntity.getPhoneNumber(),
                 Company.CompanyId.of(jpaEntity.getCompanyId()),
-                jpaEntity.getRole()
-        );
+                jpaEntity.getRole());
     }
 
     UserJpaEntity mapToJpaEntity(final User domainEntity) {
@@ -44,8 +43,7 @@ class UserMapper {
                 domainEntity.phoneNumber(),
                 domainEntity.companyId().value(),
                 domainEntity.role(),
-                null
-        );
+                null);
     }
 
 }

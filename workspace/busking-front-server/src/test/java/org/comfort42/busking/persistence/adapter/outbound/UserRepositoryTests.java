@@ -33,6 +33,7 @@ public class UserRepositoryTests {
             final RegisterUserCommand cmd = new RegisterUserCommand(
                     "busking",
                     "busking",
+                    "busking",
                     "busking@busking.org",
                     "010-1111-2222",
                     company.id(),

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.comfort42.busking.application.domain.model.Company;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterCompanyUseCase;
+import org.comfort42.busking.application.port.inbound.RegisterCompanyUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +34,12 @@ public class RegisterUserControllerTests {
             final var payload = new RegisterUserController.RegisterUserWebRequest(
                     "busking",
                     "busking",
+                    "busking",
                     "busking@busking.org",
                     "010-1111-1111",
                     0L
             );
+
 
             final var req = MockMvcRequestBuilders
                     .post("/api/users")

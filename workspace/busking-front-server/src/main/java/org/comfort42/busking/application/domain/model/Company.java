@@ -9,6 +9,10 @@ public record Company(@Getter CompanyId id, @Getter String name) {
             return new CompanyId(value);
         }
 
+        public static CompanyId of(final String value) {
+            return new CompanyId(Long.parseLong(value));
+        }
+
     }
 
     public static Company withId(final CompanyId companyId, final String name) {

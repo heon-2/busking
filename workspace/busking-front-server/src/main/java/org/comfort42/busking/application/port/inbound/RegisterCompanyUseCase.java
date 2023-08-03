@@ -1,7 +1,7 @@
-package org.comfort42.busking.application.domain.port.inbound.outbound;
+package org.comfort42.busking.application.port.inbound;
 
 import org.comfort42.busking.application.domain.model.Company;
 
-public interface RegisterCompanyPort {
+public interface RegisterCompanyUseCase {
     Company registerCompany(String companyName);
 }

@@ -1,9 +1,9 @@
 package org.comfort42.busking.application.domain.service;
 
 import org.comfort42.busking.application.domain.model.User;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterUserCommand;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterUserUseCase;
-import org.comfort42.busking.application.domain.port.inbound.outbound.RegisterUserPort;
+import org.comfort42.busking.application.port.inbound.RegisterUserCommand;
+import org.comfort42.busking.application.port.inbound.RegisterUserUseCase;
+import org.comfort42.busking.application.port.outbound.RegisterUserPort;
 import org.springframework.stereotype.Service;
 
 @Service

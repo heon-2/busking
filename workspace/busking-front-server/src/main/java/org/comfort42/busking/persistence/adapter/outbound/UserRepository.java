@@ -5,9 +5,9 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.comfort42.busking.application.domain.model.User;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterUserCommand;
-import org.comfort42.busking.application.domain.port.inbound.outbound.LoadUserPort;
-import org.comfort42.busking.application.domain.port.inbound.outbound.RegisterUserPort;
+import org.comfort42.busking.application.port.inbound.RegisterUserCommand;
+import org.comfort42.busking.application.port.outbound.LoadUserPort;
+import org.comfort42.busking.application.port.outbound.RegisterUserPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

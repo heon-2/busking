@@ -3,11 +3,11 @@ package org.comfort42.busking.persistence.adapter.outbound;
 
 import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.domain.model.UserRole;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterCompanyUseCase;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterUserCommand;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterUserUseCase;
 import org.comfort42.busking.application.domain.service.RegisterCompanyService;
 import org.comfort42.busking.application.domain.service.RegisterUserService;
+import org.comfort42.busking.application.port.inbound.RegisterCompanyUseCase;
+import org.comfort42.busking.application.port.inbound.RegisterUserCommand;
+import org.comfort42.busking.application.port.inbound.RegisterUserUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

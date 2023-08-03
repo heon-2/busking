@@ -1,4 +1,4 @@
-package org.comfort42.busking.application.domain.port.inbound.inbound;
+package org.comfort42.busking.application.port.inbound;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

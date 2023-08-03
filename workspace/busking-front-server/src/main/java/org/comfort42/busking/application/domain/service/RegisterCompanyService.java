@@ -1,8 +1,8 @@
 package org.comfort42.busking.application.domain.service;
 
 import org.comfort42.busking.application.domain.model.Company;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterCompanyUseCase;
-import org.comfort42.busking.application.domain.port.inbound.outbound.RegisterCompanyPort;
+import org.comfort42.busking.application.port.inbound.RegisterCompanyUseCase;
+import org.comfort42.busking.application.port.outbound.RegisterCompanyPort;
 import org.springframework.stereotype.Service;
 
 @Service

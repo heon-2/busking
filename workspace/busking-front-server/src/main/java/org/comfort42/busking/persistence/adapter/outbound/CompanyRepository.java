@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.comfort42.busking.application.domain.model.Company;
-import org.comfort42.busking.application.domain.port.inbound.outbound.RegisterCompanyPort;
+import org.comfort42.busking.application.port.outbound.RegisterCompanyPort;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -1,13 +1,12 @@
 package org.comfort42.busking.web.adapter.inbound;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.coyote.Response;
 import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.domain.model.User;
 import org.comfort42.busking.application.domain.model.UserRole;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterUserCommand;
-import org.comfort42.busking.application.domain.port.inbound.inbound.RegisterUserUseCase;
 import org.comfort42.busking.application.domain.service.RegisterUserService;
+import org.comfort42.busking.application.port.inbound.RegisterUserCommand;
+import org.comfort42.busking.application.port.inbound.RegisterUserUseCase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

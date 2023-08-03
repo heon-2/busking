@@ -219,47 +219,69 @@ export default function RTC() {
     return response.data; // The token
   };
   return (
-    <div>
+    <div className="bg-purple-300">
       {session === undefined ? (
         <div>
-            <Button onClick={joinSession}>관리자와의 화상채팅</Button>
+          <Button onClick={joinSession}>관리자와의 화상채팅</Button>
         </div>
       ) : null}
 
       {session !== undefined ? (
         <div id="session">
-          <div id="session-header">
-            {/* <h1 id="session-title">{mySessionId}</h1> */}
-            <Button color="red" onClick={leaveSession}>
-              화상 채팅 종료
-            </Button>
-            <Button onClick={switchCamera}>카메라 전환</Button>
-
-          </div>
           {/* {mainStreamManager !== undefined ? (
             <div id="main-video" className="col-md-6">
               <UserVideoComponent streamManager={mainStreamManager} />
             </div>
           ) : null} */}
-          <div id="video-container" className="col-md-6">
-            {publisher !== undefined ? (
-              <div
-                className="stream-container col-md-6 col-xs-6"
-                onClick={() => handleMainVideoStream(publisher)}
-              >
-                <UserVideoComponent streamManager={publisher} />
-              </div>
-            ) : null}
-            {subscribers.map((sub, i) => (
-              <div
-                key={sub.id}
-                className="stream-container col-md-6 col-xs-6"
-                onClick={() => handleMainVideoStream(sub)}
-              >
-                <span>{sub.id}</span>
-                <UserVideoComponent streamManager={sub} />
-              </div>
-            ))}
+          <div className="grid grid-cols-2 gap-20">
+            <div className="bg-red-500 justify-center">
+              <div>버스 기사님</div>
+              {publisher !== undefined ? (
+                <div
+                // onClick={() => handleMainVideoStream(publisher)}
+                >
+                  <UserVideoComponent streamManager={publisher} />
+                </div>
+              ) : null}
+            </div>
+            <div className="bg-blue-500 p-4">
+              <div>SSAFY 관리자</div>
+              {subscribers.length === 0 ? (
+                <div>아직 아무도 안들어옴 ㅋㅋ</div>
+              ) : (
+                <div>
+                  {subscribers.map((sub, i) => (
+                    <div
+                      key={sub.id}
+                      // className="stream-container col-md-6 col-xs-6"
+                      // onClick={() => handleMainVideoStream(sub)}
+                    >
+                      <span>{sub.id}</span>
+                      <UserVideoComponent streamManager={sub} />
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* {subscribers.map((sub, i) => (
+                <div
+                  key={sub.id}
+                  // className="stream-container col-md-6 col-xs-6"
+                  // onClick={() => handleMainVideoStream(sub)}
+                >
+                  <span>{sub.id}</span>
+                  <UserVideoComponent streamManager={sub} />
+                </div>
+              ))} */}
+            </div>
+          </div>
+
+          <div>
+            {/* <h1 id="session-title">{mySessionId}</h1> */}
+
+            <Button onClick={switchCamera}>카메라 전환</Button>
+            <Button color="red" onClick={leaveSession}>
+              화상 채팅 종료
+            </Button>
           </div>
         </div>
       ) : null}

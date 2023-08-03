@@ -1,33 +1,29 @@
 package org.comfort42.busking.application.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.util.EnumSet;
+import java.util.UUID;
 
 public record User(
         UserId id,
+        String username,
         String password,
+        String realName,
         String email,
-        String phone,
+        String phoneNumber,
         Company.CompanyId companyId,
         UserRole role
 ) {
-    public static class UserId {
-        private final String value;
-
-        private UserId(final String value) {
-            this.value = value;
+    public record UserId(UUID value) {
+        public static UserId of(final UUID value) {
+            return new UserId(value);
         }
 
         public static UserId of(final String value) {
-            return new UserId(value);
+            return new UserId(UUID.fromString(value));
         }
 
         @Override
         public String toString() {
-            return value;
+            return value.toString();
         }
     }
 }

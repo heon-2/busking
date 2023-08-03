@@ -11,6 +11,7 @@ import org.comfort42.busking.application.port.outbound.RegisterUserPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 class UserRepository implements RegisterUserPort, LoadUserPort {
@@ -23,7 +24,18 @@ class UserRepository implements RegisterUserPort, LoadUserPort {
     @Override
     @Transactional
     public User regitserUser(final RegisterUserCommand cmd) {
-        final UserJpaEntity userJpaEntity = new UserJpaEntity(cmd.getUserId(), cmd.getUserPassword(), cmd.getUserEmail(), cmd.getUserPhoneNumber(), cmd.getUserCompany().value(), cmd.getUserRole(), null);
+        final UserJpaEntity userJpaEntity = new UserJpaEntity(
+                UUID.randomUUID(),
+                cmd.getUsername(),
+                cmd.getPassword(),
+                cmd.getRealName(),
+                cmd.getEmail(),
+                cmd.getPhoneNumber(),
+                cmd.getCompany().value(),
+                cmd.getRole(),
+                null
+        );
+
         em.persist(userJpaEntity);
         return userMapper.mapToDomainEntity(userJpaEntity);
     }

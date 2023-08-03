@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.comfort42.busking.application.domain.model.UserRole;
 import org.hibernate.type.descriptor.converter.spi.EnumValueConverter;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
@@ -18,10 +20,16 @@ class UserJpaEntity {
 
     @Column
     @Id
-    private String id = null;
+    private UUID id = null;
+
+    @Column(unique = true)
+    private String username = null;
 
     @Column
     private String password = null;
+
+    @Column
+    private String realName = null;
 
     @Column
     private String email = null;

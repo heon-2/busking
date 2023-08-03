@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        return userMapper.mapDomainModelToUserDetails(
+        return userMapper.mapToUserDetails(
                 loadUserPort
                         .loadUserById(username)
                         .orElseThrow(() -> new UsernameNotFoundException("")) // TODO(meo-s): 예외 메시지 작성하기

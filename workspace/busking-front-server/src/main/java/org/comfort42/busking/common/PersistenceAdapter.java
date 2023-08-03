@@ -14,4 +14,3 @@ public @interface PersistenceAdapter {
     @AliasFor(annotation =Component.class)
     String value() default "";
 }
-

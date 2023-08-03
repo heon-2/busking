@@ -65,7 +65,7 @@ class AuthConfig {
                 .csrf(csrf -> csrf.disable())
                 .addFilterAfter(authorizationHeaderFilter, ExceptionTranslationFilter.class)
                 .formLogin(formLogin -> formLogin
-                        .loginProcessingUrl("/api/v1/auth/signin")
+                        .loginProcessingUrl("/api/auth/login")
                         .successHandler(authenticationResultHandler)
                         .failureHandler(authenticationResultHandler))
                 .build();

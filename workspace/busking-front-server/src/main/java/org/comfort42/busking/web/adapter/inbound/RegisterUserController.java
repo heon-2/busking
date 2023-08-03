@@ -18,7 +18,7 @@ import java.net.URI;
 @RequestMapping("/api/users")
 class RegisterUserController {
 
-    record RegisterUserWebRequest(String id, String password, String email, String phoneNumber, Long companyId) {
+    record RegisterUserWebRequest(String username, String password, String realName, String email, String phoneNumber, Long companyId) {
     }
 
     private final ObjectMapper objectMapper;
@@ -32,8 +32,9 @@ class RegisterUserController {
     @PostMapping
     ResponseEntity<?> registerUser(@RequestBody final RegisterUserWebRequest payload) {
         final RegisterUserCommand cmd = new RegisterUserCommand(
-                payload.id(),
+                payload.username(),
                 payload.password(),
+                payload.realName(),
                 payload.email(),
                 payload.phoneNumber(),
                 Company.CompanyId.of(payload.companyId),

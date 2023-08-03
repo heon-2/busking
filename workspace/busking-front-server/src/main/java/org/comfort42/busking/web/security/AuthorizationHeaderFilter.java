@@ -12,15 +12,13 @@ import org.comfort42.busking.application.domain.model.Token;
 import org.comfort42.busking.application.domain.model.User;
 import org.comfort42.busking.application.port.outbound.LoadTokenPort;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.time.Instant;
 
 class AuthorizationHeaderFilter extends OncePerRequestFilter {
-    private final static String MSG_ILLEGAL_AUTH_TOKEN = "A illegal authorization token was passed.";
-    private final static String MSG_AUTH_TOKEN_EXPIRED = "";  // TODO(meo-s): empty exception message
+
     private final LoadTokenPort loadTokenPort;
     private final JWTVerifier accessTokenVerifier;
 
@@ -29,46 +27,65 @@ class AuthorizationHeaderFilter extends OncePerRequestFilter {
         this.accessTokenVerifier = accessTokenVerifier;
     }
 
+    private String extractBearerToken(final HttpServletRequest req) {
+        final String BEARER_TOKEN_PREFIX = "Bearer";
+
+        final String authorizationHeader = req.getHeader("Authorization");
+        if (authorizationHeader == null || !authorizationHeader.startsWith(BEARER_TOKEN_PREFIX)) {
+            return null;
+        }
+
+        return authorizationHeader.substring(BEARER_TOKEN_PREFIX.length());
+    }
+
+    private Token verifyToken(final String accessToken) {
+        try {
+            final DecodedJWT decodedJWT = accessTokenVerifier.verify(accessToken);
+
+            final Claim tokenId = decodedJWT.getClaim("tid");
+            if (decodedJWT.getSubject() == null || tokenId.isMissing()) {
+                throw new BadCredentialsException("");  // TODO(meo-s): empty exception message
+            }
+
+            final User.UserId userId = User.UserId.of(decodedJWT.getSubject());
+
+            final Token token = loadTokenPort
+                    .loadTokenByUserId(userId)
+                    .orElseThrow(() -> new BadCredentialsException(""));  // TODO(meo-s): empty exception message
+
+            if (!token.tokenId().equals(Token.TokenId.of(tokenId.asString()))) {
+                throw new BadCredentialsException("");  // TODO(meo-s): empty exception message
+            }
+
+            return token;
+        } catch (TokenExpiredException | SignatureVerificationException e) {
+            throw e;
+        } catch (JWTDecodeException e) {
+            throw e;
+        }
+    }
+
     protected void doFilterInternal(
             final HttpServletRequest req,
             final HttpServletResponse resp,
             final FilterChain filterChain) throws ServletException, IOException {
-        final String authorizationHeader = req.getHeader("Authorization");
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            try {
-                final String accessToken = authorizationHeader.substring("Bearer ".length()).trim();
-                final DecodedJWT decodedJWT = accessTokenVerifier.verify(accessToken);
+        final String bearerToken = extractBearerToken(req);
+        if (bearerToken == null) {
+            filterChain.doFilter(req, resp);
+            return;
+        }
 
-                final Claim receivedTokenId = decodedJWT.getClaim("tid");
-                if (receivedTokenId == null) {
-                    throw new BadCredentialsException(MSG_ILLEGAL_AUTH_TOKEN);
-                }
+        try {
+            final Token token = verifyToken(bearerToken);
 
-                final Instant receivedTokenIssuedAt = decodedJWT.getIssuedAtAsInstant();
-                if (receivedTokenIssuedAt == null) {
-                    throw new BadCredentialsException(MSG_ILLEGAL_AUTH_TOKEN);
-                }
-
-                final Token token = loadTokenPort
-                        .loadTokenByUserId(User.UserId.of(decodedJWT.getSubject()))
-                        .orElseThrow(() -> new CredentialsExpiredException(MSG_AUTH_TOKEN_EXPIRED));
-
-                if (!token.tokenId().equals(Token.TokenId.of(receivedTokenId.asString()))) {
-                    throw new BadCredentialsException(MSG_AUTH_TOKEN_EXPIRED);
-                }
-
-//                SecurityContextHolder.getContext().setAuthentication();
-                System.out.println("good");
-            } catch (final TokenExpiredException e) {
-                throw new CredentialsExpiredException(e.toString());
-            } catch (final SignatureVerificationException e) {
-                throw new BadCredentialsException(e.toString());
-            } catch (final JWTDecodeException | IncorrectClaimException | MissingClaimException | AlgorithmMismatchException e) {
-                throw new BadCredentialsException(MSG_ILLEGAL_AUTH_TOKEN);
-            }
+            new WebAuthenticationDetails(req.getRemoteAddr(), token.tokenId().toString());
+        }
+        catch (Exception e) {
+            // TODO(meo-s): 예외 전환
         }
 
         filterChain.doFilter(req, resp);
     }
+
 }

@@ -12,10 +12,11 @@ import org.comfort42.busking.application.domain.model.UserRole;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterUserCommand {
-    private String userId;
-    private String userPassword;
-    private String userEmail;
-    private String userPhoneNumber;
-    private Company.CompanyId userCompany;
-    private UserRole userRole;
+    private String username;
+    private String realName;
+    private String password;
+    private String email;
+    private String phoneNumber;
+    private Company.CompanyId company;
+    private UserRole role;
 }

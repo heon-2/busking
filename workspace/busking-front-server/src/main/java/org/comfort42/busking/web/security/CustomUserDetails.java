@@ -3,37 +3,68 @@ package org.comfort42.busking.web.security;
 import java.util.Collection;
 import java.util.EnumSet;
 
+import lombok.Getter;
+import org.comfort42.busking.application.domain.model.Company;
+import org.comfort42.busking.application.domain.model.User;
 import org.comfort42.busking.application.domain.model.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class CustomUserDetails implements UserDetails {
+class CustomUserDetails implements UserDetails {
 
+    @Getter
+    private User.UserId id;
+
+    @Getter
     private String username;
+
+    @Getter
     private String password;
+
+    @Getter
+    private String realName;
+
+    @Getter
+    private String email;
+
+    @Getter
+    private String phoneNumber;
+
+    @Getter
+    private Company.CompanyId companyId;
+
+    private UserRole userRole;
+
     private boolean isAccountLocked = false;
+
     private boolean isAccountExpired = false;
+
     private boolean isCredentialsExpired = false;
+
     private boolean isEnabled = true;
 
-    CustomUserDetails(final String username, final String password) {
+    CustomUserDetails(
+            final User.UserId id,
+            final String username,
+            final String password,
+            final String realName,
+            final String email,
+            final String phoneNumber,
+            final Company.CompanyId companyId,
+            final UserRole userRole) {
+        this.id = id;
         this.username = username;
         this.password = password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
+        this.realName = realName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.companyId = companyId;
+        this.userRole = userRole;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return EnumSet.noneOf(UserRole.class);
+        return EnumSet.of(userRole);
     }
 
     @Override

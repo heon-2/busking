@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 class AuthenticationResultHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
 
     private static final String SUCCESS_RESPONSE_TEMPLATE = "{\"accessToken\": \"%s\",\"refreshToken\":\"%s\"}";
-    private static final UserMapper userMapper = UserMapper.getInstacne();
     private final IssueTokenUseCase issueTokenUseCase;
     private final JWTGenerator jwtGenerator;
     private final Duration accessTokenLifetime;
@@ -43,19 +42,19 @@ class AuthenticationResultHandler implements AuthenticationSuccessHandler, Authe
             final HttpServletResponse resp,
             final Authentication authentication) throws IOException, ServletException {
         if (authentication.getPrincipal() instanceof CustomUserDetails) {
-            final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            final var userDetails = (CustomUserDetails) authentication.getPrincipal();
+            final var userId = User.UserId.of(userDetails.getUsername());
 
-            final Optional<Token> optToken = issueTokenUseCase.issueTokenFor(
-                    User.UserId.of(userDetails.getUsername()), accessTokenLifetime, refreshTokenLifetime);
-
-            if (optToken.isEmpty()) {
+            final var token = issueTokenUseCase.issueTokenFor(userId, accessTokenLifetime, refreshTokenLifetime);
+            if (token.isEmpty()) {
                 resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            } else {
-                final String accessToken = jwtGenerator.generateAccessToken(optToken.get(), userDetails);
-                final String refreshToken = jwtGenerator.generateRefreshToken(optToken.get());
-                resp.setStatus(HttpStatus.OK.value());
-                resp.getWriter().write(String.format(SUCCESS_RESPONSE_TEMPLATE, accessToken, refreshToken));
+                return;
             }
+
+            final String accessToken = jwtGenerator.generateAccessToken(token.get(), userDetails);
+            final String refreshToken = jwtGenerator.generateRefreshToken(token.get());
+            resp.setStatus(HttpStatus.OK.value());
+            resp.getWriter().write(String.format(SUCCESS_RESPONSE_TEMPLATE, accessToken, refreshToken));
         }
     }
 

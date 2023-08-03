@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class RegisterBusCommand {
+public class BusCommand {
     private final Long companyId;
     private final Long busNum;
 }

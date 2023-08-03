@@ -1,7 +1,7 @@
 package org.comfort42.busking.web.adapter.inbound;
 
 import lombok.RequiredArgsConstructor;
-import org.comfort42.busking.application.port.inbound.RegisterBusCommand;
+import org.comfort42.busking.application.port.inbound.BusCommand;
 import org.comfort42.busking.application.port.inbound.RegisterBusUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class RegisterBusController {
                                   @PathVariable Long companyId,
                                   final Authentication authentication) {
         try {
-            registerBusUseCase.registerBus(new RegisterBusCommand(companyId, req.busNum()));
+            registerBusUseCase.registerBus(new BusCommand(companyId, req.busNum()));
             return ResponseEntity
                     .created(new URI(String.format("/api/companies/%d/buses/register", companyId)))
                     .build();

@@ -24,6 +24,8 @@ public class Bus {
     @Value
     public static class BusId{
         private final BusPK value;
+
+        public BusId(Long companyId,Long busNum){this.value=new BusPK(companyId,busNum);}
     }
 
     public static Bus withId(BusId busId,

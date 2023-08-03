@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -13,15 +14,13 @@ import java.util.Objects;
 @Embeddable
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class BusPK implements Serializable {
     @JoinColumn(name = "company_id")
     private Long companyId;
 
     @JoinColumn(name="bus_num")
     private Long busNum;
-
-    // 기본 생성자 필요 (기본 생성자를 명시적으로 추가)
-    public BusPK() {}
 
     public BusPK(Long companyId, Long busNum) {
         this.companyId = companyId;

@@ -8,7 +8,7 @@ class UserMapper {
     private static UserMapper instance = null;
 
     static UserMapper getInstance() {
-        if (instance != null) {
+        if (instance == null) {
             instance = new UserMapper();
         }
         return instance;

@@ -1,4 +1,4 @@
-package org.comfort42.busking.application.port.outbound;
+package org.comfort42.busking.application.domain.port.inbound.outbound;
 
 import java.util.Optional;
 

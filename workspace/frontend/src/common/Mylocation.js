@@ -10,11 +10,13 @@ function useLocation() {
     },
     userDecisionTimeout: 5000,
   });
-  console.log('뭐지')
-  console.log(coords)
+  if(coords !== undefined) {
+    console.log(coords.latitude)
+  }
   useEffect(() => {
-    if (coords && coords.latitude && coords.longitude) {
+    if (coords !== undefined) {
       setLocation([coords.latitude, coords.longitude]);
+      console.log(coords.latitude)
     }
   }, [coords]);
 

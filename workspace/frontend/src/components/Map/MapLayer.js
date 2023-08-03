@@ -12,9 +12,10 @@ import { BiCurrentLocation } from 'react-icons/bi';
 import { IconButton } from "@material-tailwind/react";
 
 
-export function MapLayer() {
-
+export function MapLayer(props) {
+    // 현재 내 위치, 지도 타입(일반, 위성), 지도 중심, 버스 경로, 버스 정보(혼잡도 등)
     const { location, mapType, center, busPath, busInfo, setCenter, setBusPath, setBusInfo } = useMapStore()
+    // 내 위치 받아올 함수
     const locationHook = useLocation();
     const updatedLocation = locationHook.getLocation();
     const [count, setCount] = useState(0);
@@ -56,26 +57,18 @@ export function MapLayer() {
     />
 }
 {/* 위성 맵 */}
-    <Marker position={location} />
-    <Test location={location} ></Test>
-    </MapContainer>
-    <Dial />   
-    <TopBar style={{ zIndex: 1000 }}/>
-    <BusNum/>
 
-    {count}
+    { props.Marker }
+    { props.FindMe }
+    {/* <Marker position={location} /> */}
+    {/* <Test location={location} ></Test> */}
+    </MapContainer>
+    { props.Dial }
+    { props.TopBar }
+    { props.BusNum }
+    {/* <Dial />    */}
+    {/* <TopBar style={{ zIndex: 1000 }}/> */}
+    {/* <BusNum/> */}
 </div>
     )
-}
-
-function Test({ location}) {
-  const map = useMap();
-
-  return location ? (
-    <IconButton size="lg" className="rounded-full" onClick={() => {map.flyTo(location, 17,{
-      duration: 1,
-    });}} style={{zIndex: 2000}}>
-      <BiCurrentLocation className="h-5 w-5 transition-transform group-hover:rotate-45" />
-    </IconButton>
-  ) : null;
 }

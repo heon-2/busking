@@ -10,7 +10,7 @@ public class BusMapper {
             BusJpaEntity bus
     ) {
         return Bus.withId(
-                new Bus.BusId(bus.getId()),
+                new Bus.BusId(bus.getId().getCompanyId(),bus.getBusNum()),
                 bus.getId().getBusNum()
         );
     }

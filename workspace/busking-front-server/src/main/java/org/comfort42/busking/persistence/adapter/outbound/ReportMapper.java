@@ -8,7 +8,7 @@ public class ReportMapper {
     final static UserMapper userMapper = UserMapper.getInstance();
     BusMapper busMapper = new BusMapper();
 
-    Report mapToDomainEntity(
+    public Report mapToDomainEntity(
             ReportJpaEntity report
     ) {
         return Report.withId(

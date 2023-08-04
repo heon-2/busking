@@ -27,6 +27,11 @@ export default function RTC() {
   const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
 
   const OV = useRef(new OpenVidu());
+  
+  // size 조절
+  const [size, setSize] = React.useState(null);
+   const handleOpen = (value) => setSize(value);
+
 
   const handleChangeSessionId = useCallback((e) => {
     setMySessionId(e.target.value);
@@ -228,38 +233,49 @@ export default function RTC() {
   };
   return (
     <div>
-      {session === undefined ? (
-        <div>
-          <Button className="w-80 h-20 text-3xl" onClick={joinSession}>
+
+<div>
+          <Button className="w-96 h-28 text-4xl" onClick={() => {handleOpen("xl"); joinSession();}}>
             관리자와 화상채팅
           </Button>
         </div>
-      ) : null}
+      {/* {session === undefined ? (
+        <div>
+          <Button className="w-80 h-20 text-3xl" onClick={() => {handleOpen("xl"); joinSession();}}>
+            관리자와 화상채팅
+          </Button>
+        </div>
+      ) : null} */}
 
-      {session !== undefined ? (
-        <div id="session" className="h-screen items-center bg-white">
-          {/* {mainStreamManager !== undefined ? (
-            <div id="main-video" className="col-md-6">
-              <UserVideoComponent streamManager={mainStreamManager} />
-            </div>
-          ) : null} */}
-          <div className="grid grid-cols-2 gap-20">
-            <div className="bg-red-500 justify-center">
-              <div>버스 기사님</div>
+
+<Dialog
+        open={
+          size === "xs" ||
+          size === "sm" ||
+          size === "md" ||
+          size === "lg" ||
+          size === "xl" ||
+          size === "xxl"
+        }
+        size={size || "md"}
+        handler={handleOpen}
+        className="bg-skyblue-50"
+      >
+        <DialogHeader className="justify-center text-white text-4xl">관리자와의 화상통화</DialogHeader>
+        <DialogBody divider  className="flex justify-center">
+        <div className="grid grid-cols-2 gap-5">
+            <div>
               {publisher !== undefined ? (
                 <div
-                // onClick={() => handleMainVideoStream(publisher)}
                 >
                   <UserVideoComponent streamManager={publisher} />
                 </div>
               ) : null}
             </div>
-            <div className="bg-black p-4">
-              <div>SSAFY 관리자</div>
+            <div className="flex items-center justify-center">
               {subscribers.length === 0 ? (
                 <div>
-                  아직 아무도 안들어옴 ㅋㅋ
-                  <Spinner className="h-64 w-64 text-blue-500/10" />
+                  <Spinner className=" h-64 w-64 text-blue-500/10" />
                 </div>
               ) : (
                 <div>
@@ -287,17 +303,15 @@ export default function RTC() {
               ))} */}
             </div>
           </div>
-
-          <div>
-            {/* <h1 id="session-title">{mySessionId}</h1> */}
-
-            <Button onClick={switchCamera}>카메라 전환</Button>
-            <Button color="red" onClick={leaveSession}>
+        </DialogBody>
+        <DialogFooter className="justify-center gap-5">
+        <Button onClick={switchCamera}>카메라 전환</Button>
+        <Button color="red" onClick={() => {handleOpen(null); leaveSession();}}>
               화상 채팅 종료
             </Button>
-          </div>
-        </div>
-      ) : null}
+        </DialogFooter>
+      </Dialog>
+
     </div>
   );
 }

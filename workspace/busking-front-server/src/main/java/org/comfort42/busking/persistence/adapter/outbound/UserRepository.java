@@ -41,11 +41,11 @@ class UserRepository implements RegisterUserPort, LoadUserPort {
     }
 
     @Override
-    public Optional<User> loadUserById(final String userId) {
+    public Optional<User> loadUserById(final User.UserId userId) {
         try {
             final UserJpaEntity jpaEntity = em
                     .createQuery("SELECT u FROM UserJpaEntity  u WHERE u.id=:userId", UserJpaEntity.class)
-                    .setParameter("userId", userId)
+                    .setParameter("userId", userId.value())
                     .getSingleResult();
             return Optional.of(userMapper.mapToDomainEntity(jpaEntity));
         }
@@ -54,4 +54,12 @@ class UserRepository implements RegisterUserPort, LoadUserPort {
         }
     }
 
+    @Override
+    public Optional<User> loadUserByUsername(final String username) {
+        final UserJpaEntity jpaEntity = em
+                .createQuery("SELECT u FROM UserJpaEntity  u WHERE u.username=:username", UserJpaEntity.class)
+                .setParameter("username", username)
+                .getSingleResult();
+        return Optional.of(userMapper.mapToDomainEntity(jpaEntity));
+    }
 }

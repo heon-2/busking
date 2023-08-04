@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return userMapper.mapToUserDetails(
                 loadUserPort
-                        .loadUserById(username)
+                        .loadUserByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("")) // TODO(meo-s): 예외 메시지 작성하기
         );
     }

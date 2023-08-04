@@ -10,14 +10,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@RequiredArgsConstructor
 public class ReportRepository implements RegisterReportPort {
 
     @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
 
-    private ReportMapper reportMapper;
-    private UserMapper userMapper;
-    private BusMapper busMapper;
+    private final ReportMapper reportMapper;
+    private static final UserMapper userMapper=UserMapper.getInstance();
+    private final BusMapper busMapper;
 
     @Override
     @Transactional

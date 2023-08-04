@@ -26,7 +26,7 @@ public class RegisterReportService implements RegisterReportUseCase {
 
     @Override
     public void registerReport(ReportCommand reportCommand) {
-        Optional<User> reporter=loadUserPort.loadUserById(reportCommand.getUserId().toString());
+        Optional<User> reporter=loadUserPort.loadUserById(reportCommand.getUserId());
         BusJpaEntity busJpaEntity=loadBusPort.loadBusById(new Bus.BusId(reportCommand.getCompanyId(),reportCommand.getBusNum()));
         Report report = Report.withId(
                 null,

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.User;
 import org.comfort42.busking.application.port.inbound.RegisterReportUseCase;
 import org.comfort42.busking.application.port.inbound.ReportCommand;
+import org.comfort42.busking.web.security.TokenAuthentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -36,7 +37,7 @@ public class RegisterReportController {
     ResponseEntity<?> registerReport(
             @RequestBody final RegisterReportWebRequest req,
             final Authentication authentication) {
-        if (authentication == null /* || authentication instanceof TokenAuthentication */) {
+        if (authentication == null || !(authentication instanceof TokenAuthentication)) {
             // 사용자가 로그인을 하지 않으면 null이다.
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).build();
         }

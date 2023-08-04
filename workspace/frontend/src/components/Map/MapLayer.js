@@ -41,7 +41,7 @@ export function MapLayer(props) {
             <MapContainer
             center={location}
             zoom={11}
-            style={{ width: '100%', height: '1000px' }}
+            style={{ width: '100%', height: '100vh' }}
             >
 {/* 기본 맵 */}
 {

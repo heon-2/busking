@@ -23,8 +23,8 @@ class LoadTokenPersistenceAdapter implements LoadTokenPort {
     }
 
     @Override
-    public Optional<Token> loadTokenByUserId(final User.UserId userId) {
-        final String tokenRedisEntityJson = redisValueOps.get(userId.toString());
+    public Optional<Token> loadToken(final Token.TokenSubject subject) {
+        final String tokenRedisEntityJson = redisValueOps.get(subject.toString());
         if (tokenRedisEntityJson == null) {
             return Optional.empty();
         }

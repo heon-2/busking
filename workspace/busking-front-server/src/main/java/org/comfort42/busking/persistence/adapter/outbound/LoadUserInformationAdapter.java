@@ -10,25 +10,21 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @PersistenceAdapter
-public class LoadUserImformationPersistenceAdapterImformation implements LoadUserInformationPort {
+class LoadUserInformationAdapter implements LoadUserInformationPort {
 
-    private final UserMapper userMapper;
+    private final static UserMapper userMapper = UserMapper.getInstance();
     private final UserRepository userRepository;
 
     @Override
     public List<User> LoadViewUser() {
-
-        List<User> list = new ArrayList<>();
-        int index = 0;
-        for(UserJpaEntity user : userRepository.findAll()){
-            list.add(userMapper.mapToDomainEntity(user));
-        }
-
-        return list;
-//        if(repoList!=null&&!repoList.isEmpty()){
-//        }else{
-//            return null;
+//        List<User> list = new ArrayList<>();
+//        int index = 0;
+//        for (UserJpaEntity user : userRepository.findAll()) {
+//            list.add(userMapper.mapToDomainEntity(user));
 //        }
+//
+//        return list;
+        return new ArrayList<>();
     }
 
     @Override

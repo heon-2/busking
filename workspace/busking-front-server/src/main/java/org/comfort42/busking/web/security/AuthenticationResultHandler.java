@@ -43,9 +43,10 @@ class AuthenticationResultHandler implements AuthenticationSuccessHandler, Authe
             final Authentication authentication) throws IOException, ServletException {
         if (authentication.getPrincipal() instanceof CustomUserDetails) {
             final var userDetails = (CustomUserDetails) authentication.getPrincipal();
-            final var userId = User.UserId.of(userDetails.getUsername());
+            final var userId = userDetails.getUserId();
+            final var companyId = userDetails.getCompanyId();
 
-            final var token = issueTokenUseCase.issueTokenFor(userId, accessTokenLifetime, refreshTokenLifetime);
+            final var token = issueTokenUseCase.issueTokenFor(userId, companyId, accessTokenLifetime, refreshTokenLifetime);
             if (token.isEmpty()) {
                 resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
                 return;

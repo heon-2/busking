@@ -33,7 +33,7 @@ class JWTGenerator {
                 .withNotBefore(token.issuedAt())
                 .withExpiresAt(token.accessExpiresAt())
                 .withIssuer(tokenIssuer)
-                .withSubject(userDetails.getUsername())
+                .withSubject(token.subject().toString())
                 .withAudience(tokenAudience)
                 .withClaim("tid", token.tokenId().toString())
                 .withClaim("authorities", authorities)

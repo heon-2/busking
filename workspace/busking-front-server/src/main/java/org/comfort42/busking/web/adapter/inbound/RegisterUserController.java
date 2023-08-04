@@ -18,7 +18,13 @@ import java.net.URI;
 @RequestMapping("/api/users")
 class RegisterUserController {
 
-    record RegisterUserWebRequest(String username, String password, String realName, String email, String phoneNumber, Long companyId) {
+    record RegisterUserWebRequest(
+            String username,
+            String password,
+            String realName,
+            String email,
+            String phoneNumber,
+            Long companyId) {
     }
 
     private final ObjectMapper objectMapper;
@@ -44,7 +50,7 @@ class RegisterUserController {
         try {
             final User user = registerUserUseCase.registerUser(cmd);
             return ResponseEntity
-                    .created(new URI(String.format("/api/companies/%d/users/%s", user.companyId().value(), user.id())))
+                    .created(new URI("/api/users/" + user.id()))
                     .build();
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT.value()).build();

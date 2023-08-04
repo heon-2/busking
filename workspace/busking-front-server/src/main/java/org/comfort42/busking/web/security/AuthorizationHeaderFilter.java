@@ -2,16 +2,17 @@ package org.comfort42.busking.web.security;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.*;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.comfort42.busking.application.domain.model.Token;
-import org.comfort42.busking.application.domain.model.User;
+import org.comfort42.busking.application.domain.model.UserRole;
 import org.comfort42.busking.application.port.outbound.LoadTokenPort;
+import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,7 +29,7 @@ class AuthorizationHeaderFilter extends OncePerRequestFilter {
     }
 
     private String extractBearerToken(final HttpServletRequest req) {
-        final String BEARER_TOKEN_PREFIX = "Bearer";
+        final String BEARER_TOKEN_PREFIX = "Bearer ";
 
         final String authorizationHeader = req.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith(BEARER_TOKEN_PREFIX)) {
@@ -38,26 +39,26 @@ class AuthorizationHeaderFilter extends OncePerRequestFilter {
         return authorizationHeader.substring(BEARER_TOKEN_PREFIX.length());
     }
 
-    private Token verifyToken(final String accessToken) {
+    private Pair<Token, DecodedJWT> verifyToken(final String accessToken) {
         try {
-            final DecodedJWT decodedJWT = accessTokenVerifier.verify(accessToken);
+            final var decodedJWT = accessTokenVerifier.verify(accessToken);
 
-            final Claim tokenId = decodedJWT.getClaim("tid");
+            final var tokenId = decodedJWT.getClaim("tid");
             if (decodedJWT.getSubject() == null || tokenId.isMissing()) {
                 throw new BadCredentialsException("");  // TODO(meo-s): empty exception message
             }
 
-            final User.UserId userId = User.UserId.of(decodedJWT.getSubject());
+            final var tokenSubject = Token.TokenSubject.of(decodedJWT.getSubject());
 
-            final Token token = loadTokenPort
-                    .loadTokenByUserId(userId)
+            final var token = loadTokenPort
+                    .loadToken(tokenSubject)
                     .orElseThrow(() -> new BadCredentialsException(""));  // TODO(meo-s): empty exception message
 
             if (!token.tokenId().equals(Token.TokenId.of(tokenId.asString()))) {
                 throw new BadCredentialsException("");  // TODO(meo-s): empty exception message
             }
 
-            return token;
+            return Pair.of(token, decodedJWT);
         } catch (TokenExpiredException | SignatureVerificationException e) {
             throw e;
         } catch (JWTDecodeException e) {
@@ -77,11 +78,17 @@ class AuthorizationHeaderFilter extends OncePerRequestFilter {
         }
 
         try {
-            final Token token = verifyToken(bearerToken);
+            final var tokenInfo = verifyToken(bearerToken);
+            final var tokenMetadata = tokenInfo.getFirst();
+            final var tokenPayload = tokenInfo.getSecond();
 
-            new WebAuthenticationDetails(req.getRemoteAddr(), token.tokenId().toString());
-        }
-        catch (Exception e) {
+            final var authorities = tokenPayload.getClaim("authorities").isNull()
+                    ? tokenPayload.getClaim("authorities").asString() : "GUEST";
+
+            final var webAuthenticationDetails = new WebAuthenticationDetails(req.getRemoteAddr(), tokenMetadata.tokenId().toString());
+            final var authentication = new TokenAuthentication(tokenMetadata, UserRole.of(authorities), webAuthenticationDetails);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
             // TODO(meo-s): 예외 전환
         }
 

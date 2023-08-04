@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 class CustomUserDetails implements UserDetails {
 
     @Getter
-    private User.UserId id;
+    private User.UserId userId;
 
     @Getter
     private String username;
@@ -44,7 +44,7 @@ class CustomUserDetails implements UserDetails {
     private boolean isEnabled = true;
 
     CustomUserDetails(
-            final User.UserId id,
+            final User.UserId userId,
             final String username,
             final String password,
             final String realName,
@@ -52,7 +52,7 @@ class CustomUserDetails implements UserDetails {
             final String phoneNumber,
             final Company.CompanyId companyId,
             final UserRole userRole) {
-        this.id = id;
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.realName = realName;

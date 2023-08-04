@@ -11,20 +11,12 @@ export function KnightMap() {
         <MapLayer></MapLayer>
       </div>
       {/* 나중에 zindex 조정하기 */}
-      <div className="flex fixed bottom-6 left-10" style={{ zIndex: 1000 }}>
+      <div className="flex fixed bottom-10 left-10" style={{ zIndex: 1000 }}>
         <RTC></RTC>
       </div>
-      <div className="flex fixed bottom-6 right-10" style={{ zIndex: 1000 }}>
-        {/* <Button
-          onClick={() => {
-            navigate("/RTC");
-          }}
-        >
-          관리자와의 화상통화 연결
-        </Button> */}
-
+      <div className="flex fixed bottom-10 right-10" style={{ zIndex: 1000 }}>
         <Button
-          className="w-72 h-20 text-3xl"
+          className="w-96 h-28 text-4xl"
           onClick={() => {
             navigate("/knightquit");
           }}

@@ -1,5 +1,13 @@
 import { OpenVidu } from "openvidu-browser";
-import { Button } from "@material-tailwind/react";
+import {
+  Button,
+  Modal,
+  Spinner,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -229,7 +237,7 @@ export default function RTC() {
       ) : null}
 
       {session !== undefined ? (
-        <div id="session">
+        <div id="session" className="h-screen items-center bg-white">
           {/* {mainStreamManager !== undefined ? (
             <div id="main-video" className="col-md-6">
               <UserVideoComponent streamManager={mainStreamManager} />
@@ -246,10 +254,13 @@ export default function RTC() {
                 </div>
               ) : null}
             </div>
-            <div className="bg-blue-500 p-4">
+            <div className="bg-black p-4">
               <div>SSAFY 관리자</div>
               {subscribers.length === 0 ? (
-                <div>아직 아무도 안들어옴 ㅋㅋ</div>
+                <div>
+                  아직 아무도 안들어옴 ㅋㅋ
+                  <Spinner className="h-64 w-64 text-blue-500/10" />
+                </div>
               ) : (
                 <div>
                   {subscribers.map((sub, i) => (

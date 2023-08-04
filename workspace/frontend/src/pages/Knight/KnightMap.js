@@ -15,14 +15,6 @@ export function KnightMap() {
         <RTC></RTC>
       </div>
       <div className="flex fixed bottom-6 right-10" style={{ zIndex: 1000 }}>
-        {/* <Button
-          onClick={() => {
-            navigate("/RTC");
-          }}
-        >
-          관리자와의 화상통화 연결
-        </Button> */}
-
         <Button
           className="w-72 h-20 text-3xl"
           onClick={() => {

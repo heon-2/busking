@@ -7,12 +7,14 @@ export function KnightMap() {
   const navigate = useNavigate();
   return (
     <div>
-      <h1>KnightMap</h1>
       <div className="z-0">
         <MapLayer></MapLayer>
       </div>
       {/* 나중에 zindex 조정하기 */}
-      <div className="flex fixed bottom-6 left-20" style={{ zIndex: 1000 }}>
+      <div className="flex fixed bottom-6 left-10" style={{ zIndex: 1000 }}>
+        <RTC></RTC>
+      </div>
+      <div className="flex fixed bottom-6 right-10" style={{ zIndex: 1000 }}>
         {/* <Button
           onClick={() => {
             navigate("/RTC");
@@ -20,9 +22,9 @@ export function KnightMap() {
         >
           관리자와의 화상통화 연결
         </Button> */}
-        <RTC></RTC>
 
         <Button
+          className="w-72 h-20 text-3xl"
           onClick={() => {
             navigate("/knightquit");
           }}

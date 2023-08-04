@@ -8,7 +8,7 @@ public class ReportMapper {
     final static UserMapper userMapper = UserMapper.getInstance();
     BusMapper busMapper = new BusMapper();
 
-    Report mapToDomainEntity(
+    public Report mapToDomainEntity(
             ReportJpaEntity report
     ) {
         return Report.withId(
@@ -16,8 +16,8 @@ public class ReportMapper {
                 userMapper.mapToDomainEntity(report.getReporter()),
                 report.getDescription(),
                 report.getCreated_at(),
-                report.getLat(),
                 report.getLng(),
+                report.getLat(),
                 busMapper.mapToDomainEntity(report.getBus())
         );
     }

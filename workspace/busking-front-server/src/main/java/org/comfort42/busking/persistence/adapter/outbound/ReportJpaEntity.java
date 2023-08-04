@@ -2,8 +2,7 @@ package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.comfort42.busking.application.domain.model.Bus;
-import org.comfort42.busking.application.domain.model.User;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
@@ -11,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "report")
-@Getter
+@Getter @Setter
 public class ReportJpaEntity {
     @Id
     @GeneratedValue
@@ -27,9 +26,9 @@ public class ReportJpaEntity {
     @CreationTimestamp
     private LocalDateTime created_at = LocalDateTime.now();
 
-    private Double lat;
-
     private Double lng;
+
+    private Double lat;
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name= "bus_id")

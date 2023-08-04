@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import java.util.Collection;
 
-class TokenAuthentication implements Authentication {
+public class TokenAuthentication implements Authentication {
 
     private final Token token;
     private final UserDetails userDetails;
@@ -33,7 +33,7 @@ class TokenAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return token.subject().toString();
+        return token.subject().userId().toString();
     }
 
     @Override

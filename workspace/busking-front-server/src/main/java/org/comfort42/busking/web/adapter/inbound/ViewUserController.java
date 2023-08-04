@@ -1,18 +1,20 @@
 package org.comfort42.busking.web.adapter.inbound;
 
 import lombok.RequiredArgsConstructor;
-import org.comfort42.busking.application.domain.model.User;
+import org.apache.tomcat.util.http.parser.Authorization;
+import org.comfort42.busking.application.port.inbound.ViewUserPayload;
 import org.comfort42.busking.application.port.inbound.ViewUserUseCase;
-import org.comfort42.busking.application.port.inbound.ViewUserCommand;
 import org.comfort42.busking.common.WebAdapter;
+import org.comfort42.busking.web.security.TokenAuthentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.*;
+import org.comfort42.busking.application.domain.model.User;
 
-import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @WebAdapter
 @RestController
@@ -22,21 +24,39 @@ public class ViewUserController {
 
     private final ViewUserUseCase viewUserUseCase;
 
-    @GetMapping()
-    public ResponseEntity<?> ViewUser() {
+    @GetMapping("/list/{page}")
+    public ResponseEntity<?> ViewUser(Authentication authentication, @PathVariable long page) {
         try {
 
-            return new ResponseEntity<List<ViewUserCommand>>(viewUserUseCase.UserList(), HttpStatus.OK);
+            if (authentication == null || !(authentication instanceof TokenAuthentication)) {
 
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).build();
+            }else{
+
+                long companyId = Integer.parseInt(((TokenAuthentication) authentication).getCompanyId());
+                return new ResponseEntity<ConcurrentHashMap<String,Object>>(viewUserUseCase.userList(companyId,page)
+                                                                                                    ,HttpStatus.OK);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("{userId}")
-    public ResponseEntity<?> DetailUser(@PathVariable int userId) {
+    @GetMapping()
+    public ResponseEntity<?> DetailUser(Authentication authentication) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            if (authentication == null || !(authentication instanceof TokenAuthentication)) {
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).build();
+            }else{
+                return new ResponseEntity<ViewUserPayload>(viewUserUseCase
+                        .userDetail(UUID.fromString(authentication.getName())),HttpStatus.OK);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<ViewUserPayload>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

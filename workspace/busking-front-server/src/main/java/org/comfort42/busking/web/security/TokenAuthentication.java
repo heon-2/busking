@@ -66,4 +66,8 @@ public class TokenAuthentication implements Authentication {
         this.isAuthenticated = isAuthenticated;
     }
 
+    public String getCompanyId() {
+        return token.subject().companyId().toString();
+    }
+
 }

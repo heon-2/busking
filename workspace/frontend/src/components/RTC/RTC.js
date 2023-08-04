@@ -219,23 +219,17 @@ export default function RTC() {
     return response.data; // The token
   };
   return (
-    <div className="bg-purple-300">
+    <div>
       {session === undefined ? (
         <div>
-            <Button onClick={joinSession}>관리자와의 화상채팅</Button>
+          <Button className="w-80 h-20 text-3xl" onClick={joinSession}>
+            관리자와 화상채팅
+          </Button>
         </div>
       ) : null}
 
       {session !== undefined ? (
         <div id="session">
-          <div id="session-header">
-            {/* <h1 id="session-title">{mySessionId}</h1> */}
-            <Button color="red" onClick={leaveSession}>
-              화상 채팅 종료
-            </Button>
-            <Button onClick={switchCamera}>카메라 전환</Button>
-
-          </div>
           {/* {mainStreamManager !== undefined ? (
             <div id="main-video" className="col-md-6">
               <UserVideoComponent streamManager={mainStreamManager} />

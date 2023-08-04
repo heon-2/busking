@@ -1,41 +1,38 @@
-import { Button } from "@material-tailwind/react";
+import { 
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { QR }  from "../../components/QRcode/QR";
+
 export function ScanQR() {
   let navigate = useNavigate();
   return (
-    <div>
-      <div className="header mb-40 text-lg">
-        <h1>해당 QR 코드를 버스에 찍어주세요.</h1>
-      </div>
-      <div className="qrcode flex justify-center">
-        <img
-          className=""
-          src="https://www.qrcode.com/en/img/model12/model1Image.png"
-          alt=""
-        />
-      </div>
-
-      <div>
-        <p className="">[탑승하고 있는 버스호차 정보]</p>
-        <h2>[버스 하차지 정보]</h2>
-      </div>
-
-      <div className="bottom">
-        <Button
-          onClick={() => {
-            navigate("/setQR");
-          }}
-        >
-          QR 코드 재발급
-        </Button>
-        <Button
-          onClick={() => {
-            navigate("/map");
-          }}
-        >
-          홈 화면 가기
-        </Button>
-      </div>
-    </div>
+    <div className="h-screen overflow-y-auto bg-blue-50 flex flex-col items-center justify-center">
+  <div className="flex header text-xl font-bold h-16 md:h-20 items-center justify-center">
+    <p>해당 QR 코드를 버스에 찍어주세요</p>
+  </div>
+  <Card className="w-full md:w-96">
+    <CardHeader floated={false} className="h-80 md:h-96">
+      <QR />
+    </CardHeader>
+    <CardBody className="text-center">
+      <Typography variant="h4" color="blue-gray" className="mb-2">
+        4-3 흑석사거리
+      </Typography>
+      <Typography color="blue" className="font-medium" textGradient>
+        삼성2공장 SSAFY 하차
+      </Typography>
+    </CardBody>
+    <CardFooter className="flex flex-col gap-4 pt-2">
+      <Button onClick={() => navigate("/setQR")}>QR 코드 재발급</Button>
+      <Button onClick={() => navigate("/map")}>홈 화면 가기</Button>
+    </CardFooter>
+  </Card>
+</div>
   );
 }

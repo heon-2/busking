@@ -3,6 +3,7 @@ package org.comfort42.busking.application.port.inbound;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.comfort42.busking.application.domain.model.Report;
 import org.comfort42.busking.application.domain.model.User;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,8 @@ import java.time.LocalDateTime;
 @Setter
 @RequiredArgsConstructor
 public class ReportCommand {
+    private final Report.ReportId reportId;
+
     private final User.UserId userId;
 
     private final String description;
@@ -25,5 +28,6 @@ public class ReportCommand {
 
     private final Long companyId;
 
+    private final String reporter;
 
 }

@@ -45,13 +45,15 @@ public class RegisterReportController {
             final var userId = User.UserId.of(authentication.getName());
             reportUseCase.registerReport(
                     new ReportCommand(
+                            null,
                             userId,
                             req.description(),
                             LocalDateTime.now(),
                             req.lng(),
                             req.lat(),
                             req.busNum(),
-                            req.companyId()
+                            req.companyId(),
+                            null
                     ));
             return ResponseEntity.created(new URI(new String("/api/reports"))).build();
         }

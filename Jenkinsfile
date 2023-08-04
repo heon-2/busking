@@ -33,6 +33,7 @@ pipeline {
                     unstash(name: 'frontend.build')
                     sh 'tar zxf frontend.build.tar.gz && rm frontend.build.tar.gz'
                     sh 'mv build src/main/resources/static'
+                    sh 'rm -rf src/test'
 
                     sh 'chmod +x ./gradlew && ./gradlew build'
                     sh 'rm ./build/libs/*plain*'

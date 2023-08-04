@@ -6,5 +6,5 @@ import org.comfort42.busking.application.domain.model.User;
 import java.util.Optional;
 
 public interface LoadTokenPort {
-    Optional<Token> loadTokenByUserId(final User.UserId userId);
+    Optional<Token> loadToken(final Token.TokenSubject userId);
 }

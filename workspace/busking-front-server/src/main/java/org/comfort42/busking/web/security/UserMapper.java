@@ -23,7 +23,7 @@ public class UserMapper {
 
     User mapToDomainModel(final CustomUserDetails userDetails) {
         return new User(
-                userDetails.getId(),
+                userDetails.getUserId(),
                 userDetails.getUsername(),
                 userDetails.getPassword(),
                 userDetails.getRealName(),

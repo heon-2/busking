@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 public enum UserRole implements GrantedAuthority {
 
+    GUEST("GUEST"),
     EMPLOYEE("EMPLOYEE"),
     COMPANY_ADMIN("COMPANY_ADMIN"),
     DRIVER("DRIVER");

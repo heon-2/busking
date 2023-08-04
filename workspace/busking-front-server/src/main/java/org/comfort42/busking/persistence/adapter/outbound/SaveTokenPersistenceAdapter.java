@@ -21,7 +21,7 @@ class SaveTokenPersistenceAdapter implements SaveTokenPort {
 
     @Override
     public void save(final Token token) {
-        final TokenRedisEntity tokenPersistenceRepresentation = new TokenRedisEntity(
+        final TokenRedisEntity redisEntity = new TokenRedisEntity(
                 token.tokenId().toString(),
                 token.subject().toString(),
                 token.issuedAt(),
@@ -30,9 +30,8 @@ class SaveTokenPersistenceAdapter implements SaveTokenPort {
         );
 
         try {
-            final String userId = token.subject().toString();
-            final String tokenJson = objectMapper.writeValueAsString(tokenPersistenceRepresentation);
-            redisValueOps.set(userId, tokenJson);
+            final String tokenJson = objectMapper.writeValueAsString(redisEntity);
+            redisValueOps.set(redisEntity.getSubject(), tokenJson);
         } catch (final JsonProcessingException e) {
             // TODO(meo-s): empty catch body
         }

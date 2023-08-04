@@ -30,7 +30,7 @@ class TokenMapper {
     Token mapRedisEntityToDomainModel(final TokenRedisEntity redisEntity) {
         return new Token(
                 Token.TokenId.of(redisEntity.getTid()),
-                User.UserId.of(redisEntity.getSubject()),
+                Token.TokenSubject.of(redisEntity.getSubject()),
                 redisEntity.getIssuedAt(),
                 redisEntity.getAccessExpiresAt(),
                 redisEntity.getRefreshExpiresAt()

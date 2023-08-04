@@ -2,6 +2,7 @@ package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "report")
-@Getter
+@Getter @Setter
 public class ReportJpaEntity {
     @Id
     @GeneratedValue

@@ -17,6 +17,7 @@ public class StationRepository implements RegisterStationPort {
     private final EntityManager em;
 
     private final StationMapper stationMapper;
+    private static final CompanyMapper companyMapper=CompanyMapper.getInstance();
 
     @Override
     @Transactional
@@ -25,6 +26,8 @@ public class StationRepository implements RegisterStationPort {
         stationJpaEntity.setName(station.getName());
         stationJpaEntity.setLng(station.getLng());
         stationJpaEntity.setLat(station.getLat());
+        CompanyJpaEntity companyJpaEntity=companyMapper.mapToJpaEntity(station.getCompany());
+        stationJpaEntity.setCompany(companyJpaEntity);
         em.persist(stationJpaEntity);
     }
 }

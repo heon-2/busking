@@ -1,12 +1,14 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
+import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.RouteStation;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class RouteStationMapper {
-    StationMapper stationMapper=new StationMapper();
-    RouteMapper routeMapper=new RouteMapper();
+    private final StationMapper stationMapper;
+    private final RouteMapper routeMapper;
 
     public RouteStation mapToDomainEntity(
             RouteStationJpaEntity routeStationJpaEntity,

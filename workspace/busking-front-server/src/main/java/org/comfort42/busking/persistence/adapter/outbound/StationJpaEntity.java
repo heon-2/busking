@@ -26,7 +26,7 @@ public class StationJpaEntity {
     private Double lat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", insertable = false, updatable = false)
+    @JoinColumn(name = "company_id")
     private CompanyJpaEntity company;
 
     @OneToMany(mappedBy = "station",cascade = CascadeType.REMOVE)

@@ -4,21 +4,23 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Report;
+import org.comfort42.busking.application.port.outbound.LoadReportPort;
 import org.comfort42.busking.application.port.outbound.RegisterReportPort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
-public class ReportRepository implements RegisterReportPort {
+public class ReportRepository implements RegisterReportPort, LoadReportPort {
 
     @PersistenceContext
     private final EntityManager em;
 
     private final ReportMapper reportMapper;
     private static final UserMapper userMapper=UserMapper.getInstance();
-    private final BusMapper busMapper;
 
     @Override
     @Transactional
@@ -30,5 +32,21 @@ public class ReportRepository implements RegisterReportPort {
         reportJpaEntity.setLat(report.getLat());
         reportJpaEntity.setBus(bus);
         em.persist(reportJpaEntity);
+    }
+
+    @Override
+    public List<Report> loadReportList() {
+        List<ReportJpaEntity> reportJpaEntities=em.createQuery("select r from ReportJpaEntity r", ReportJpaEntity.class)
+                .getResultList();
+        List<Report> reports=new ArrayList<>();
+        for(ReportJpaEntity reportJpaEntity: reportJpaEntities){
+            reports.add(reportMapper.mapToDomainEntity(reportJpaEntity));
+        }
+        return reports;
+    }
+
+    @Override
+    public Report loadReportById(Report.ReportId reportId) {
+        return reportMapper.mapToDomainEntity(em.find(ReportJpaEntity.class,reportId.getValue()));
     }
 }

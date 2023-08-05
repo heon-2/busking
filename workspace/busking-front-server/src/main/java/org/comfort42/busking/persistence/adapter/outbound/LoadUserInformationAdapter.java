@@ -7,28 +7,41 @@ import org.comfort42.busking.common.PersistenceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @PersistenceAdapter
 class LoadUserInformationAdapter implements LoadUserInformationPort {
 
     private final static UserMapper userMapper = UserMapper.getInstance();
-    private final UserRepository userRepository;
+    private final ViewUserRepository viewUserRepository;
 
     @Override
-    public List<User> LoadViewUser() {
-//        List<User> list = new ArrayList<>();
-//        int index = 0;
-//        for (UserJpaEntity user : userRepository.findAll()) {
-//            list.add(userMapper.mapToDomainEntity(user));
-//        }
-//
-//        return list;
-        return new ArrayList<>();
+    public List<User> loadViewUser(long companyId, long page) {
+        List<User> list = new ArrayList<>();
+        for (UserJpaEntity user : viewUserRepository.findByCompanyId(companyId,page)) {
+            list.add(userMapper.mapToDomainEntity(user));
+
+        }
+
+        return list;
+
     }
 
     @Override
-    public User LoadDetailUser() {
-        return null;
+    public Long totalPage(long companyId) {
+        return viewUserRepository.countByCompanyId(companyId);
+    }
+
+    @Override
+    public User loadUserDetail(UUID userId) {
+        Optional<UserJpaEntity> user = viewUserRepository.findById(userId);
+
+        if(user.isPresent()){
+            return userMapper.mapToDomainEntity(user.get());
+        }else{
+            return null;
+        }
     }
 }

@@ -19,7 +19,7 @@ public class RouteJpaEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", insertable = false, updatable = false)
+    @JoinColumn(name = "company_id")
     private CompanyJpaEntity company;
 
     @OneToMany(mappedBy = "route",cascade = CascadeType.REMOVE)

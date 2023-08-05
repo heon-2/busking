@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class StationMapper {
 
-    private final CompanyMapper companyMapper;
+    private static final CompanyMapper companyMapper=CompanyMapper.getInstance();
 
     Station mapToDomainEntity(
             StationJpaEntity station

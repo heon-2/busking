@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RouteMapper {
 
-    private final CompanyMapper companyMapper;
+    private static final CompanyMapper companyMapper=CompanyMapper.getInstance();
 
     Route mapToDomainEntity(
             RouteJpaEntity route

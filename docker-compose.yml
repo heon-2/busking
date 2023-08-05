@@ -1,0 +1,45 @@
+version: '2'
+
+volumes:
+  busking_main_data:
+    external:
+      name: busking_main_data
+
+networks:
+  busking_network:
+    driver: bridge
+
+services:
+  busking_mysql:
+    restart: on-failure
+    image: 'mysql:latest'
+    container_name: 'busking_mysql'
+    environment:
+      MYSQL_DATABASE: busking
+      MYSQL_ROOT_PASSWORD: busking
+      TZ: Asia/Seoul
+    networks:
+    - busking_network
+    volumes:
+    - 'busking_main_data:/var/lib/mysql'
+
+  busking_front_server:
+    restart: on-failure
+    depends_on:
+    - busking_mysql
+    image: 'me0s/busking:latest'
+    container_name: busking_front_server
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://busking_mysql:3306/busking'
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: busking
+    ports:
+    - '38443:5000'
+    networks:
+    - busking_network
+
+  busking_redis:
+    restart: on-failure
+    image: 'redis:latest'
+    container_name: busking_redis
+    network_mode: 'service:busking_front_server'

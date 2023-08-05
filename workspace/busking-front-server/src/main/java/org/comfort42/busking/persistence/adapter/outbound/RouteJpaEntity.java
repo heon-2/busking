@@ -18,6 +18,10 @@ public class RouteJpaEntity {
 
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", insertable = false, updatable = false)
+    private CompanyJpaEntity company;
+
     @OneToMany(mappedBy = "route",cascade = CascadeType.REMOVE)
     private List<BusRouteJpaEntity> buses = new ArrayList<>();
 

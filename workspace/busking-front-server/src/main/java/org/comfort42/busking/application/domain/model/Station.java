@@ -23,6 +23,8 @@ public class Station {
     @NonNull
     private final Double lat;
 
+    private final Company company;
+
 //    @NonNull
 //    private final List<RouteStation> route;
 
@@ -34,9 +36,10 @@ public class Station {
     public static Station withId(StationId stationId,
                                  String name,
                                  Double lng,
-                                 Double lat
+                                 Double lat,
+                                 Company company
                                  ) {
 
-        return new Station(stationId,name,lng,lat);
+        return new Station(stationId,name,lng,lat,company);
     }
 }

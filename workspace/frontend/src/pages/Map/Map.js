@@ -19,6 +19,7 @@ export function Map() {
             <MapLayer 
             FindMe={<FindMe></FindMe>}
             Dial={<Dial></Dial>}
+            BusNum={<BusNum></BusNum>}
             />
         </div>
     )

@@ -12,12 +12,15 @@ import java.util.List;
 
 @Value
 @RequiredArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class Route {
 
     private final RouteId id;
 
     private final String name;
+
+    private final Company company;
 
 //    private final List<BusRoute> buses;
 
@@ -29,8 +32,9 @@ public class Route {
     }
 
     public static Route withId(Route.RouteId routeId,
-                                 String name
-                                 ) {
-        return new Route(routeId,name);
+                               String name,
+                               Company company
+                               ) {
+        return new Route(routeId, name,company);
     }
 }

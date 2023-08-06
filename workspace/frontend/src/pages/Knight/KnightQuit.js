@@ -4,23 +4,24 @@ import { useNavigate } from "react-router-dom";
 export function KnightQuit() {
   const navigate = useNavigate();
   return (
-    <div>
-      <h1>Knight Quit</h1>
-      <p> 진짜 종료할거임 ? </p>
+    <div className="grid grid-rows-2 h-screen p-20 gap-14 bg-[#F0F4F9]">
       <Button
         color="red"
         onClick={() => {
           navigate("/knightselect");
         }}
+        className="border rounded-3xl text-8xl"
       >
-        진짜 종료할 거
+        운행 종료
       </Button>
       <Button
+        
         onClick={() => {
           navigate(-1);
         }}
+        className="border rounded-3xl text-8xl"
       >
-        뒤로가기
+        뒤로 가기
       </Button>
     </div>
   );

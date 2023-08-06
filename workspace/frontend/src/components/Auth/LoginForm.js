@@ -16,7 +16,9 @@ export function LoginForm() {
 const [ username, setName ] = useState('');
 const [password, setPassword] = useState('');
 
-const { setUser } = useUserStore()
+const { user, accessToken, setUser, setAccessToken, setRefreshToken } = useUserStore()
+const navigate = useNavigate()
+
 return (
     <Card color="transparent" shadow={false}>
     <Typography variant="h4" color="blue-gray">
@@ -45,7 +47,7 @@ return (
         }
         containerProps={{ className: "-ml-2.5" }}
         />
-        <Button className="mt-6" onClick={() => onLogin({username, password, setUser})}>
+        <Button className="mt-6" onClick={() => onLogin({username, password, user, setUser, setAccessToken, setRefreshToken, navigate})}>
         Login
         </Button>
         {/* <Button className="mt-6" onClick={() => onLogout({name, password, setUser})}>
@@ -61,23 +63,14 @@ return (
         </a>
         </Typography>
     </form>
-    <Button onClick={() => onUser()}>fdas</Button>
     </Card>
 );
 }
 
-function onLogin({username, password, setUser}) {
-    console.log(username)
-    console.log(password)
+async function onLogin({username, password, user, setUser, setAccessToken, setRefreshToken, navigate}) {
 
-    if (username === '') {
-        alert('아이디를 입력해주세요.')
-    }
-    else if (password === '') {
-        alert('비밀번호를 입력해주세요.')
-    }
-    else {
-        axios.post('/api/auth/login', {
+    try {
+        const response = await axios.post('/api/auth/login', {
             username: username,
             password: password,
         },
@@ -86,84 +79,37 @@ function onLogin({username, password, setUser}) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
+        })
+        console.log(response)
+        setAccessToken(response.data.accessToken)
+        setRefreshToken(response.data.refreshToken)
+        localStorage.setItem('accessToken', response.data.accessToken)
+        localStorage.setItem('refreshToken', response.data.refreshToken)
+        
+        const accessToken = localStorage.getItem('accessToken')
+
+        const response2 = await axios.get('/api/users', {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization' : `Bearer ${accessToken}`,
+            }
+        })
+        console.log(response2.data)
+        setUser(response2.data)
+
+        if (user.role === 'EMPLOYEE') {
+            navigate('/map')
+        } else if (user.role === 'COMPANY_ADMIN') {
+            navigate('/admin')
+        } else {
+            navigate('/knightselect')
         }
-        )
-        .then((response) => {
-            console.log(response)
-            localStorage.setItem('accessToken', response.data.accessToken)
-            localStorage.setItem('refreshToken', response.data.refreshToken)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+
+    } catch(error) {
+        console.log(error)
     }
 }
 
-// function onLogout({name, password, setUser}) {
-//     console.log(name)
-//     axios.post('http://localhost:3001/logout', {
-//         name: name,
-//         password: password
-//     })
-//     .then((response) => {
-//         console.log(response)
-//         localStorage.removeItem('accessToken')
-//         setUser(response.data.user)
-//     })
-//     .catch((error) => {
-//         console.log(error)
-//     })
-// }
-
-
-// async function onLogin({ username, password, setUser }) {
-//   try {
-//     const headers = {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/x-www-form-urlencoded'
-//     };
-
-//     const requestBody = new URLSearchParams();
-//     requestBody.append('username', username);
-//     requestBody.append('password', password);
-
-//     const response = await axios.post('/api/auth/login', requestBody, { headers });
-//     console.log(response.data);
-
-//     localStorage.setItem('accessToken', response.data.accessToken);
-//     setUser(response.data.user);
-//   } catch (error) {
-//     console.log(error);
-//     // ... 에러 처리
-//   }
-// }
-
-function onUser(){
-   const accessToken = localStorage.getItem('accessToken') 
-   console.log(accessToken)
-   axios.get('/api/users',
-//    {
-//     description: "adsdadasaffasfwf111sd",
-//     lng: 1,
-//     lat: 1,
-//     busNum: 3,
-//     companyId: 1
-//    }, 
-   {headers: {
-    'Accept': 'application/json',
-    'Authorization' : `Bearer ${accessToken}`,
-   }}
-//    {queries:{
-//     'Authorization': `Bearer ${accessToken}`
-//    }}
-   )
-   .then((response) => {
-    console.log(response)
-   })
-   .catch((error) => {
-    console.log(error)
-   })
-}
 
 function makeUser() {
     const accessToken = localStorage.getItem('accessToken')
@@ -188,3 +134,30 @@ function makeUser() {
         console.log(error)
     })
 }
+
+// function onUser(){
+//    const accessToken = localStorage.getItem('accessToken') 
+//    console.log(accessToken)
+//    axios.get('/api/users',
+// //    {
+// //     description: "adsdadasaffasfwf111sd",
+// //     lng: 1,
+// //     lat: 1,
+// //     busNum: 3,
+// //     companyId: 1
+// //    }, 
+//    {headers: {
+//     'Accept': 'application/json',
+//     'Authorization' : `Bearer ${accessToken}`,
+//    }}
+// //    {queries:{
+// //     'Authorization': `Bearer ${accessToken}`
+// //    }}
+//    )
+//    .then((response) => {
+//     console.log(response)
+//    })
+//    .catch((error) => {
+//     console.log(error)
+//    })
+// }

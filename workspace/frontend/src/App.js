@@ -16,9 +16,13 @@ import { KnightMap } from "./pages/Knight/KnightMap";
 import { KnightQuit, knightQuit } from "./pages/Knight/KnightQuit";
 // import  RTC  from "./pages/Knight/RTC";
 import { KnightSelect } from "./pages/Knight/KnightSelect";
+import { useUserStore } from "./store.js"
 
 function App() {
   const navigate = useNavigate();
+  const { user } = useUserStore();
+
+
 
   return (
     <div className="App">

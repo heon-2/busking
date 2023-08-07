@@ -38,6 +38,7 @@ public class ViewUserService implements ViewUserUseCase {
                     user.realName(),
                     user.email(),
                     user.phoneNumber(),
+                    user.companyId().toString(),
                     user.role().value()));
         }
         map.put("list",list);
@@ -52,6 +53,7 @@ public class ViewUserService implements ViewUserUseCase {
                                     user.realName(),
                                     user.email(),
                                     user.phoneNumber(),
+                                    user.companyId().toString(),
                                     user.role().value());
     }
 

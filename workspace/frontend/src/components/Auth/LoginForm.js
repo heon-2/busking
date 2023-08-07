@@ -19,6 +19,7 @@ const [password, setPassword] = useState('');
 const { user, accessToken, setUser, setAccessToken, setRefreshToken } = useUserStore()
 const navigate = useNavigate()
 
+
 return (
     <Card color="transparent" shadow={false}>
     <Typography variant="h4" color="blue-gray">
@@ -47,7 +48,7 @@ return (
         }
         containerProps={{ className: "-ml-2.5" }}
         />
-        <Button className="mt-6" onClick={() => onLogin({username, password, user, setUser, setAccessToken, setRefreshToken, navigate})}>
+        <Button className="mt-6" onClick={() => onLogin({username, password, setUser, setAccessToken, setRefreshToken, navigate})}>
         Login
         </Button>
         {/* <Button className="mt-6" onClick={() => onLogout({name, password, setUser})}>
@@ -67,7 +68,7 @@ return (
 );
 }
 
-async function onLogin({username, password, user, setUser, setAccessToken, setRefreshToken, navigate}) {
+async function onLogin({username, password, setUser, setAccessToken, setRefreshToken, navigate}) {
 
     try {
         const response = await axios.post('/api/auth/login', {
@@ -95,11 +96,10 @@ async function onLogin({username, password, user, setUser, setAccessToken, setRe
             }
         })
         console.log(response2.data)
-        setUser(response2.data)
-
-        if (user.role === 'EMPLOYEE') {
+        await setUser(response2.data)
+        if (response2.data.role === 'EMPLOYEE') {
             navigate('/map')
-        } else if (user.role === 'COMPANY_ADMIN') {
+        } else if (response2.data.role === 'COMPANY_ADMIN') {
             navigate('/admin')
         } else {
             navigate('/knightselect')
@@ -111,29 +111,29 @@ async function onLogin({username, password, user, setUser, setAccessToken, setRe
 }
 
 
-function makeUser() {
-    const accessToken = localStorage.getItem('accessToken')
-    axios.post('/api/users', {
-        username: "ssafy",
-        password: "ssafy",
-        companyId: 1,
-        phoneNumber: "010-0000-0000",
-        email: "kkk@gmail.com",
-        realName: "kkk"
-    },
-    {
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        }
-    })
-    .then((response) => {
-        console.log(response)
-    })
-    .catch((error) => {
-        console.log(error)
-    })
-}
+// function makeUser() {
+//     const accessToken = localStorage.getItem('accessToken')
+//     axios.post('/api/users', {
+//         username: "ssafy",
+//         password: "ssafy",
+//         companyId: 1,
+//         phoneNumber: "010-0000-0000",
+//         email: "kkk@gmail.com",
+//         realName: "kkk"
+//     },
+//     {
+//         headers: {
+//             'Accept': 'application/json',
+//             'Authorization': `Bearer ${accessToken}`
+//         }
+//     })
+//     .then((response) => {
+//         console.log(response)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
+// }
 
 // function onUser(){
 //    const accessToken = localStorage.getItem('accessToken') 

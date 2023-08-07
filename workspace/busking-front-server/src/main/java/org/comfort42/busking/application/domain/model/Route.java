@@ -24,7 +24,7 @@ public class Route {
 
 //    private final List<BusRoute> buses;
 
-//    private List<RouteStationJpaEntity> stations = new ArrayList<>();
+//    private List<RouteStation> stations = new ArrayList<>();
 
     @Value
     public static class RouteId {

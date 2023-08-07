@@ -62,9 +62,10 @@ class AuthenticationResultHandler implements AuthenticationSuccessHandler, Authe
     @Override
     public void onAuthenticationFailure(
             final HttpServletRequest req,
-            final HttpServletResponse resp,
+             HttpServletResponse resp,
             final AuthenticationException exception) throws IOException, ServletException {
         // TODO(meo-s): Auto-generated method stub
+            resp.setStatus(HttpStatus.UNAUTHORIZED.value());
     }
 
 }

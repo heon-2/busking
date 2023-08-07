@@ -20,4 +20,6 @@ public class RouteCommand {
     private final List<Station.StationId> stationIds;
 
     private final Company.CompanyId companyId;
+
+    private final String geometry;
 }

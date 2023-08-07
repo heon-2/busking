@@ -20,27 +20,29 @@ import java.util.List;
 public class LoadRouteController {
 
     public record RoutePayload(Route.RouteId routeId,
-                        String name,
-                        Company.CompanyId companyId,
-                        List<StationCommand> stations){}
+                               String name,
+                               Company.CompanyId companyId,
+                               List<StationCommand> stations,
+                               String geometry) {
+    }
 
     private final LoadRouteUseCase loadRouteUseCase;
 
     @GetMapping
-    ResponseEntity<?> loadRouteList(@PathVariable Long companyId){
-        try{
+    ResponseEntity<?> loadRouteList(@PathVariable Long companyId) {
+        try {
             return ResponseEntity.ok().body(loadRouteUseCase.loadRouteList(Company.CompanyId.of(companyId)));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>("에러", HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{routeId}")
-    ResponseEntity<?> loadRouteById(@PathVariable Long companyId,@PathVariable Long routeId){
-        try{
-            return ResponseEntity.ok().body(loadRouteUseCase.loadRouteById(Company.CompanyId.of(companyId),new Route.RouteId(routeId)));
-        }catch (Exception e){
+    ResponseEntity<?> loadRouteById(@PathVariable Long companyId, @PathVariable Long routeId) {
+        try {
+            return ResponseEntity.ok().body(loadRouteUseCase.loadRouteById(Company.CompanyId.of(companyId), new Route.RouteId(routeId)));
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>("에러", HttpStatus.BAD_REQUEST);
         }

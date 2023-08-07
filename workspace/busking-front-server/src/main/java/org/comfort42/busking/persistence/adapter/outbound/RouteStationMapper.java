@@ -1,10 +1,13 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import lombok.RequiredArgsConstructor;
+import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.domain.model.Route;
 import org.comfort42.busking.application.domain.model.RouteStation;
 import org.comfort42.busking.application.domain.model.Station;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component
 public class RouteStationMapper {
@@ -32,13 +35,14 @@ public class RouteStationMapper {
                 stationJpaEntity.getName(),
                 stationJpaEntity.getLng(),
                 stationJpaEntity.getLat(),
-                null,
-                null);
+                companyMapper.mapToDomainEntity(stationJpaEntity.getCompany()),
+                new ArrayList<>());
         RouteJpaEntity routeJpaEntity=routeStationJpaEntity.getRoute();
         Route route=Route.withId(new Route.RouteId(routeJpaEntity.getId()),
                 routeJpaEntity.getName(),
-                null,
-                null
+                companyMapper.mapToDomainEntity(routeJpaEntity.getCompany()),
+                new ArrayList<>(),
+                routeJpaEntity.getGeometry()
                 );
         return RouteStation.withId(
                 new RouteStation.RouteStationId(routeStationJpaEntity.getId()),

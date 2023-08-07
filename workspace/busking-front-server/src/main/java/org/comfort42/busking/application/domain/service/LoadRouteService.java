@@ -38,7 +38,8 @@ public class LoadRouteService implements LoadRouteUseCase {
             routes.add(new LoadRouteController.RoutePayload(route.getId(),
                     route.getName(),
                     route.getCompany().getId(),
-                    stationCommands));
+                    stationCommands,
+                    route.getGeometry()));
         }
         return routes;
     }
@@ -58,6 +59,7 @@ public class LoadRouteService implements LoadRouteUseCase {
         return new LoadRouteController.RoutePayload(routeId,
                 route.getName(),
                 companyId,
-                stationCommands);
+                stationCommands,
+                route.getGeometry());
     }
 }

@@ -24,11 +24,11 @@ public class RegisterRouteService  implements RegisterRouteUseCase {
     @Override
     public void registerRoute(RouteCommand routeCommand) {
         Company company=loadCompanyPort.loadCompanyById(routeCommand.getCompanyId());
-        Route route=new Route(null,routeCommand.getName(),company,null,routeCommand.getGeometry());
+        Route route=new Route(null,routeCommand.getName(),company,null,null,routeCommand.getGeometry());
         List<Station> stationList=new ArrayList<>();
         for(Station.StationId stationId:routeCommand.getStationIds()){
             stationList.add(loadStationPort.loadStationById(stationId));
         }
-        registerRoutePort.registerRoute(new Route(null,routeCommand.getName(),company,null,routeCommand.getGeometry()),stationList);
+        registerRoutePort.registerRoute(new Route(null,routeCommand.getName(),company,null,null,routeCommand.getGeometry()),stationList);
     }
 }

@@ -35,9 +35,9 @@ public class ViewUserService implements ViewUserUseCase {
 
             list.add(new ViewUserPayload(
                     user.username(),
-                    user.realName(),
                     user.email(),
                     user.phoneNumber(),
+                    user.realName(),
                     user.companyId().toString(),
                     user.role().value()));
         }
@@ -49,12 +49,12 @@ public class ViewUserService implements ViewUserUseCase {
     public ViewUserPayload userDetail(UUID userId) {
 
         User user =  loadUserInformationPort.loadUserDetail(userId);
-        return new ViewUserPayload( user.username(),
-                                    user.realName(),
-                                    user.email(),
-                                    user.phoneNumber(),
-                                    user.companyId().toString(),
-                                    user.role().value());
+        return new ViewUserPayload(  user.username(),
+                user.email(),
+                user.phoneNumber(),
+                user.realName(),
+                user.companyId().toString(),
+                user.role().value());
     }
 
 }

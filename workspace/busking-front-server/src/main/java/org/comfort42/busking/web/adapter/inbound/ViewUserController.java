@@ -1,11 +1,17 @@
 package org.comfort42.busking.web.adapter.inbound;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.comfort42.busking.application.port.inbound.ViewUserPayload;
 import org.comfort42.busking.application.port.inbound.ViewUserUseCase;
 import org.comfort42.busking.common.WebAdapter;
 import org.comfort42.busking.web.security.TokenAuthentication;
+import org.springdoc.core.annotations.RouterOperation;
+import org.springdoc.core.annotations.RouterOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,11 +25,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @WebAdapter
 @RestController
 @RequiredArgsConstructor
+
 @RequestMapping("/api/users")
+
 public class ViewUserController {
 
     private final ViewUserUseCase viewUserUseCase;
 
+
+
+    @RouterOperation(operation = @Operation(description = "Say hello", operationId = "hello", tags = "persons",
+            responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ViewUserPayload.class)))))
     @GetMapping("/list/{page}")
     public ResponseEntity<?> ViewUser(Authentication authentication, @PathVariable long page) {
         try {
@@ -42,6 +54,7 @@ public class ViewUserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @GetMapping()
     public ResponseEntity<?> DetailUser(Authentication authentication) {

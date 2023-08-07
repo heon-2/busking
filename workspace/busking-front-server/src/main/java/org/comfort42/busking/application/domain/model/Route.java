@@ -26,6 +26,8 @@ public class Route {
 
     private final List<RouteStation> stations;
 
+    private final String geometry;
+
     @Value
     public static class RouteId {
         private final Long value;
@@ -34,8 +36,9 @@ public class Route {
     public static Route withId(Route.RouteId routeId,
                                String name,
                                Company company,
-                               List<RouteStation> stations
+                               List<RouteStation> stations,
+                               String geometry
                                ) {
-        return new Route(routeId, name,company,stations);
+        return new Route(routeId, name,company,stations,geometry);
     }
 }

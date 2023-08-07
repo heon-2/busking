@@ -28,7 +28,7 @@ public class ViewUserService implements ViewUserUseCase {
 
         ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<>();
         long pageNum = loadUserInformationPort.totalPage(companyId);
-        map.put("totalPageNum",(pageNum/10)+1);
+        map.put("totalPageNum",(pageNum/20)+1);
         page = (page-1)*20;
         List<ViewUserPayload> list = new ArrayList<>();
         for (final User user : loadUserInformationPort.loadViewUser(companyId,page)) {
@@ -41,7 +41,7 @@ public class ViewUserService implements ViewUserUseCase {
                     user.companyId().toString(),
                     user.role().value()));
         }
-        map.put("list",list);git
+        map.put("list",list);
         return map;
     }
 

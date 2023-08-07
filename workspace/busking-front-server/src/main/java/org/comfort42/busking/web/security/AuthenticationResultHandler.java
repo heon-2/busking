@@ -65,7 +65,7 @@ class AuthenticationResultHandler implements AuthenticationSuccessHandler, Authe
              HttpServletResponse resp,
             final AuthenticationException exception) throws IOException, ServletException {
         // TODO(meo-s): Auto-generated method stub
-            resp.setStatus(HttpStatus.BAD_REQUEST.value());
+            resp.setStatus(HttpStatus.UNAUTHORIZED.value());
     }
 
 }

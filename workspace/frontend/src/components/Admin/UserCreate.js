@@ -27,3 +27,27 @@ export function UserCreate() {
     </Card>
   );
 }
+
+// function makeUser() {
+//   const accessToken = localStorage.getItem('accessToken')
+//   axios.post('/api/users', {
+//       username: "ssafy",
+//       password: "ssafy",
+//       companyId: 1,
+//       phoneNumber: "010-0000-0000",
+//       email: "kkk@gmail.com",
+//       realName: "kkk"
+//   },
+//   {
+//       headers: {
+//           'Accept': 'application/json',
+//           'Authorization': `Bearer ${accessToken}`
+//       }
+//   })
+//   .then((response) => {
+//       console.log(response)
+//   })
+//   .catch((error) => {
+//       console.log(error)
+//   })
+// }

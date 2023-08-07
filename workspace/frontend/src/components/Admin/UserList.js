@@ -25,6 +25,8 @@ const TABLE_HEAD = ["이름", "권한", "휴대폰 번호", "이메일" ,"Edit"]
 
 
 
+
+
 export function UserList() {
   const [TABLE_ROWS, setTABLE_ROWS] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -36,17 +38,16 @@ export function UserList() {
   const [ phoneNumber, setPhoneNumber ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ realName, setRealName ] = useState('');
-  
 
   useEffect(() => {
-    getUserList();
+    getDefaultUserList();
   }, []);
   
-  function getUserList() {
+  function getDefaultUserList() {
+
     axios
       .get("/api/users/list/1")
       .then((res) => {
-        console.log(res.data);
         setTABLE_ROWS(res.data.list);
       })
       .catch((err) => {
@@ -75,6 +76,20 @@ export function UserList() {
   
       setActive(active - 1);
     };
+
+    function getUserList(param) {
+
+      axios
+        .get("/api/users/list/" + param)
+        .then((res) => {
+          console.log(res.data);
+          setTABLE_ROWS(res.data.list);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     return (
       <div className="flex items-center gap-4">
         <Button
@@ -87,11 +102,11 @@ export function UserList() {
           <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
         </Button>
         <div className="flex items-center gap-2">
-          <IconButton {...getItemProps(1)}>1</IconButton>
-          <IconButton {...getItemProps(2)}>2</IconButton>
-          <IconButton {...getItemProps(3)}>3</IconButton>
-          <IconButton {...getItemProps(4)}>4</IconButton>
-          <IconButton {...getItemProps(5)}>5</IconButton>
+          <IconButton {...getItemProps(1)} onClick={()=>getUserList(1)}>1</IconButton>
+          <IconButton {...getItemProps(2)} onClick={()=>getUserList(2)}>2</IconButton>
+          <IconButton {...getItemProps(3)} onClick={()=>getUserList(3)}>3</IconButton>
+          <IconButton {...getItemProps(4)} onClick={()=>getUserList(4)}>4</IconButton>
+          <IconButton {...getItemProps(5)} onClick={()=>getUserList(5)}>5</IconButton>
         </div>
         <Button
           variant="text"
@@ -103,6 +118,63 @@ export function UserList() {
           Next
           <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
         </Button>
+      </div>
+    );
+  }
+
+  function SimplePagination() {
+    const [active, setActive] = React.useState(1);
+  
+    const next = () => {
+      if (active === 15) return;
+  
+      setActive(active + 1);
+    };
+  
+    const prev = () => {
+      if (active === 1) return;
+  
+      setActive(active - 1);
+    };
+
+    // function getUserList(active) {
+
+    //   axios
+    //     .get("/api/users/list/" + active)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       setTABLE_ROWS(res.data.list);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
+
+  
+    return (
+      <div className="flex items-center gap-8">
+        <IconButton
+          size="sm"
+          variant="outlined"
+          color="blue-gray"
+          onClick={prev}
+          disabled={active === 1}
+        >
+          <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+        </IconButton>
+        <Typography color="gray" className="font-normal">
+          Page <strong className="text-blue-gray-900">{active}</strong> of{" "}
+          <strong className="text-blue-gray-900">15</strong>
+        </Typography>
+        <IconButton
+          size="sm"
+          variant="outlined"
+          color="blue-gray"
+          onClick={next}
+          disabled={active === 15}
+        >
+          <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+        </IconButton>
       </div>
     );
   }
@@ -197,6 +269,7 @@ export function UserList() {
     </Card>
     <div className="flex justify-center mt-4">
     <Pagination />
+    <SimplePagination />
     </div>
       </div>
   )

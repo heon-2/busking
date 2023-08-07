@@ -4,8 +4,10 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import axios from "axios";
+import { useUserStore } from '../../store.js'
 
-export function UserCreate() {
+export function RegisterUserForm() {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
@@ -28,7 +30,7 @@ export function UserCreate() {
   );
 }
 
-// function makeUser() {
+// function registerUser() {
 //   const accessToken = localStorage.getItem('accessToken')
 //   axios.post('/api/users', {
 //       username: "ssafy",

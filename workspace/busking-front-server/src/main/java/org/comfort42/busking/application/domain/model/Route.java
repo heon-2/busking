@@ -22,9 +22,10 @@ public class Route {
 
     private final Company company;
 
-//    private final List<BusRoute> buses;
+    private final List<RouteStation> stations;
 
-//    private List<RouteStation> stations = new ArrayList<>();
+    private final String geometry;
+
 
     @Value
     public static class RouteId {
@@ -33,8 +34,10 @@ public class Route {
 
     public static Route withId(Route.RouteId routeId,
                                String name,
-                               Company company
+                               Company company,
+                               List<RouteStation> stations,
+                               String geometry
                                ) {
-        return new Route(routeId, name,company);
+        return new Route(routeId, name,company,stations,geometry);
     }
 }

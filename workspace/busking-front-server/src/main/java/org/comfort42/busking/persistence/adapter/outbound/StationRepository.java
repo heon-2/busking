@@ -47,4 +47,9 @@ public class StationRepository implements RegisterStationPort, LoadStationPort {
         }
         return stationList;
     }
+
+    @Override
+    public Station loadStationById(Station.StationId stationId) {
+        return stationMapper.mapToDomainEntity(em.find(StationJpaEntity.class,stationId.getValue()));
+    }
 }

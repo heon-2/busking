@@ -17,9 +17,9 @@ export function Map() {
     return (
         <div>
             <MapLayer 
-            FindMe={<FindMe></FindMe>}
-            Dial={<Dial></Dial>}
-            BusNum={<BusNum></BusNum>}
+            // FindMe={<FindMe></FindMe>}
+            // Dial={<Dial></Dial>}
+            // BusNum={<BusNum></BusNum>}
             />
         </div>
     )

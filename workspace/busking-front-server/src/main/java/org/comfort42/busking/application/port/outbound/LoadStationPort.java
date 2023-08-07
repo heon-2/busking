@@ -8,4 +8,6 @@ import java.util.List;
 public interface LoadStationPort {
 
     List<Station> loadStationList(Company.CompanyId companyId);
+
+    Station loadStationById(Station.StationId stationId);
 }

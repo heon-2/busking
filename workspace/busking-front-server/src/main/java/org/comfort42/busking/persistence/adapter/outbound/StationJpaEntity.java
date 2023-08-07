@@ -1,7 +1,9 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,6 +14,8 @@ import java.util.List;
 @Table(name = "station")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StationJpaEntity {
     @Id
     @GeneratedValue

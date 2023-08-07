@@ -21,7 +21,8 @@ public class RegisterRouteController {
 
     record RegisterRouteWebRequest(
             List<Long> stations,
-            String name
+            String name,
+            String geometry
     ){}
 
     private final RegisterRouteUseCase registerRouteUseCase;
@@ -33,7 +34,7 @@ public class RegisterRouteController {
             for(Long id: req.stations()){
                 stationIds.add(new Station.StationId(id));
             }
-            registerRouteUseCase.registerRoute(new RouteCommand(null,req.name(),stationIds, Company.CompanyId.of(companyId)));
+            registerRouteUseCase.registerRoute(new RouteCommand(null,req.name(),stationIds, Company.CompanyId.of(companyId),req.geometry()));
             return ResponseEntity
                     .created(new URI(String.format("/api/companies/%d/routes", companyId)))
                     .build();

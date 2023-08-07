@@ -41,7 +41,7 @@ public class ViewUserService implements ViewUserUseCase {
                     user.companyId().toString(),
                     user.role().value()));
         }
-        map.put("list",list);
+        map.put("list",list);git
         return map;
     }
 

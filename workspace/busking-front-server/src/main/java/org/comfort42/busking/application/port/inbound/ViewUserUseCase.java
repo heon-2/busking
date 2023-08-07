@@ -13,3 +13,4 @@ public interface ViewUserUseCase {
 
     ViewUserPayload userDetail(UUID userId);
 }
+

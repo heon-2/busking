@@ -33,4 +33,6 @@ public class RouteJpaEntity {
 
     @OneToMany(mappedBy = "route",cascade = CascadeType.REMOVE)
     private List<RouteStationJpaEntity> stations = new ArrayList<>();
+
+    private String geometry;
 }

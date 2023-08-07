@@ -27,7 +27,8 @@ public class RouteMapper {
                 new Route.RouteId(route.getId()),
                 route.getName(),
                 companyMapper.mapToDomainEntity(route.getCompany()),
-                routeStations
+                routeStations,
+                route.getGeometry()
         );
     }
 
@@ -43,7 +44,8 @@ public class RouteMapper {
                 route.getName(),
                 companyMapper.mapToJpaEntity(route.getCompany()),
                 new ArrayList<BusRouteJpaEntity>(),
-                routeStationJpaEntities
+                routeStationJpaEntities,
+                route.getGeometry()
         );
     }
 }

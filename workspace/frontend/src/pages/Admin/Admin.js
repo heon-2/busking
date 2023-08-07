@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import {
   Card,
   Typography,
@@ -42,9 +43,12 @@ export function Admin() {
 
   const handleOpen = () => { setOpen(!open); };
 
-  const registerUser = () => {
-    console.log("registerUser");
-  };
+  const [ username, setName ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ phoneNumber, setPhoneNumber ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ realName, setRealName ] = useState('');
+
 
   return (
     <div className="admin">
@@ -103,12 +107,14 @@ export function Admin() {
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
-            <Input label="Name" size="lg" />
-            <Input label="Password" size="lg" />
-            <Input label="Mobile" size="lg" />
+            <Input label="아이디" value={username} size="lg" onChange={(e) => setName(e.target.value)} />
+            <Input label="비밀번호" value={password} size="lg" onChange={(e) => setPassword(e.target.value)}/>
+            <Input label="이름" value={realName} size="lg" onChange={(e) => setRealName(e.target.value)}/>
+            <Input label="휴대폰 번호" value={phoneNumber} size="lg" onChange={(e) => setPhoneNumber(e.target.value)} />
+            <Input label="이메일" value={email} size="lg" onChange={(e) => setEmail(e.target.value)} />
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={() => {handleOpen(); registerUser()}} fullWidth>
+            <Button variant="gradient" onClick={() => {handleOpen(); registerUser(username, password, realName, phoneNumber, email)}} fullWidth>
               등록
             </Button>
           </CardFooter>
@@ -166,3 +172,30 @@ export function Admin() {
     </div>
   );
 }
+
+function registerUser(username, password, realName, phoneNumber, email) {
+  const accessToken = localStorage.getItem('accessToken')
+  axios.post('/api/users', {
+      username: username,
+      password: password,
+      companyId: 1,
+      phoneNumber: phoneNumber,
+      email: email,
+      realName: realName,
+      role: "EMPLOYEE",
+  },
+  {
+      headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+      }
+  })
+  .then((response) => {
+      console.log(response)
+  })
+  .catch((error) => {
+      console.log(error)
+  })
+}
+
+

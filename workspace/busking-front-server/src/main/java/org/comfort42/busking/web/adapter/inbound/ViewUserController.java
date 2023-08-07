@@ -34,8 +34,7 @@ public class ViewUserController {
 
 
 
-    @RouterOperation(operation = @Operation(description = "Say hello", operationId = "hello", tags = "persons",
-            responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ViewUserPayload.class)))))
+    @Operation(summary = "유저 목록",description = "관리자의 companyId와 같은 모든 유저를 불러온다. 10명씩 불러온다.")
     @GetMapping("/list/{page}")
     public ResponseEntity<?> ViewUser(Authentication authentication, @PathVariable long page) {
         try {
@@ -56,6 +55,7 @@ public class ViewUserController {
     }
 
 
+    @Operation(summary = "상세보기", description = "로그인한 유저의 정보를 본다.")
     @GetMapping()
     public ResponseEntity<?> DetailUser(Authentication authentication) {
 

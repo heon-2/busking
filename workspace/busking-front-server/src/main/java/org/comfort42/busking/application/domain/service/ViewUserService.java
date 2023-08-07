@@ -29,7 +29,7 @@ public class ViewUserService implements ViewUserUseCase {
         ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<>();
         long pageNum = loadUserInformationPort.totalPage(companyId);
         map.put("totalPageNum",(pageNum/10)+1);
-
+        page = (page-1)*20;
         List<ViewUserPayload> list = new ArrayList<>();
         for (final User user : loadUserInformationPort.loadViewUser(companyId,page)) {
 

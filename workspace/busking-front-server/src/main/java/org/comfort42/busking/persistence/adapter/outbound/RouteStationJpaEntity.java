@@ -1,13 +1,18 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
 @Table(name="route_station")
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RouteStationJpaEntity {
 
     @Id

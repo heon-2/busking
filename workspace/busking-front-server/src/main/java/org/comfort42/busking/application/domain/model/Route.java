@@ -28,6 +28,7 @@ public class Route {
 
     private final String geometry;
 
+
     @Value
     public static class RouteId {
         private final Long value;

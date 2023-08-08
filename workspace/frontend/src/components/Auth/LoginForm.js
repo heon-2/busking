@@ -1,7 +1,6 @@
 import {
     Card,
     Input,
-    Checkbox,
     Button,
     Typography,
     } from "@material-tailwind/react";
@@ -11,6 +10,7 @@ import {
     import { queries } from "@testing-library/react";
     import { useNavigate } from 'react-router-dom';
     
+
     export function LoginForm() {
     
     const [ username, setName ] = useState('');
@@ -21,51 +21,29 @@ import {
     
     
     return (
-        <Card color="transparent" shadow={false}>
-        <Typography variant="h4" color="blue-gray">
-            Sign In
-        </Typography>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-            <div className="mb-4 flex flex-col gap-6">
-            <Input size="lg" label="Name" value={username} onChange={(e) => setName(e.target.value)}/>
-            <Input type="password" size="lg" label="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <div className="flex flex-col items-center justify-center h-screen bg-blue-50">
+            <div>
+                <img src="/ssabus_logo.png" alt="logo" className="h-60"/>
             </div>
-            <Checkbox
-            label={
-                <Typography
-                variant="small"
-                color="gray"
-                className="flex items-center font-normal"
-                >
-                I agree the
-                <a
-                    href="#"
-                    className="font-medium transition-colors hover:text-blue-500"
-                >
-                    &nbsp;Terms and Conditions
-                </a>
-                </Typography>
-            }
-            containerProps={{ className: "-ml-2.5" }}
-            />
-            <Button className="mt-6" onClick={() => onLogin({username, password, setUser, setAccessToken, setRefreshToken, navigate})}>
-            Login
-            </Button>
-            {/* <Button className="mt-6" onClick={() => onLogout({name, password, setUser})}>
-            LogOut
-            </Button> */}
-            <Typography color="gray" className="mt-4 text-center font-normal">
-            Already have an account?{" "}
-            <a
-                href="#"
-                className="font-medium text-blue-500 transition-colors hover:text-blue-700"
-            >
-                Sign Up
-            </a>
+        <Card color="transparent" shadow={true} className="p-8 bg-white">
+            <Typography variant="h4" color="blue-gray">
+                로그인
             </Typography>
-        </form>
+            <Typography color="gray" className="mt-1 font-normal">
+                교육생의 정보를 입력해주세요.
+            </Typography>
+            <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+                <div className="mb-4 flex flex-col gap-6">
+                    <Input size="lg" label="아이디" value={username} onChange={(e) => setName(e.target.value)}/>
+                    <Input type="password" size="lg" label="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                </div>
+                <Button className="mt-6" onClick={() => onLogin({ username, password, setUser, setAccessToken, setRefreshToken, navigate })}>
+                    Login
+                </Button>
+            </form>
         </Card>
-    );
+        </div>
+        );
     }
     
     async function onLogin({username, password, setUser, setAccessToken, setRefreshToken, navigate}) {

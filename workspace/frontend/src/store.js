@@ -51,6 +51,17 @@ mapStore = persist(mapStore, { name: 'map_settings' });
 
 export const useMapStore = create(mapStore)
 
+let adminStore = (set) => ({
+    hintPath: [],
+    markers: [],
+    newPath: [],
+    setHintPath: (payload) => set({ hintPath: payload }),
+    setMarkers: (payload) => set({ markers: payload }),
+    setNewPath: (payload) => set({ newPath: payload }),
+})
 
+adminStore = persist(adminStore, { name: 'admin_settings' });
+
+export const useAdminStore = create(adminStore)
 
 

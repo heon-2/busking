@@ -11,7 +11,7 @@ import org.hibernate.type.descriptor.converter.spi.EnumValueConverter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user",indexes = @Index(name = "i_realName",columnList = "realName"))
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

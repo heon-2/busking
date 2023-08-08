@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ViewUserRepository extends JpaRepository<UserJpaEntity, UUID> {
-    @Query(value = " select * from user where company_id= :companyId limit :page,20;", nativeQuery = true)
+    @Query(value = " select * from user where company_id= :companyId order by real_name limit :page,20;", nativeQuery = true)
     List<UserJpaEntity> findByCompanyId(@Param(value = "companyId") long companyId,
                                         @Param(value = "page") long page);
 

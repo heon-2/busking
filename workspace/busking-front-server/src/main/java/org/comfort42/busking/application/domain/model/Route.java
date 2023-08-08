@@ -22,11 +22,10 @@ public class Route {
 
     private final Company company;
 
-//    private final List<BusRoute> buses;
-
     private final List<RouteStation> stations;
 
     private final String geometry;
+
 
     @Value
     public static class RouteId {

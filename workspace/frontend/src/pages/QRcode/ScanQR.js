@@ -22,10 +22,10 @@ export function ScanQR() {
     </CardHeader>
     <CardBody className="text-center">
       <Typography variant="h4" color="blue-gray" className="mb-2">
-        4-3 흑석사거리
+        4-3 흑석사거리 (탑승 정류장)
       </Typography>
       <Typography color="blue" className="font-medium" textGradient>
-        삼성2공장 SSAFY 하차
+        SSAFY 하차 (하차 정류장)
       </Typography>
     </CardBody>
     <CardFooter className="flex flex-col gap-4 pt-2">

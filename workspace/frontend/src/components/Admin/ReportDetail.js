@@ -9,7 +9,13 @@ import { useMap } from "react-leaflet";
 
 import { BiCurrentLocation } from "react-icons/bi";
 import { IconButton } from "@material-tailwind/react";
-import { Button, Typography } from "@material-tailwind/react";
+import {
+  Button,
+  Typography,
+  Card,
+  CardBody,
+  CardFooter,
+} from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 export function ReportDetail() {
   const navigate = useNavigate();
@@ -55,12 +61,38 @@ export function ReportDetail() {
 
   return (
     <>
-      <div className="grid grid-cols-2 w-screen bg-white">
+      <div className="grid grid-cols-2 bg-white">
         <div className="col-span-1">
-          <MapLayer FindMe={<FindMe />} Dial={<Dial />} />
+          <MapLayer />
         </div>
         <div className="col-span-1 text-start">
-          <Typography className="flex justify-center" variant="h1">
+          <Card className="mt-10 w-full">
+            <CardBody>
+              <Typography variant="h3" color="blue-gray" className="mb-2">
+                상세 신고 내용
+              </Typography>
+              <div className="gap-10">
+                <Typography variant="h5">신고자 : {reporter}</Typography>
+                <Typography variant="h5">신고 호차 : {busNum}호차</Typography>
+                <Typography variant="h5">신고 내용 : {description}</Typography>
+                <Typography variant="h5">사고 지점</Typography>
+
+                <Typography variant="h5">
+                  위도 : {lng} / 경도 : {lat}
+                </Typography>
+                <Typography variant="h5">신고 일시 : {time} </Typography>
+              </div>
+            </CardBody>
+            <CardFooter className="pt-0">
+              <div className="flex justify-start gap-8">
+                <Button color="red" onClick={() => navigate(-1)}>
+                  신고 위치
+                </Button>
+                <Button onClick={() => navigate(-1)}>뒤로 가기</Button>
+              </div>
+            </CardFooter>
+          </Card>
+          {/* <Typography className="flex justify-center" variant="h1">
             상세 신고 내용
           </Typography>
           <Typography variant="h4">신고자 : {reporter}</Typography>
@@ -76,7 +108,7 @@ export function ReportDetail() {
               신고 위치
             </Button>
             <Button onClick={() => navigate(-1)}>뒤로 가기</Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

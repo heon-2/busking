@@ -52,12 +52,18 @@ mapStore = persist(mapStore, { name: 'map_settings' });
 export const useMapStore = create(mapStore)
 
 let adminStore = (set) => ({
+    mouseLocation: [],
     hintPath: [],
     markers: [],
     newPath: [],
+    newStop: [],
+    stopCreate: false,
     setHintPath: (payload) => set({ hintPath: payload }),
     setMarkers: (payload) => set({ markers: payload }),
     setNewPath: (payload) => set({ newPath: payload }),
+    setNewStop: (payload) => set({ newStop: payload }),
+    setStopCreate: () => set((state) => ({ stopCreate: !state.stopCreate})),
+    setMouseLocation: (payload) => set({ mouseLocation: payload })
 })
 
 adminStore = persist(adminStore, { name: 'admin_settings' });

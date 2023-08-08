@@ -32,7 +32,7 @@ import { useMapStore } from '../../store.js';
               <CogIcon className="h-5 w-5" />
             </SpeedDialAction>
             <SpeedDialAction>
-              <Square3Stack3DIcon className="h-5 w-5" onClick={() => toggleMapType()}/>
+              <Square3Stack3DIcon className="h-5 w-5" onClick={(e) => {e.stopPropagation(); e.preventDefault(); toggleMapType()}}/>
             </SpeedDialAction>
           </SpeedDialContent>
         </SpeedDial>

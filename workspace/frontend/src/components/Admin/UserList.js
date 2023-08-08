@@ -38,6 +38,7 @@ export function UserList() {
   const [ phoneNumber, setPhoneNumber ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ realName, setRealName ] = useState('');
+  const [ totalPageNum, setTotalPageNum ] = useState(0);
 
   useEffect(() => {
     getDefaultUserList();
@@ -46,9 +47,12 @@ export function UserList() {
   function getDefaultUserList() {
 
     axios
-      .get("/api/users/list/1")
+      .get("/api/users/list/0")
       .then((res) => {
+        console.log(res.data);
         setTABLE_ROWS(res.data.list);
+        setTotalPageNum(res.data.totalPageNum);
+        console.log(res.data.totalPageNum);
       })
       .catch((err) => {
         console.log(err);
@@ -66,7 +70,7 @@ export function UserList() {
       });
   
     const next = () => {
-      if (active === 5) return;
+      if (active === totalPageNum) return;
   
       setActive(active + 1);
     };
@@ -76,6 +80,10 @@ export function UserList() {
   
       setActive(active - 1);
     };
+
+    // const clickChoice = (e) => {
+    //   setActive(e);
+    // };
 
     function getUserList(param) {
 
@@ -90,6 +98,9 @@ export function UserList() {
         });
     }
 
+    const paginationItems = Array.from({ length: totalPageNum }, (_, i) => (
+      <IconButton key={i+1} {...getItemProps(i+1)} onClick={()=>getUserList(i+1)}>{i+1}</IconButton>
+    ))
     return (
       <div className="flex items-center gap-4">
         <Button
@@ -102,18 +113,14 @@ export function UserList() {
           <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
         </Button>
         <div className="flex items-center gap-2">
-          <IconButton {...getItemProps(1)} onClick={()=>getUserList(1)}>1</IconButton>
-          <IconButton {...getItemProps(2)} onClick={()=>getUserList(2)}>2</IconButton>
-          <IconButton {...getItemProps(3)} onClick={()=>getUserList(3)}>3</IconButton>
-          <IconButton {...getItemProps(4)} onClick={()=>getUserList(4)}>4</IconButton>
-          <IconButton {...getItemProps(5)} onClick={()=>getUserList(5)}>5</IconButton>
+          { paginationItems }
         </div>
         <Button
           variant="text"
           color="blue-gray"
           className="flex items-center gap-2"
           onClick={next}
-          disabled={active === 5}
+          disabled={active === totalPageNum}
         >
           Next
           <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
@@ -121,21 +128,6 @@ export function UserList() {
       </div>
     );
   }
-
-  function SimplePagination() {
-    const [active, setActive] = React.useState(1);
-  
-    const next = () => {
-      if (active === 15) return;
-  
-      setActive(active + 1);
-    };
-  
-    const prev = () => {
-      if (active === 1) return;
-  
-      setActive(active - 1);
-    };
 
     // function getUserList(active) {
 
@@ -150,34 +142,6 @@ export function UserList() {
     //     });
     // }
 
-  
-    return (
-      <div className="flex items-center gap-8">
-        <IconButton
-          size="sm"
-          variant="outlined"
-          color="blue-gray"
-          onClick={prev}
-          disabled={active === 1}
-        >
-          <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
-        </IconButton>
-        <Typography color="gray" className="font-normal">
-          Page <strong className="text-blue-gray-900">{active}</strong> of{" "}
-          <strong className="text-blue-gray-900">15</strong>
-        </Typography>
-        <IconButton
-          size="sm"
-          variant="outlined"
-          color="blue-gray"
-          onClick={next}
-          disabled={active === 15}
-        >
-          <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-        </IconButton>
-      </div>
-    );
-  }
 
 
   return (
@@ -269,7 +233,6 @@ export function UserList() {
     </Card>
     <div className="flex justify-center mt-4">
     <Pagination />
-    <SimplePagination />
     </div>
       </div>
   )

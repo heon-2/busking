@@ -9,6 +9,8 @@ import { SetQR } from "./pages/QRcode/SetQR";
 import { Report } from "./pages/Report/Report";
 import { Page404 } from "./pages/Page404";
 import { Admin } from "./pages/Admin/Admin";
+import { ReportDetail } from "./components/Admin/ReportDetail";
+
 {
   /* 지헌 import 추가한 부분 (Merge 할 때 주의) */
 }
@@ -16,13 +18,11 @@ import { KnightMap } from "./pages/Knight/KnightMap";
 import { KnightQuit, knightQuit } from "./pages/Knight/KnightQuit";
 // import  RTC  from "./pages/Knight/RTC";
 import { KnightSelect } from "./pages/Knight/KnightSelect";
-import { useUserStore } from "./store.js"
+import { useUserStore } from "./store.js";
 
 function App() {
   const navigate = useNavigate();
   const { user } = useUserStore();
-
-
 
   return (
     <div className="App">
@@ -38,6 +38,7 @@ function App() {
         <Route path="/knightquit" element={<KnightQuit />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Page404 />} />
+        <Route path="/report/:reportId" element={<ReportDetail />} />
       </Routes>
 
       {/* 상제형 404페이지 추가 */}

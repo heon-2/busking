@@ -2,12 +2,14 @@ package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.comfort42.busking.application.domain.model.Bus;
 import org.comfort42.busking.application.domain.model.Route;
 
 @Entity
 @Table(name="bus_route")
 @Getter
+@Setter
 public class BusRouteJpaEntity {
     @Id
     @GeneratedValue

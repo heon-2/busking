@@ -42,6 +42,7 @@ public class RouteStationMapper {
                 routeJpaEntity.getName(),
                 companyMapper.mapToDomainEntity(routeJpaEntity.getCompany()),
                 new ArrayList<>(),
+                new ArrayList<>(),
                 routeJpaEntity.getGeometry()
                 );
         return RouteStation.withId(

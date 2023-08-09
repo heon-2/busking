@@ -18,6 +18,8 @@ import {
     
     const { user, accessToken, setUser, setAccessToken, setRefreshToken } = useUserStore()
     const navigate = useNavigate()
+
+    const applicationBaseUrl="https://i9c108.p.ssafy.io"
     
     
     return (
@@ -49,7 +51,7 @@ import {
     async function onLogin({username, password, setUser, setAccessToken, setRefreshToken, navigate}) {
     
         try {
-            const response = await axios.post('/api/auth/login', {
+            const response = await axios.post(applicationBaseUrl+'/api/auth/login', {
                 username: username,
                 password: password,
             },

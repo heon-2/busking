@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/companies/{companyId}/buses/register")
@@ -25,7 +26,7 @@ public class RegisterBusController {
                                   @PathVariable Long companyId,
                                   final Authentication authentication) {
         try {
-            registerBusUseCase.registerBus(new BusCommand(companyId, req.busNum()));
+            registerBusUseCase.registerBus(new BusCommand(companyId, req.busNum(),new ArrayList<>()));
             return ResponseEntity
                     .created(new URI(String.format("/api/companies/%d/buses/register", companyId)))
                     .build();

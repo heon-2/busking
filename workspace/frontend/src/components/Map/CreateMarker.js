@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
-import { Marker, Popup } from 'react-leaflet'
+import { Marker, Popup, Tooltip } from 'react-leaflet'
 import { useAdminStore } from '../../store.js'
 import L from 'leaflet'
 import axios from 'axios'
@@ -60,9 +60,7 @@ export function CreateMarker() {
         setHintPath(copy)
       };
     useEffect(() => {
-        if (hintPath.length >= 2) {
           setCoords({hintPath, newPath, setNewPath})
-        }
       }, [hintPath])
 
       return (
@@ -82,7 +80,11 @@ export function CreateMarker() {
                   console.log(copy);
                 },
               }}
+              
             >
+              <Tooltip permanent>
+                {index+1}
+              </Tooltip>
               <Popup>
                 Marker {index}
                 <IconButton
@@ -103,7 +105,7 @@ export function CreateMarker() {
 
 function setCoords({hintPath, newPath, setNewPath}) {
     if (hintPath.length < 2) {
-      alert("경유지를 2개 이상 설정해주세요.")
+      setNewPath([])
     }
     else {
       axios.post('/api/routes/generate', {

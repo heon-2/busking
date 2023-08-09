@@ -10,6 +10,7 @@ import { Report } from "./pages/Report/Report";
 import { Page404 } from "./pages/Page404";
 import { Admin } from "./pages/Admin/Admin";
 import { ReportDetail } from "./components/Admin/ReportDetail";
+import { UserMap } from "./pages/Map/UserMap";
 
 {
   /* 지헌 import 추가한 부분 (Merge 할 때 주의) */
@@ -39,6 +40,9 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Page404 />} />
         <Route path="/report/:reportId" element={<ReportDetail />} />
+
+        {/* 지헌 테스트용 페이지 ( User 홈 ) */}
+        <Route path="/usermap" element={<UserMap />} />
       </Routes>
 
       {/* 상제형 404페이지 추가 */}

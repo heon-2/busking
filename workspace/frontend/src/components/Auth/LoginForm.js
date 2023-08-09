@@ -9,7 +9,6 @@ import {
     import { useUserStore } from '../../store.js'
     import { queries } from "@testing-library/react";
     import { useNavigate } from 'react-router-dom';
-    
 
     export function LoginForm() {
     
@@ -19,7 +18,6 @@ import {
     const { user, accessToken, setUser, setAccessToken, setRefreshToken } = useUserStore()
     const navigate = useNavigate()
 
-    const applicationBaseUrl="https://i9c108.p.ssafy.io"
     
     
     return (
@@ -51,7 +49,7 @@ import {
     async function onLogin({username, password, setUser, setAccessToken, setRefreshToken, navigate}) {
     
         try {
-            const response = await axios.post(applicationBaseUrl+'/api/auth/login', {
+            const response = await axios.post('https://i9c108.p.ssafy.io/api/auth/login', {
                 username: username,
                 password: password,
             },
@@ -69,7 +67,7 @@ import {
             
             const accessToken = localStorage.getItem('accessToken')
     
-            const response2 = await axios.get('/api/users', {
+            const response2 = await axios.get('https://i9c108.p.ssafy.io/api/users', {
                 headers: {
                     'Accept': 'application/json',
                     'Authorization' : `Bearer ${accessToken}`,

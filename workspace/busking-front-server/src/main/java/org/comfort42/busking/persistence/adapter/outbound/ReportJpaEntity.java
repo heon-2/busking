@@ -1,7 +1,9 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "report")
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReportJpaEntity {
     @Id
     @GeneratedValue
@@ -37,4 +41,5 @@ public class ReportJpaEntity {
             @JoinColumn(name="bus_id")
     })
     private BusJpaEntity bus;
+
 }

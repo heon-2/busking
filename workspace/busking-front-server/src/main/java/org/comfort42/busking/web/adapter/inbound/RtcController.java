@@ -1,4 +1,4 @@
-package org.comfort42.busking;
+package org.comfort42.busking.web.adapter.inbound;
 
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class RtcController {
 	 * @param params The Session properties
 	 * @return The Session ID
 	 */
-	@PostMapping("/api/sessions")
+	@PostMapping("/api/rtc/sessions")
 	public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
 			throws OpenViduJavaClientException, OpenViduHttpException {
 		SessionProperties properties = SessionProperties.fromJson(params).build();
@@ -55,7 +55,7 @@ public class RtcController {
 	 * @param params    The Connection properties
 	 * @return The Token associated to the Connection
 	 */
-	@PostMapping("/api/sessions/{sessionId}/connections")
+	@PostMapping("/api/rtc/sessions/{sessionId}/connections")
 	public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
 			@RequestBody(required = false) Map<String, Object> params)
 			throws OpenViduJavaClientException, OpenViduHttpException {

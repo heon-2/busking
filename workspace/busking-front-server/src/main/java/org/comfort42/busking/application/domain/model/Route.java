@@ -22,9 +22,12 @@ public class Route {
 
     private final Company company;
 
-//    private final List<BusRoute> buses;
+    private final List<BusRoute> buses;
 
-//    private List<RouteStationJpaEntity> stations = new ArrayList<>();
+    private final List<RouteStation> stations;
+
+    private final String geometry;
+
 
     @Value
     public static class RouteId {
@@ -33,8 +36,11 @@ public class Route {
 
     public static Route withId(Route.RouteId routeId,
                                String name,
-                               Company company
+                               Company company,
+                               List<BusRoute> buses,
+                               List<RouteStation> stations,
+                               String geometry
                                ) {
-        return new Route(routeId, name,company);
+        return new Route(routeId, name,company,buses,stations,geometry);
     }
 }

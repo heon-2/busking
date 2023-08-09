@@ -14,9 +14,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 // import "./App.css";
 import UserVideoComponent from "./UserVideoComponent";
 
-const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
+// const APPLICATION_SERVER_URL =
+//   process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
 
+const APPLICATION_SERVER_URL = "https://i9c108.p.ssafy.io/";
 export default function RTC() {
   const [mySessionId, setMySessionId] = useState("ssafy_1");
   const [myUserName, setMyUserName] = useState("SSAFY");
@@ -27,11 +28,10 @@ export default function RTC() {
   const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
 
   const OV = useRef(new OpenVidu());
-  
+
   // size 조절
   const [size, setSize] = React.useState(null);
-   const handleOpen = (value) => setSize(value);
-
+  const handleOpen = (value) => setSize(value);
 
   const handleChangeSessionId = useCallback((e) => {
     setMySessionId(e.target.value);
@@ -233,12 +233,17 @@ export default function RTC() {
   };
   return (
     <div>
-
-<div>
-          <Button className="w-96 h-28 text-4xl" onClick={() => {handleOpen("xl"); joinSession();}}>
-            관리자와 화상채팅
-          </Button>
-        </div>
+      <div>
+        <Button
+          className="w-96 h-28 text-4xl"
+          onClick={() => {
+            handleOpen("xl");
+            joinSession();
+          }}
+        >
+          긴급 화상통화 연결
+        </Button>
+      </div>
       {/* {session === undefined ? (
         <div>
           <Button className="w-80 h-20 text-3xl" onClick={() => {handleOpen("xl"); joinSession();}}>
@@ -247,8 +252,7 @@ export default function RTC() {
         </div>
       ) : null} */}
 
-
-<Dialog
+      <Dialog
         open={
           size === "xs" ||
           size === "sm" ||
@@ -261,13 +265,14 @@ export default function RTC() {
         handler={handleOpen}
         className="bg-skyblue-50"
       >
-        <DialogHeader className="justify-center text-white text-4xl">관리자와의 화상통화</DialogHeader>
-        <DialogBody divider  className="flex justify-center">
-        <div className="grid grid-cols-2 gap-5">
+        <DialogHeader className="justify-center text-white text-4xl">
+          긴급 화상통화
+        </DialogHeader>
+        <DialogBody divider className="flex justify-center">
+          <div className="grid grid-cols-2 gap-5">
             <div>
               {publisher !== undefined ? (
-                <div
-                >
+                <div>
                   <UserVideoComponent streamManager={publisher} />
                 </div>
               ) : null}
@@ -305,13 +310,18 @@ export default function RTC() {
           </div>
         </DialogBody>
         <DialogFooter className="justify-center gap-5">
-        <Button onClick={switchCamera}>카메라 전환</Button>
-        <Button color="red" onClick={() => {handleOpen(null); leaveSession();}}>
-              화상 채팅 종료
-            </Button>
+          <Button onClick={switchCamera}>카메라 전환</Button>
+          <Button
+            color="red"
+            onClick={() => {
+              handleOpen(null);
+              leaveSession();
+            }}
+          >
+            화상 채팅 종료
+          </Button>
         </DialogFooter>
       </Dialog>
-
     </div>
   );
 }

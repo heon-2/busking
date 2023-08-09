@@ -19,18 +19,21 @@ public class Bus {
 
     private final Long busNum;
 
-//    private List<BusRoute> routes = new ArrayList<>();
+    private final List<BusRoute> routes;
 
     @Value
     public static class BusId{
         private final BusPK value;
 
         public BusId(Long companyId,Long busNum){this.value=new BusPK(companyId,busNum);}
+
+        public BusId(BusPK busPK){this.value=busPK;}
     }
 
     public static Bus withId(BusId busId,
-                             Long busNum
+                             Long busNum,
+                             List<BusRoute> routes
     ) {
-        return new Bus(busId,busNum);
+        return new Bus(busId,busNum,routes);
     }
 }

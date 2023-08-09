@@ -58,12 +58,14 @@ let adminStore = (set) => ({
     newPath: [],
     newStop: [],
     stopCreate: false,
+    newStop: [],
     setHintPath: (payload) => set({ hintPath: payload }),
     setMarkers: (payload) => set({ markers: payload }),
     setNewPath: (payload) => set({ newPath: payload }),
     setNewStop: (payload) => set({ newStop: payload }),
     setStopCreate: () => set((state) => ({ stopCreate: !state.stopCreate})),
-    setMouseLocation: (payload) => set({ mouseLocation: payload })
+    setMouseLocation: (payload) => set({ mouseLocation: payload }),
+    setNewStop: (payload) => set({ newStop: payload }),
 })
 
 adminStore = persist(adminStore, { name: 'admin_settings' });

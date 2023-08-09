@@ -10,9 +10,7 @@ function useLocation() {
     },
     userDecisionTimeout: 5000,
   });
-  if(coords !== undefined) {
-    console.log(coords.latitude)
-  }
+
   useEffect(() => {
     if (coords !== undefined) {
       setLocation([coords.latitude, coords.longitude]);

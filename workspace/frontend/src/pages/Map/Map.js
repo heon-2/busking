@@ -16,6 +16,8 @@ import { IconButton, Button } from '@material-tailwind/react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { PathContainer } from '../../components/Map/PathContainer.js'
+import { MouseLocation } from '../../components/Map/MouseLocation';
+import { CreateStop } from '../../components/Map/CreateStop.js'
 
 export function Map() {
     const { hintPath, stopCreate, setStopCreate } = useAdminStore()
@@ -39,6 +41,8 @@ export function Map() {
             CreateMarker={<CreateMarker></CreateMarker>}
             // DragMarker={<DragMarker></DragMarker>}
             AdminPath={<AdminPath></AdminPath>}
+            MouseLocation={<MouseLocation></MouseLocation>}
+            CreateStop={<CreateStop></CreateStop>}
             />
         </div>
     )

@@ -17,11 +17,10 @@ export function Report() {
   const [reportContent, setReportContent] = useState("");
   const { location, busNum } = useUserStore();
   // 경도
-  // const lat = location[0];
-  // // 위도
-  // const lng = location[1];
+  const lat = 1;
+  // 위도
+  const lng = 1231.3;
   const accessToken = localStorage.getItem("accessToken");
-  console.log(accessToken)
 
   // 신고 항목들 변수로 담기
   const [reportList, setReportList] = useState([
@@ -33,16 +32,16 @@ export function Report() {
 
   function sendReport(reportContent) {
     console.log(reportContent);
-    // console.log(accessToken);
+
     axios
       .post(
         "/api/reports",
         {
-          "description": "제대로된 테스트",
-          "lng": 1,
-          "lat": 1,
-          "busNum": 3,
-          "companyId": 1,
+          description: reportContent,
+          lng: lng,
+          lat: lat,
+          busNum: 3,
+          companyId: 1,
         },
 
         {
@@ -77,9 +76,7 @@ export function Report() {
         },
       })
       .then((response) => {
-        console.log(accessToken)
         console.log(response.data);
-        console.log('성공');
       })
       .catch((error) => {
         console.error(error);

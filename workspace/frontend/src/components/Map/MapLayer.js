@@ -11,6 +11,8 @@ import useLocation from '../../common/Mylocation.js';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { IconButton, Button } from "@material-tailwind/react";
 import polyline from '@mapbox/polyline'
+import rbush from 'rbush';
+import { useAdminStore } from '../../store.js';
 
 export function MapLayer(props) {
   // const [markers, setMarkers] = useState([]);
@@ -123,6 +125,8 @@ export function MapLayer(props) {
     { props.CreateMarker }
     { props.DraggableMarker }
     { props.AdminPath }
+    { props.MouseLocation }
+    { props.CreateStop }
     {/* <Dial />    */}
     {/* <TopBar style={{ zIndex: 1000 }}/> */}
     {/* <BusNum/> */}

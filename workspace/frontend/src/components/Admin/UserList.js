@@ -100,7 +100,7 @@ export function UserList() {
 
 
   return (
-      <div className="flex flex-col flex-grow pl-4 pr-8 mt-2 p-4">
+      <div className="flex flex-col flex-grow pl-4 pr-8 p-4">
         <Button onClick={handleOpen} variant="gradient" className="self-end">
         교육생 등록
       </Button>
@@ -134,7 +134,7 @@ export function UserList() {
           </CardFooter>
         </Card>
       </Dialog>
-          <Card className="h-full w-full overflow-scroll mt-4">
+          <Card className="h-full w-full overflow-y-auto mt-4">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>

@@ -34,6 +34,7 @@ public class RouteRepository implements RegisterRoutePort, LoadRoutePort {
         RouteJpaEntity routeJpaEntity=new RouteJpaEntity();
         routeJpaEntity.setName(route.getName());
         routeJpaEntity.setCompany(companyMapper.mapToJpaEntity(route.getCompany()));
+        routeJpaEntity.setGeometry(route.getGeometry());
         em.persist(routeJpaEntity);
 //        System.out.println(routeJpaEntity.getId());
         List<RouteStationJpaEntity> routeStationJpaEntities=new ArrayList<>();

@@ -9,7 +9,7 @@ export function FindMe() {
     const { location } = useMapStore()
   
     return location ? (
-      <IconButton size="lg" className="rounded-full" onClick={() => {map.flyTo(location, 17,{
+      <IconButton size="lg" className="rounded-full top-20 flex justify-end ml-3" onClick={() => {map.flyTo(location, 17,{
         duration: 2,
       });}} style={{zIndex: 2000}}>
         <BiCurrentLocation className="h-5 w-5 transition-transform group-hover:rotate-45" />

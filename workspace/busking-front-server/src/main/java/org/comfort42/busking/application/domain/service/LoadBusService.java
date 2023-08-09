@@ -2,12 +2,19 @@ package org.comfort42.busking.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Bus;
+import org.comfort42.busking.application.domain.model.Company;
+import org.comfort42.busking.application.domain.model.Route;
 import org.comfort42.busking.application.port.inbound.BusCommand;
 import org.comfort42.busking.application.port.inbound.LoadBusUseCase;
+import org.comfort42.busking.application.port.inbound.LoadRouteUseCase;
+import org.comfort42.busking.application.port.inbound.RouteCommand;
 import org.comfort42.busking.application.port.outbound.LoadBusPort;
+import org.comfort42.busking.application.port.outbound.LoadRoutePort;
 import org.comfort42.busking.common.UseCase;
 import org.comfort42.busking.persistence.adapter.outbound.BusJpaEntity;
 import org.comfort42.busking.persistence.adapter.outbound.BusMapper;
+import org.comfort42.busking.persistence.adapter.outbound.BusRouteJpaEntity;
+import org.comfort42.busking.web.adapter.inbound.LoadRouteController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,25 +25,39 @@ public class LoadBusService implements LoadBusUseCase {
 
     private final LoadBusPort loadBusPort;
     private final BusMapper busMapper;
+    private final LoadRouteUseCase loadRouteUseCase;
 
     @Override
     public List<BusCommand> loadBusList() {
         List<BusCommand> busList = new ArrayList<>();
         for (BusJpaEntity bus : loadBusPort.loadBusList()) {
             Bus busDomainEntity = busMapper.mapToDomainEntity(bus);
+            List<LoadRouteController.RoutePayload> routes = new ArrayList<>();
+            for (BusRouteJpaEntity busRoute : bus.getRoutes()) {
+                LoadRouteController.RoutePayload route = loadRouteUseCase.loadRouteById(Company.CompanyId.of(bus.getCompany().getId()), new Route.RouteId(busRoute.getRoute().getId()));
+                routes.add(route);
+            }
+
             busList.add(
                     new BusCommand(busDomainEntity.getId().getValue().getCompanyId(),
-                            busDomainEntity.getBusNum()));
+                            busDomainEntity.getBusNum(),
+                            routes));
         }
         return busList;
     }
 
     @Override
     public BusCommand loadBusById(BusCommand busCommand) {
-        Bus bus=busMapper.mapToDomainEntity(
-                loadBusPort.loadBusById(
-                        new Bus.BusId(busCommand.getCompanyId(),
-                                busCommand.getBusNum())));
-        return new BusCommand(bus.getId().getValue().getCompanyId(),bus.getBusNum());
+        BusJpaEntity busJpaEntity = loadBusPort.loadBusById(
+                new Bus.BusId(busCommand.getCompanyId(),
+                        busCommand.getBusNum()));
+        Bus bus = busMapper.mapToDomainEntity(busJpaEntity);
+        List<LoadRouteController.RoutePayload> routes = new ArrayList<>();
+        for (BusRouteJpaEntity busRoute : busJpaEntity.getRoutes()) {
+            LoadRouteController.RoutePayload route = loadRouteUseCase.loadRouteById(Company.CompanyId.of(busJpaEntity.getCompany().getId()), new Route.RouteId(busRoute.getRoute().getId()));
+            routes.add(route);
+        }
+
+        return new BusCommand(bus.getId().getValue().getCompanyId(), bus.getBusNum(), routes);
     }
 }

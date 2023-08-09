@@ -33,7 +33,7 @@ public class LoadBusController {
     ResponseEntity<?> loadBusById(@PathVariable Long companyId, @PathVariable Long busNum){
         try{
 
-            return ResponseEntity.ok().body(loadBusUseCase.loadBusById(new BusCommand(companyId,busNum)));
+            return ResponseEntity.ok().body(loadBusUseCase.loadBusById(new BusCommand(companyId,busNum,new ArrayList<>())));
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<String>("에러", HttpStatus.BAD_REQUEST);

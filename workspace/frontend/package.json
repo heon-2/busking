@@ -70,5 +70,5 @@
   "devDependencies": {
     "tailwindcss": "^3.3.3"
   },
-  "proxy": "https://localhost:38443"
+  "proxy": "https://i9c108.p.ssafy.io"
 }

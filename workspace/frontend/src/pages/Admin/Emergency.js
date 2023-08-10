@@ -12,14 +12,21 @@ import {
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 // import "./App.css";
-import UserVideoComponent from "./UserVideoComponent";
-import { useUserStore } from "../../store";
+import UserVideoComponent from "./../../components/RTC/UserVideoComponent";
+import { useUserStore } from "./../../store.js";
+import { useNavigate } from "react-router-dom";
 
 // const APPLICATION_SERVER_URL =
 //   process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
 
 const APPLICATION_SERVER_URL = "https://i9c108.p.ssafy.io/";
-export default function RTC() {
+export function Emergency() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        joinSession(); // Automatically join the session when the component mounts
+        handleOpen("xl"); // Open the modal dialog
+      }, []);
 
   // 스토어에서 user를 불러와 user.fcmToken 사용하기
   const { user } = useUserStore();
@@ -264,17 +271,8 @@ export default function RTC() {
   
   return (
     <div>
-      <div>
-        <Button
-          className="w-96 h-28 text-4xl"
-          onClick={() => {
-            handleOpen("xl");
-            joinSession();
-            pushAlarm();
-          }}
-        >
-          긴급 화상통화 연결
-        </Button>
+      <div className="h-screen w-screen bg-transparent">
+        
       </div>
       {/* {session === undefined ? (
         <div>
@@ -348,6 +346,7 @@ export default function RTC() {
             onClick={() => {
               handleOpen(null);
               leaveSession();
+              navigate("/admin")
               
             }}
           >

@@ -83,7 +83,11 @@ let busStore = (set) => ({
     busNumber: [],
     stations: [],
     busPath: [],
-    passengers: 0,
+    passengers: [],
+    setBusNumber: (payload) => set({ busNumber: payload }),
+    setStations: (payload) => set({ stations: payload }),
+    setBusPath: (payload) => set({ busPath: payload }),
+    setPassengers: (payload) => set({ passengers: payload }),
 
 
 })

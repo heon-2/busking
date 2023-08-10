@@ -12,7 +12,7 @@ import { Admin } from "./pages/Admin/Admin";
 import { ReportDetail } from "./components/Admin/ReportDetail";
 import { UserMap } from "./pages/Map/UserMap";
 import { QRreader } from "./pages/QRcode/QRreader";
-import "./firebase-messaging-sw.js";
+// import "./firebase-messaging-sw.js";
 {
   /* 지헌 import 추가한 부분 (Merge 할 때 주의) */
 }

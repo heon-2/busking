@@ -11,7 +11,7 @@ import { Page404 } from "./pages/Page404";
 import { Admin } from "./pages/Admin/Admin";
 import { ReportDetail } from "./components/Admin/ReportDetail";
 import { UserMap } from "./pages/Map/UserMap";
-
+import "./firebase-messaging-sw.js";
 {
   /* 지헌 import 추가한 부분 (Merge 할 때 주의) */
 }

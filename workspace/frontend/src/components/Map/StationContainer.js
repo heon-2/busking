@@ -1,68 +1,61 @@
-import update from 'immutability-helper'
-import { useCallback, useState, useEffect } from 'react'
-import { StationCard } from './StationCard.js'
-import { useAdminStore } from '../../store.js'
-import { IconButton, Button } from "@material-tailwind/react";
+import React, { useEffect } from 'react';
+import StationCard from './StationCard';
+import { useState } from 'react';
+import { useBusStore, useAdminStore } from '../../store';
 import axios from 'axios';
 
-const style = {
-  width: 400,
-}
-const deleteMarker = (markerId, hintPath, setMarkers, setHintPath, markers) => {
-    let copy = [...markers]
-    copy.splice(markerId, 1)
-    setMarkers(copy);
-    copy = [...hintPath]
-    copy.splice(markerId, 1)
-    setHintPath(copy)
-  };
-export const StationContainer = () => {
-  const { hintPath, markers, setMarkers, setHintPath, setStationMarkers } = useAdminStore()
-  const [cards, setCards] = useState([])
-  const [stations, setStations] = useState([])
-
+const StationContainer = () => {
+  const { hintPath, markers, setMarkers } = useAdminStore();
+  const {stations, setStations} = useBusStore();
+  // const stations = [{name: "SSAFY 교육장", lat: 35.20434915762915, lng: 126.80986958640538}, 
+  //                   {name: "국민은행 사거리", lat: 35.19019048804865, lng: 126.82341592439369}]
   useEffect(() => {
-    axios.get('/api/companies/1/stations')
+    axios.get('api/companies/1/stations')
     .then((response) => {
+      console.log(response)
       setStations(response.data)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+    })    
   }, [])
 
-  useEffect(() => {
-    setCards(stations.map((item, index) => ({
-      id: index,
-      text: `${item.name}`
-    })));
-  }, [stations]);
-  {
-    const moveCard = useCallback((dragIndex, hoverIndex) => {
-      setCards((prevCards) =>
-        update(prevCards, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, prevCards[dragIndex]],
-          ],
-        }),
-      )
-    }, [])
-    const renderCard = (card, index) => {
-      return (
-        <StationCard
-          key={card.id}
-          index={index}
-          id={card.id}
-          text={<>{index+1}<Button onClick={(e) => {e.stopPropagation(); deleteMarker(index, hintPath, setMarkers, setHintPath, markers);}}>x</Button></>}
-          moveCard={moveCard}
-        />
-      )
-    }
-    return (
-      <>
-        <div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
-      </>
-    )
-  }
-}
+  const [items, setItems] = useState({
+    stations: stations.map((_, i) => ({
+      id: `${i}${i}`,
+      title: `${_.name}`,
+      status: 'false',
+      lat: `${_.lat}`,
+      lng: `${_.lng}`
+    })),
+    routes: hintPath.map((_, i) => ({
+      id: `${_[0]}${_[1]}`,
+      title: `${_.name}`,
+      status: 'false',
+      lat: hintPath[i][0],
+      lng: hintPath[i][1],
+    })),
+  }, [markers]);
+
+  // useEffect(() => {
+  //   let copy = JSON.parse(JSON.stringify(items))
+  //   copy['routes'] = hintPath.map((_, i) => ({
+  //     id: `${_.name}`,
+  //     title: `${_.name}`,
+  //     status: 'false',
+  //     lat: hintPath[i][0],
+  //     lng: hintPath[i][1],
+  //   }))
+  //   setItems(copy)
+  //   console.log('이거 먹힘?')
+  // }, [markers, hintPath])
+
+  // useEffect(() => {
+  //   stations
+  // }, [])
+
+  return (
+    <>
+      <StationCard items={items} setItems={setItems} />
+    </>
+  );
+};
+
+export default StationContainer;

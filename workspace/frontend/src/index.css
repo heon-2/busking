@@ -24,12 +24,10 @@ body,
   margin: 0;
   padding: 0;
   -webkit-touch-callout: none;
-  overflow: auto;
-  background: #010101;
+  background: #f0f4f9;
 }
 
 #root {
-  overflow: auto;
 }
 
 body {

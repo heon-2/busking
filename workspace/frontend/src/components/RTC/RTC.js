@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Typography,
 } from "@material-tailwind/react";
 
 import axios from "axios";
@@ -261,7 +262,18 @@ export default function RTC() {
       console.log('왜 안 되냐 대체');
     });
 
-  
+  // 점 3개 왔다갔다 하기.
+  const [dots, setDots] = useState("....");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots((prevDots) => (prevDots === "...." ? "" : prevDots + "."));
+    }, 500); // 0.5초마다 점 추가
+
+    return () => clearInterval(interval);
+  }, []);
+  ///
+
   return (
     <div>
       <div>
@@ -312,7 +324,13 @@ export default function RTC() {
             <div className="flex items-center justify-center">
               {subscribers.length === 0 ? (
                 <div>
+                  <div>
                   <Spinner className=" h-64 w-64 text-blue-500/10" />
+                  </div>
+
+                  <div className="fixed mt-5">
+                  <Typography className="text-2xl font-semibold text-gray-100 mr-3"> 관리자와 연결 중입니다{dots} </Typography>
+                  </div>
                 </div>
               ) : (
                 <div>

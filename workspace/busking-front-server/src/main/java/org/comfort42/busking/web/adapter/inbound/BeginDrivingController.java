@@ -52,7 +52,7 @@ public class BeginDrivingController {
             requestMap.put("route",routeObj);
 
             String webclientResponse= WebClient.create()
-                    .put()
+                    .post()
                     .uri(gpsMapperUrl+"/api/realtime/driving/begin")
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(objectMapper.writeValueAsString(requestMap))

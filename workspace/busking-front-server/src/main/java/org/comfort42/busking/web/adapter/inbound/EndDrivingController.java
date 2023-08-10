@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
@@ -29,14 +30,12 @@ public class EndDrivingController {
     ResponseEntity<?> endDriving(@RequestBody ObjectNode map){
         try{
             final var busObj = map.get("bus");
-            final var routeObj = map.get("route");
 
-            ConcurrentHashMap<String, Object> requestMap = new ConcurrentHashMap<>();
+            Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("bus",busObj);
-            requestMap.put("route",routeObj);
 
             String webClientResponse = WebClient.create()
-                    .put()
+                    .post()
                     .uri(gpsMapperUrl+"/api/realtime/driving/end")
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(objectMapper.writeValueAsString(requestMap))

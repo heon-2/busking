@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class BeginDrivingController {
     private final LoadBusUseCase loadBusUseCase;
     private final ObjectMapper objectMapper;
 
-    @PutMapping("/api/realtime/driving/begin")
+    @PostMapping("/api/realtime/driving/begin")
     ResponseEntity<?> beginDriving(@RequestBody ObjectNode map) throws JsonProcessingException {
         try{
             final var busObj = map.get("bus");
@@ -48,12 +49,13 @@ public class BeginDrivingController {
                     .loadRouteById(Company.CompanyId.of(companyId), new Route.RouteId(routeId));
 
             routeObj.put("geometry", route.geometry());
+            requestMap.put("route",routeObj);
 
             String webclientResponse= WebClient.create()
                     .put()
                     .uri(gpsMapperUrl+"/api/realtime/driving/begin")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(objectMapper.writeValueAsString(map))
+                    .bodyValue(objectMapper.writeValueAsString(requestMap))
                     .retrieve()
                     .onStatus(
                             HttpStatus.INTERNAL_SERVER_ERROR::equals,

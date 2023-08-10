@@ -18,16 +18,20 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { PathContainer } from '../../components/Map/PathContainer.js'
 import { MouseLocation } from '../../components/Map/MouseLocation';
 import { CreateStop } from '../../components/Map/CreateStop.js'
-import { StopList } from '../../components/Map/StopList.js'
+// import { StopList } from '../../components/Map/StopList.js'
+import StationContainer from '../../components/Map/StationContainer';
 
 export function Map() {
     const { hintPath, stopCreate, setStopCreate } = useAdminStore()
     return (
-        <div>
-            <DndProvider backend={HTML5Backend}>
-                <PathContainer></PathContainer>
-                <StopList></StopList>      
-            </DndProvider>
+        <div >
+            <StationContainer></StationContainer>
+            {/* <DndProvider backend={HTML5Backend} >
+                <PathContainer className=""></PathContainer>
+                <PathContainer className=""></PathContainer>
+            </DndProvider> */}
+
+
             <Button onClick={() => {
                 if (hintPath.length < 2){
                     alert('아직 경로 생성이 안됐습니다.')

@@ -72,7 +72,7 @@ let adminStore = (set) => ({
     setStationMarkers: (payload) => set({ stationMarkers: payload }),
 })
 
-adminStore = persist(adminStore, { name: 'admin_settings' });
+// adminStore = persist(adminStore, { name: 'admin_settings' });
 
 export const useAdminStore = create(adminStore)
 

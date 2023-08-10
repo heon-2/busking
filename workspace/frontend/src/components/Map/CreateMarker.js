@@ -42,8 +42,7 @@ export function CreateMarker() {
             setHintPath(copy)
             console.log(copy)
             // 생성한 마커와 ID를 상태에 추가
-            setMarkers([...markers, { marker: newMarker }]);
-        
+            setMarkers([...markers, { marker: 1, name: `${lat}${lng}`, drag: true }]);
             console.log('클릭 좌표:', lat, lng);
             console.log(newMarker)
             console.log(markers)
@@ -66,11 +65,11 @@ export function CreateMarker() {
       return (
         <>
           <MyComponent />
-          {markers.map(({ marker }, index) => (
+          {markers.map(({ marker, drag }, index) => (
             <Marker
               key={index}
               position={hintPath[index]} // 이 부분도 수정이 필요할 수 있습니다.
-              draggable={true}
+              draggable={drag}
               eventHandlers={{
                 dragend: (e) => {
                   const { lat, lng } = e.target.getLatLng();
@@ -104,6 +103,7 @@ export function CreateMarker() {
 
 
 function setCoords({hintPath, newPath, setNewPath}) {
+  console.log(hintPath)
     if (hintPath.length < 2) {
       setNewPath([])
     }
@@ -114,6 +114,9 @@ function setCoords({hintPath, newPath, setNewPath}) {
       .then((res) => {
         console.log(res)
         setNewPath(polyline.decode(res.data.route.geometry))
+      })
+      .catch((error) => {
+        console.log(error)
       })
     }
   }

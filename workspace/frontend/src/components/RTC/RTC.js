@@ -14,9 +14,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 // import "./App.css";
 import UserVideoComponent from "./UserVideoComponent";
 
-const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
+// const APPLICATION_SERVER_URL =
+//   process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
 
+const APPLICATION_SERVER_URL = "https://i9c108.p.ssafy.io/";
 export default function RTC() {
   const [mySessionId, setMySessionId] = useState("ssafy_1");
   const [myUserName, setMyUserName] = useState("SSAFY");

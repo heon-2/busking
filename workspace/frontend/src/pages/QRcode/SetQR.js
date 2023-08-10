@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 export function SetQR() {
     let navigate = useNavigate();
     return (
-        <div className='bg-blue-50 bg-opacity-50 h-screen'>
-            <div className="font-bold text-2xl h-20 ">
+        <div className='bg-blue-50 bg-opacity-50 h-full overflow-y-auto'>
+            <div className="font-bold text-2xl h-20 mt-10">
                 탑승할 버스와 하차지를 선택하세요
             </div>
             <div className="logo p-4 mt-10 mb-20 flex justify-center">
@@ -22,7 +22,7 @@ export function SetQR() {
             <SelectQR />
             </div>
 
-            <div className="flex flex-col gap-5 m-16 bg-blue-50">
+            <div className="flex flex-col gap-5 m-16 bg-blue-50 bg-opacity-50">
                 <Button onClick={()=> {
                     navigate("/scanQR");
                 }}>QR 생성</Button>

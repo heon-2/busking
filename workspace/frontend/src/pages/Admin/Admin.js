@@ -26,9 +26,9 @@ export function Admin() {
     <div className="admin">
       <div className="flex">
         <div className="LeftsideBar">
-          <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-            <div className="mb-2 p-4 bg-blue-100 rounded-xl">
-              <Typography variant="h5" color="blue-gray">
+          <Card className="h-full min-h-[45rem] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+            <div className="mb-2 p-4 bg-blue-400 rounded-lg">
+              <Typography variant="h5" color="white">
                 관리자 메뉴
               </Typography>
             </div>
@@ -43,7 +43,7 @@ export function Admin() {
                 <ListItemPrefix>
                   <InboxIcon className="h-5 w-5" />
                 </ListItemPrefix>
-                버스 정보 조회 ???
+                버스 정보 조회
               </ListItem>
               <ListItem onClick={() => setDisplay("ReportList")}>
                 <ListItemPrefix>
@@ -52,7 +52,7 @@ export function Admin() {
                 신고 내역 조회
                 <ListItemSuffix>
                   <Chip
-                    value="3"
+                    value="9"
                     size="sm"
                     variant="ghost"
                     color="blue-gray"
@@ -64,7 +64,7 @@ export function Admin() {
                 <ListItemPrefix>
                   <UserCircleIcon className="h-5 w-5" />
                 </ListItemPrefix>
-                화상통화 메뉴 ??
+                긴급 화상 통화
                 <ListItemSuffix>
                   <Chip
                     value="3"
@@ -79,7 +79,7 @@ export function Admin() {
           </Card>
         </div>
 
-        <div className="flex flex-col flex-grow pl-4 pr-8 mt-2 p-4">
+        <div className="flex flex-col flex-grow pl-4 mt-1 pr-8 p-4">
           {display === "UserList" && <UserList />}
           {/* {display === "BusList" && <BusList />} */}
           {display === "ReportList" && <ReportList />}

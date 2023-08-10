@@ -11,88 +11,69 @@ import useLocation from '../../common/Mylocation.js';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { IconButton, Button } from "@material-tailwind/react";
 import polyline from '@mapbox/polyline'
+import rbush from 'rbush';
+import { useAdminStore } from '../../store.js';
 
 export function MapLayer(props) {
-  const [markers, setMarkers] = useState([]);
-  const [coordinates, setCoordinates] = useState([]);
-  const [coordinatesList, setCoordinatesList] = useState([]);
-
-  function MyComponent() {
-    const map = useMapEvents({
-      click: (e) => {
-        const { lat, lng } = e.latlng;
-  
-        // 마커 아이콘 스타일 설정
-
-  
-        // 마커에 적용될 스타일 설정
-        const markerOptions = {
-          draggable: true, // 마커를 드래그할 수 있도록 설정
-        };
-  
-        // 마커 생성 및 스타일 적용
-        const newMarker = L.marker([lat, lng], markerOptions);
-        const markerId = markers.length; // 마커에 부여할 고유한 ID 또는 인덱스
-  
-        // 드래그 이벤트 리스너 등록
-        newMarker.on('dragend', (event) => {
-          // const { lat, lng } = event.target.getLatLng();
-          // console.log('새로운 좌표:', lat, lng);
-          const { lat, lng } = event.target.getLatLng();
-          let copy = [...coordinates]
-          copy.push([lat, lng])
-          setCoordinates(copy)
-          console.log(copy)
-        });
-        
-        let copy = [...coordinates]
-        copy.push([lat, lng])
-        setCoordinates(copy)
-        console.log(copy)
-        // 생성한 마커와 ID를 상태에 추가
-        setMarkers([...markers, { marker: newMarker }]);
-  
-        console.log('클릭 좌표:', lat, lng);
-        console.log(newMarker)
-      }
-    });
-  }
-
-  const deleteMarker = (markerId) => {
-    let copy = [...markers]
-    copy.splice(markerId, 1)
-    setMarkers(copy);
-    copy = [...coordinates]
-    copy.splice(markerId, 1)
-    setCoordinates(copy)
-  };
-
-  // const 
+  // const [markers, setMarkers] = useState([]);
+  // const [coordinates, setCoordinates] = useState([]);
+  // const [coordinatesList, setCoordinatesList] = useState([]);
 
   // function MyComponent() {
-  //   const [markers, setMarkers] = useState([]);
-  //   let count = 1;
   //   const map = useMapEvents({
   //     click: (e) => {
-  //       const markerOptions = {
-  //         draggable: true,
-  //       }
   //       const { lat, lng } = e.latlng;
-  //       const marker = L.marker([lat, lng], markerOptions).addTo(map);
+  
+  //       // 마커 아이콘 스타일 설정
+
+  
+  //       // 마커에 적용될 스타일 설정
+  //       const markerOptions = {
+  //         draggable: true, // 마커를 드래그할 수 있도록 설정
+  //       };
+  
+  //       // 마커 생성 및 스타일 적용
+  //       const newMarker = L.marker([lat, lng], markerOptions);
   //       const markerId = markers.length; // 마커에 부여할 고유한 ID 또는 인덱스
-  //       console.log(lat, lng);
-  //       console.log(marker)
-
-  //       marker.on('dragend', (event) => {
+  
+  //       // 드래그 이벤트 리스너 등록
+  //       newMarker.on('dragend', (event) => {
+  //         // const { lat, lng } = event.target.getLatLng();
+  //         // console.log('새로운 좌표:', lat, lng);
   //         const { lat, lng } = event.target.getLatLng();
-  //         console.log('새로운 좌표:', lat, lng);
+  //         let copy = [...coordinates]
+  //         copy.push([lat, lng])
+  //         setCoordinates(copy)
+  //         console.log(copy)
   //       });
-  //       setMarkers([...markers, { marker: Marker, id: markerId }]);
-
+        
+  //       let copy = [...coordinates]
+  //       copy.push([lat, lng])
+  //       setCoordinates(copy)
+  //       console.log(copy)
+  //       // 생성한 마커와 ID를 상태에 추가
+  //       setMarkers([...markers, { marker: newMarker }]);
+  
+  //       console.log('클릭 좌표:', lat, lng);
+  //       console.log(newMarker)
   //     }
   //   });
-  //   return null;
   // }
+
+  // const deleteMarker = (markerId) => {
+  //   let copy = [...markers]
+  //   copy.splice(markerId, 1)
+  //   setMarkers(copy);
+  //   copy = [...coordinates]
+  //   copy.splice(markerId, 1)
+  //   setCoordinates(copy)
+  // };
+
+  // useEffect(() => {
+  //   if (coordinates.length >= 2) {
+  //     setCoords({coordinates, coordinatesList, setCoordinatesList})
+  //   }
+  // }, [coordinates])
 
     // 현재 내 위치, 지도 타입(일반, 위성), 지도 중심, 버스 경로, 버스 정보(혼잡도 등)
     const { location, mapType, center, busPath, busInfo, setCenter, setBusPath, setBusInfo } = useMapStore()
@@ -119,9 +100,6 @@ export function MapLayer(props) {
             center={location}
             zoom={11}
             style={{ width: '100%', height: '100vh' }}
-            eventHandlers={{clcik: () => {
-              console.log('제발..')
-            }}}
             >
 {/* 기본 맵 */}
 {
@@ -144,11 +122,18 @@ export function MapLayer(props) {
     { props.Dial }
     { props.TopBar }
     { props.BusNum }
+    { props.CreateMarker }
+    { props.DraggableMarker }
+    { props.AdminPath }
+    { props.MouseLocation }
+    { props.CreateStop }
     {/* <Dial />    */}
     {/* <TopBar style={{ zIndex: 1000 }}/> */}
     {/* <BusNum/> */}
     {/* </div> */}
-    <MyComponent />
+    {/* <MyComponent>
+    
+    </MyComponent>
     {markers.map(({marker}, id) => (
         <Marker key={id} position={marker.getLatLng()} draggable={true} icon={marker.options.icon} eventHandlers={{
           dragend: (e) => {
@@ -161,20 +146,26 @@ export function MapLayer(props) {
         }}>
           <Popup>Marker {id}<IconButton onClick={(e) => {e.stopPropagation(); deleteMarker(id);}}>x</IconButton></Popup>
         </Marker>
-      ))}
-    <Polyline pathOptions={{color: 'red'}} positions={coordinatesList} />
+      ))} */}
+    {/* <Polyline pathOptions={{color: 'red'}} positions={coordinatesList} /> */}
     </MapContainer>
-    <Button style={{ zIndex: 2000}} onClick={(e) => {e.stopPropagation(); setCoords({coordinates, coordinatesList, setCoordinatesList})}}>fasdfas</Button>
+    {/* <Button style={{ zIndex: 2000}} onClick={(e) => {e.stopPropagation(); setCoords({coordinates, coordinatesList, setCoordinatesList})}}>fasdfas</Button> */}
     </div>
     )
 }
 
-function setCoords({coordinates, coordinatesList, setCoordinatesList}) {
-  axios.post('/api/routes/generate', {
-    hints: coordinates,
-  })
-  .then((res) => {
-    console.log(res)
-    setCoordinatesList(polyline.decode(res.data.route.geometry))
-  })
-}
+// function setCoords({coordinates, coordinatesList, setCoordinatesList}) {
+//   if (coordinates.length < 2) {
+//     alert("경유지를 2개 이상 설정해주세요.")
+//   }
+//   else {
+//     axios.post('/api/routes/generate', {
+//       hints: coordinates,
+//     })
+//     .then((res) => {
+//       console.log(res)
+//       setCoordinatesList(polyline.decode(res.data.route.geometry))
+//     })
+//   }
+
+// }

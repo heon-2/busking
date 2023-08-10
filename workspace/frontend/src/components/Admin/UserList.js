@@ -11,18 +11,10 @@ import {
   Input,
   IconButton,
 } from "@material-tailwind/react";
-import {
-  ArrowRightIcon,
-  ArrowLeftIcon,
-} from "@heroicons/react/24/outline";
 
 import { useEffect } from "react";
 
 const TABLE_HEAD = ["이름", "권한", "휴대폰 번호", "이메일" ,"Edit"];
-
-
-
-
 
 
 
@@ -41,6 +33,7 @@ export function UserList() {
   const [ email, setEmail ] = useState('');
   const [ realName, setRealName ] = useState('');
   const [ totalPageNum, setTotalPageNum ] = useState(0);
+  const [ active, setActive ] = useState(1);
 
   useEffect(() => {
     getDefaultUserList();
@@ -49,7 +42,7 @@ export function UserList() {
   function getDefaultUserList() {
 
     axios
-      .get("/api/users/list/0")
+      .get("/api/users/list/1")
       .then((res) => {
         console.log(res.data);
         setTABLE_ROWS(res.data.list);
@@ -61,31 +54,20 @@ export function UserList() {
       });
   }
 
-  function Pagination() {
-    const [active, setActive] = React.useState(1);
+
+  function Pagination({ totalPageNum, active, setActive }) {
   
     const getItemProps = (index) =>
       ({
         variant: active === index ? "filled" : "text",
         color: active === index ? "blue" : "blue-gray",
-        onClick: () => setActive(index),
+        onClick: () => {
+          setActive(index);
+          getUserList(index); // 페이지 버튼을 클릭하면 해당 페이지로 데이터를 가져옴
+        },
       });
-  
-    const next = () => {
-      if (active === totalPageNum) return;
-  
-      setActive(active + 1);
-    };
-  
-    const prev = () => {
-      if (active === 1) return;
-  
-      setActive(active - 1);
-    };
 
-    // const clickChoice = (e) => {
-    //   setActive(e);
-    // };
+
 
     function getUserList(param) {
 
@@ -94,60 +76,31 @@ export function UserList() {
         .then((res) => {
           console.log(res.data);
           setTABLE_ROWS(res.data.list);
+          console.log(param);
+          setActive(param);
+          console.log(active);
         })
         .catch((err) => {
           console.log(err);
         });
     }
 
+
     const paginationItems = Array.from({ length: totalPageNum }, (_, i) => (
-      <IconButton key={i+1} {...getItemProps(i+1)} onClick={()=>getUserList(i+1)}>{i+1}</IconButton>
+      <IconButton key={i+1} {...getItemProps(i+1)} >{i+1}</IconButton>
     ))
     return (
       <div className="flex items-center gap-4">
-        <Button
-          variant="text"
-          color="blue-gray"
-          className="flex items-center gap-2"
-          onClick={prev}
-          disabled={active === 1}
-        >
-          <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-        </Button>
         <div className="flex items-center gap-2">
           { paginationItems }
         </div>
-        <Button
-          variant="text"
-          color="blue-gray"
-          className="flex items-center gap-2"
-          onClick={next}
-          disabled={active === totalPageNum}
-        >
-          Next
-          <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-        </Button>
       </div>
     );
   }
 
-    // function getUserList(active) {
-
-    //   axios
-    //     .get("/api/users/list/" + active)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       setTABLE_ROWS(res.data.list);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // }
-
-
 
   return (
-      <div className="flex flex-col flex-grow pl-4 pr-8 mt-2 p-4">
+      <div className="flex flex-col flex-grow pl-4 pr-8 p-4">
         <Button onClick={handleOpen} variant="gradient" className="self-end">
         교육생 등록
       </Button>
@@ -181,7 +134,7 @@ export function UserList() {
           </CardFooter>
         </Card>
       </Dialog>
-          <Card className="h-full w-full overflow-scroll mt-4">
+          <Card className="h-full w-full overflow-y-auto mt-4">
       <table className="w-full min-w-max table-auto text-left">
         <thead>
           <tr>
@@ -263,13 +216,17 @@ export function UserList() {
       </table>
     </Card>
     <div className="flex justify-center mt-4">
-    <Pagination />
+    <Pagination
+          totalPageNum={totalPageNum}
+          active={active}
+          setActive={setActive}
+        />
     </div>
       </div>
   )
 }
 
-function registerUser(username, password, realName, phoneNumber, email) {
+function registerUser(username, password, realName, phoneNumber, email, getUserList) {
   const accessToken = localStorage.getItem('accessToken')
   axios.post('/api/users', {
       username: username,
@@ -288,6 +245,7 @@ function registerUser(username, password, realName, phoneNumber, email) {
   })
   .then((response) => {
       console.log(response)
+      getUserList()
   })
   .catch((error) => {
       console.log(error)

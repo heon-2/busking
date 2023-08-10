@@ -21,10 +21,7 @@ import {
     
     
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-blue-50">
-            <div>
-                <img src="/ssabus_logo.png" alt="logo" className="h-60"/>
-            </div>
+        <div className="flex flex-col items-center justify-center h-screen">
         <Card color="transparent" shadow={true} className="p-8 bg-white">
             <Typography variant="h4" color="blue-gray">
                 로그인
@@ -32,8 +29,8 @@ import {
             <Typography color="gray" className="mt-1 font-normal">
                 교육생의 정보를 입력해주세요.
             </Typography>
-            <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-                <div className="mb-4 flex flex-col gap-6">
+            <form className="max-w-screen-lg mt-8 mb-2 w-80 sm:w-96">
+                <div className="flex flex-col gap-6 mb-4">
                     <Input size="lg" label="아이디" value={username} onChange={(e) => setName(e.target.value)}/>
                     <Input type="password" size="lg" label="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </div>

@@ -11,6 +11,7 @@ import { Page404 } from "./pages/Page404";
 import { Admin } from "./pages/Admin/Admin";
 import { ReportDetail } from "./components/Admin/ReportDetail";
 import { UserMap } from "./pages/Map/UserMap";
+import { QRreader } from "./pages/QRcode/QRreader";
 import "./firebase-messaging-sw.js";
 {
   /* 지헌 import 추가한 부분 (Merge 할 때 주의) */
@@ -32,6 +33,7 @@ function App() {
         <Route path="/map" element={<Map />} />
         <Route path="/scanQR" element={<ScanQR />} />
         <Route path="/setQR" element={<SetQR />} />
+        <Route path="/QRreader" element={<QRreader />} />
         <Route path="/report" element={<Report />} />
         <Route path="/knightselect" element={<KnightSelect />} />
         {/* <Route path="/RTC" element={<RTC />} /> */}

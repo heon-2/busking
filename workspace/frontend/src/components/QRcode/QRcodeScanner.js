@@ -7,10 +7,10 @@ export const QRcodeScanner = (props) => {
   };
 
   return (
-    <div>
+    <div className="h-full w-full">
       <Html5QrcodePlugin
         fps={10}
-        qrbox={250}
+        qrbox={400}
         disableFlip={false}
         qrCodeSuccessCallback={onNewScanResult}
         />

@@ -100,18 +100,19 @@ export function MapLayer(props) {
             center={location}
             zoom={11}
             style={{ width: '100%', height: '100vh' }}
+            zoomControl = {false}
             >
 {/* 기본 맵 */}
 {
     mapType === false ?
     <TileLayer
     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     />
     :
     <TileLayer
     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-    attribution='Tiles &copy; Esri'
+    // attribution='Tiles &copy; Esri'
     />
 }
 {/* 위성 맵 */}

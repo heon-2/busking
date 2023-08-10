@@ -50,22 +50,28 @@ public class BeginDrivingController {
 
             routeObj.put("geometry", route.geometry());
 
-            String response= WebClient.create()
+            String webclientResponse= WebClient.create()
                     .put()
                     .uri(gpsMapperUrl+"/api/realtime/driving/begin")
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(objectMapper.writeValueAsString(map))
                     .retrieve()
+                    .onStatus(
+                            HttpStatus.INTERNAL_SERVER_ERROR::equals,
+                            response -> response.bodyToMono(String.class).map(Exception::new))
+                    .onStatus(
+                            HttpStatus.BAD_REQUEST::equals,
+                            response -> response.bodyToMono(String.class).map(Exception::new))
                     .bodyToMono(String.class)
                     .block();
 
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(response);
+                    .body(webclientResponse);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<String>("에러", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.toString(), HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -8,26 +8,31 @@ import {
   Button,
 } from "@material-tailwind/react";
 
+import { TopBar } from "./../../components/Map/TopBar";
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 import { useUserStore, useMapStore } from "../../store";
 
 export function Report() {
+  const navigate = useNavigate();
   const [reportContent, setReportContent] = useState("");
-  const { location, busNum } = useUserStore();
+  const { busNum } = useUserStore();
+  const { location } = useMapStore();
   // 경도
-  const lat = 1;
+  const lat = location[0];
   // 위도
-  const lng = 1231.3;
+  const lng = location[1];
+  // console.log(location);
   const accessToken = localStorage.getItem("accessToken");
 
   // 신고 항목들 변수로 담기
   const [reportList, setReportList] = useState([
-    "난폭 운전을 합니다",
-    "예정 시간보다 빨리 출발했습니다.",
-    "운전 중 위험한 행동을 합니다.",
+    "난폭 운전",
+    "예정 시간보다 빨리 출발",
+    "운전 중 위험한 행동 ( 휴대폰 사용 등 )",
     "응급 상황 발생 ( 교통사고, 환자 발생 등 )",
+    "무정차 출발",
   ]);
 
   function sendReport(reportContent) {
@@ -86,7 +91,7 @@ export function Report() {
   return (
     <div className="bg-gray-100">
       <div>
-        <p>상단바 들어갈 자리</p>
+        <TopBar content={"불편 사항 신고"} page={"report"}></TopBar>
         <img src="/ssabus_logo.png" alt="싸버지 logo" className="h-80 mt-10" />
         <p className="text-3xl my-20 text-blue-400 font-bold">신고하기</p>
         <Card>
@@ -124,23 +129,24 @@ export function Report() {
             })}
           </List>
         </Card>
-        <Button
-          onClick={() => {
-            sendReport(reportContent);
-          }}
-          className="bg-red-400 mt-10"
-        >
-          신 고 하 기
-        </Button>
+        <div className="mt-10">
+          <Button
+            onClick={() => {
+              sendReport(reportContent);
+            }}
+            className="bg-red-400"
+          >
+            신고하기
+          </Button>
 
-        <Button
-          onClick={() => {
-            getReport();
-          }}
-        >
-          {" "}
-          신고조회해보자
-        </Button>
+          <Button
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            뒤로가기
+          </Button>
+        </div>
       </div>
     </div>
   );

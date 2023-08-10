@@ -19,8 +19,8 @@ public class LoadStationService implements LoadStationUseCase {
 
     @Override
     public List<StationCommand> loadStationList(Company.CompanyId companyId) {
-        List<StationCommand> stationList =new ArrayList<>();
-        for(Station station: loadStationPort.loadStationList(companyId)){
+        List<StationCommand> stationList = new ArrayList<>();
+        for (Station station : loadStationPort.loadStationList(companyId)) {
             stationList.add(new StationCommand(
                     station.getId(),
                     station.getName(),

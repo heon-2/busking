@@ -21,7 +21,16 @@ public class RegisterStationService implements RegisterStaionUseCase {
 
     @Override
     public void registerStation(StationCommand stationCommand) {
-        Company company=loadCompanyPort.loadCompanyById(stationCommand.getCompanyId());
-        registerStationPort.registerStation(new Station(null,stationCommand.getName(),stationCommand.getLng(), stationCommand.getLat(),company,new ArrayList<RouteStation>()));
+        Company company = loadCompanyPort.loadCompanyById(stationCommand.getCompanyId());
+        registerStationPort.registerStation(
+                new Station(
+                        null,
+                        stationCommand.getName(),
+                        stationCommand.getLng(),
+                        stationCommand.getLat(),
+                        company,
+                        new ArrayList<RouteStation>()
+                )
+        );
     }
 }

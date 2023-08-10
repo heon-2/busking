@@ -17,17 +17,17 @@ public class RegisterStationController {
 
     record RegisterStationWebRequest(String name,
                                      Double lng,
-                                     Double lat){}
+                                     Double lat) {
+    }
 
     private final RegisterStaionUseCase registerStaionUseCase;
 
     @PostMapping
-    ResponseEntity<?> registerStation(@RequestBody RegisterStationWebRequest req, @PathVariable Long companyId){
-        try{
-            registerStaionUseCase.registerStation(new StationCommand(null,req.name(),req.lng(),req.lat(), Company.CompanyId.of(companyId)));
+    ResponseEntity<?> registerStation(@RequestBody RegisterStationWebRequest req, @PathVariable Long companyId) {
+        try {
+            registerStaionUseCase.registerStation(new StationCommand(null, req.name(), req.lng(), req.lat(), Company.CompanyId.of(companyId)));
             return ResponseEntity.created(new URI("/api/stations")).build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>("에러", HttpStatus.BAD_REQUEST);
         }

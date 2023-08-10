@@ -12,9 +12,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StationMapper {
 
-    private static final RouteStationMapper routeStationMapper=RouteStationMapper.getInstance();
+    private static final RouteStationMapper routeStationMapper = RouteStationMapper.getInstance();
 
-    private static final CompanyMapper companyMapper=CompanyMapper.getInstance();
+    private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
 
     Station mapToDomainEntity(
             StationJpaEntity station
@@ -27,7 +27,7 @@ public class StationMapper {
                 new Station.StationId(station.getId()),
                 station.getName(),
                 station.getLng(),
-                station.getLng(),
+                station.getLat(),
                 companyMapper.mapToDomainEntity(station.getCompany()),
                 routeStations
         );
@@ -35,18 +35,19 @@ public class StationMapper {
 
     StationJpaEntity mapToJpaEntity(
             Station station
-    ){
-        List<RouteStationJpaEntity> routeStationJpaEntities=new ArrayList<>();
-        for(RouteStation routeStation: station.getRoutes()){
+    ) {
+        List<RouteStationJpaEntity> routeStationJpaEntities = new ArrayList<>();
+        for (RouteStation routeStation : station.getRoutes()) {
             routeStationJpaEntities.add(routeStationMapper.mapToJpaEntity(routeStation));
         }
-        return new StationJpaEntity(station.getId().getValue(),
+        return new StationJpaEntity(
+                station.getId().getValue(),
                 station.getName(),
                 station.getLng(),
                 station.getLat(),
                 companyMapper.mapToJpaEntity(station.getCompany()),
                 routeStationJpaEntities
-                );
+        );
 
     }
 

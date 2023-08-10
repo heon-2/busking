@@ -22,6 +22,7 @@ class UserJpaEntity {
     @Id
     private UUID id = null;
 
+
     @Column(unique = true)
     private String username = null;
 
@@ -47,5 +48,6 @@ class UserJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", insertable = false, updatable = false)
     private CompanyJpaEntity company = null;
+
 
 }

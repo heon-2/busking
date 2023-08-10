@@ -34,6 +34,7 @@ dependencies {
     implementation("io.openvidu:openvidu-java-client:2.28.0")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+    implementation ("com.google.firebase:firebase-admin:9.2.0")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
     annotationProcessor("org.projectlombok:lombok")

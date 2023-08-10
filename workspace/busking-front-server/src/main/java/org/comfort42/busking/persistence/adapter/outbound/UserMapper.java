@@ -2,7 +2,9 @@ package org.comfort42.busking.persistence.adapter.outbound;
 
 import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.domain.model.User;
+import org.springframework.stereotype.Component;
 
+@Component
 class UserMapper {
 
     private static UserMapper instance = null;

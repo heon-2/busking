@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface LoadUserInformationPort {
     List<User> loadViewUser(long companyId, long page);
-
     Long totalPage(long companyId);
     User loadUserDetail(UUID userId);
+
 }

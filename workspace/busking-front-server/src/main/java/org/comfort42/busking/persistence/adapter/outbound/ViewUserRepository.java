@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ViewUserRepository extends JpaRepository<UserJpaEntity, UUID> {
@@ -13,4 +14,8 @@ public interface ViewUserRepository extends JpaRepository<UserJpaEntity, UUID> {
                                         @Param(value = "page") long page);
 
     Long countByCompanyId(long companyId);
+
+
+
+
 }

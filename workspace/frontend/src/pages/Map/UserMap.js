@@ -14,11 +14,13 @@ import { IconButton, Button } from "@material-tailwind/react";
 export function UserMap() {
   return (
     <div className="relative">
-      <MapLayer FindMe={<FindMe/>}Dial={<Dial></Dial>}></MapLayer>
-      <div className="absoulte fixed top-2 left-2 right-2" style={{ zIndex: 400 }}>
-        <TopBar></TopBar>
+      <MapLayer FindMe={<FindMe />} Dial={<Dial></Dial>}></MapLayer>
+      <div
+        className="absoulte fixed top-2 left-2 right-2"
+        style={{ zIndex: 400 }}
+      >
+        <TopBar content={"실시간 버스 위치"} page={"usermap"}></TopBar>
       </div>
-
 
       <div className="absoulute fixed bottom-0" style={{ zIndex: 400 }}>
         <BusNum></BusNum>

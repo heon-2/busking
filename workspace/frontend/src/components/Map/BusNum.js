@@ -4,6 +4,9 @@ import { BiBus } from 'react-icons/bi';
 import { Button } from "@material-tailwind/react";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {BusInfo} from './BusInfo';
+import { FindMe } from "../../common/FindMe.js";
+import { MapContainer } from 'react-leaflet';
 export function BusNum() {
     const navigate = useNavigate();
     const [num, setNum] = useState([false, false, false, false]);
@@ -12,37 +15,44 @@ export function BusNum() {
         // 4개의 버스 번호를 표시하는 버튼. -> 열을 4개로 쪼개서 버튼 하나당 한 열에 배치. ( 이거 zIndex 400부터 표시됨.. )
         <div>
     {/* <div className="flex fixed justify-center bottom-0 w-screen h-12 grid-cols-4 gap-3" style={{ zIndex: 400}}> */}
-    <div className="flex w-screen h-12 grid-cols-4 gap-3 " style={{ zIndex: 400}}>
-        {
-            num.map((item, index) => {
-                if (item === false){
-                    return <div className="w-1/4"><Button key={index} color="white" className="w-full h-full" onClick={() => toggleBus({index, num, setNum})}><BiBus className="inline-block align-middle mr-3"></BiBus>
-                    <span className="inline-block align-middle">{index+1}</span></Button></div>
-                }
-                else {
-                    // 각 너비를 1/4 씩 주고, 버튼과 글씨를 inline-block 설정 후, 수직 정렬을 위해 align-middle 설정.
-                    return <div className="w-1/4"> 
-                    <Button key={index} className="w-full h-full" onClick={() => toggleBus({index, num, setNum})}>
-                        <BiBus className="inline-block align-middle mr-3 "></BiBus>
-                        <span className="inline-block align-middle">{index+1}</span>
-                        </Button> 
-                        </div>
-                }
-            })
-        }
+<div className="flex w-screen h-10 grid-cols-4 gap-3 mb-3" style={{ zIndex: 400}}>
+
+    <div className="pl-px">
+        {/* 좌측 여백 1픽셀 */}
     </div>
 
-    <div className="bg-white h-1/5">
-        
-          {num[0] === true && '1호차'}
-          {num[1] === true && '2호차'}
-          {num[2] === true && '3호차'}
-          {num[3] === true && '4호차'}
+    {
+        num.map((item, index) => {
+            if (item === false) {
+                return <div className="w-1/4"><Button key={index} color="white" className="w-full h-full shadow-lg shadow-black/40" onClick={() => toggleBus({index, num, setNum})}><BiBus className="inline-block align-middle mr-2"></BiBus>
+                    <span className="inline-block align-middle">{index+1}</span></Button></div>
+            } else {
+                return <div className="w-1/4"> 
+                    <Button key={index} className="w-full h-full shadow-lg shadow-black/50" onClick={() => toggleBus({index, num, setNum})}>
+                        <BiBus className="inline-block align-middle mr-2"></BiBus>
+                        <span className="inline-block align-middle">{index+1}</span>
+                    </Button>
+                </div>
+            }
+        })
+    }
+    <div className="pr-px">
+        {/* 우측 여백 1픽셀 */}
     </div>
+</div>
+
+
+<div className="bg-white h-1/5">
+    {num.map((value, index) => {
+        const busNumber = index + 1; // 호차 번호는 인덱스 + 1
+        return value && <BusInfo index={index+1}></BusInfo>;
+    })}
+</div>
+
 
 
     <div className="w-screen">
-    <Button className="w-full h-12 etxt-lg" onClick={()=> navigate('/setQR')}>탑승하기</Button>
+    <Button className="w-full h-14 text-lg" onClick={()=> navigate('/setQR')}>탑승하기</Button>
 
     </div>
     </div>

@@ -1,19 +1,14 @@
 import { LoginForm } from "../../components/Auth/LoginForm";
-import { Scene } from "../../components/Scene";
 
 export function Login() {
     return (
-        <>
-        <Scene/>
+        <div >
         <div className="">
-        </div>
-        <div className="main">
-            <div className="loginspace">
-                <div className="login-container">
+            
+            <div className="">
+            </div>
             <LoginForm />
-            </div>
-            </div>
         </div>
-        </>
+        </div>
     )
 }

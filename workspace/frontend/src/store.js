@@ -15,10 +15,12 @@ let userStore = (set) => ({
     },// JIRA..... 
     accessToken: '',
     refreshToken: '',
+    fcmToken : '',
 
     setUser: (payload) => set({ user: payload }),
     setAccessToken: (payload) => set({accessToken: payload}),
     setRefreshToken: (payload) => set({refreshToken: payload}),
+    setFcmToken: (payload) => set({fcmToken: payload}),
     logout: () => set({ user: '' }),
 });
 
@@ -52,24 +54,45 @@ mapStore = persist(mapStore, { name: 'map_settings' });
 export const useMapStore = create(mapStore)
 
 let adminStore = (set) => ({
+    route: [],
     mouseLocation: [],
+    stationMarkers: [],
     hintPath: [],
     markers: [],
     newPath: [],
-    newStop: [],
+    newStation: [],
     stopCreate: false,
-    newStop: [],
+    setRoute: (payload) => set({ route: payload}),
     setHintPath: (payload) => set({ hintPath: payload }),
     setMarkers: (payload) => set({ markers: payload }),
     setNewPath: (payload) => set({ newPath: payload }),
-    setNewStop: (payload) => set({ newStop: payload }),
+    setNewStation: (payload) => set({ newStop: payload }),
     setStopCreate: () => set((state) => ({ stopCreate: !state.stopCreate})),
     setMouseLocation: (payload) => set({ mouseLocation: payload }),
-    setNewStop: (payload) => set({ newStop: payload }),
+    setStationMarkers: (payload) => set({ stationMarkers: payload }),
 })
 
 adminStore = persist(adminStore, { name: 'admin_settings' });
 
 export const useAdminStore = create(adminStore)
 
+
+// ====================================================
+
+let busStore = (set) => ({
+    busNumber: [],
+    stations: [],
+    busPath: [],
+    passengers: [],
+    setBusNumber: (payload) => set({ busNumber: payload }),
+    setStations: (payload) => set({ stations: payload }),
+    setBusPath: (payload) => set({ busPath: payload }),
+    setPassengers: (payload) => set({ passengers: payload }),
+
+
+})
+
+busStore = persist(busStore, { name: 'bus_settings' });
+
+export const useBusStore = create(busStore)
 

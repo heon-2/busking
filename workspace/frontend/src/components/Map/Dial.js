@@ -17,7 +17,7 @@ import { useMapStore } from '../../store.js';
     const { toggleMapType } = useMapStore();
 
     return (
-      <div className="fixed top-6 right-6" style={{ zIndex: 1000}}>
+      <div className="fixed top-20 right-4" style={{ zIndex: 1000}}>
         <SpeedDial placement="bottom">
           <SpeedDialHandler>
             <IconButton size="lg" className="rounded-full">

@@ -10,7 +10,7 @@ const style = {
   backgroundColor: 'white',
   cursor: 'move',
 }
-export const StopCard = ({ id, text, index, moveCard }) => {
+export const StationCard = ({ id, text, index, moveCard }) => {
   const { markers, setMarkers, hintPath, setHintPath } = useAdminStore()
   const ref = useRef(null)
   const [{ handlerId }, drop] = useDrop({

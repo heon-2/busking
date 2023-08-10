@@ -18,6 +18,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { PathContainer } from '../../components/Map/PathContainer.js'
 import { MouseLocation } from '../../components/Map/MouseLocation';
 import { CreateStop } from '../../components/Map/CreateStop.js'
+import { StopList } from '../../components/Map/StopList.js'
 
 export function Map() {
     const { hintPath, stopCreate, setStopCreate } = useAdminStore()
@@ -25,6 +26,7 @@ export function Map() {
         <div>
             <DndProvider backend={HTML5Backend}>
                 <PathContainer></PathContainer>
+                <StopList></StopList>      
             </DndProvider>
             <Button onClick={() => {
                 if (hintPath.length < 2){

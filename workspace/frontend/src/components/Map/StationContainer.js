@@ -1,8 +1,9 @@
 import update from 'immutability-helper'
 import { useCallback, useState, useEffect } from 'react'
-import { StopCard } from './StopCard.js'
+import { StationCard } from './StationCard.js'
 import { useAdminStore } from '../../store.js'
 import { IconButton, Button } from "@material-tailwind/react";
+import axios from 'axios';
 
 const style = {
   width: 400,
@@ -15,16 +16,27 @@ const deleteMarker = (markerId, hintPath, setMarkers, setHintPath, markers) => {
     copy.splice(markerId, 1)
     setHintPath(copy)
   };
-export const StopContainer = () => {
-  const { hintPath, markers, setMarkers, setHintPath } = useAdminStore()
+export const StationContainer = () => {
+  const { hintPath, markers, setMarkers, setHintPath, setStationMarkers } = useAdminStore()
   const [cards, setCards] = useState([])
+  const [stations, setStations] = useState([])
 
   useEffect(() => {
-    setCards(markers.map((item, index) => ({
+    axios.get('/api/companies/1/stations')
+    .then((response) => {
+      setStations(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }, [])
+
+  useEffect(() => {
+    setCards(stations.map((item, index) => ({
       id: index,
-      text: `${index + 1}`
+      text: `${item.name}`
     })));
-  }, [markers]);
+  }, [stations]);
   {
     const moveCard = useCallback((dragIndex, hoverIndex) => {
       setCards((prevCards) =>
@@ -38,7 +50,7 @@ export const StopContainer = () => {
     }, [])
     const renderCard = (card, index) => {
       return (
-        <PathCard
+        <StationCard
           key={card.id}
           index={index}
           id={card.id}

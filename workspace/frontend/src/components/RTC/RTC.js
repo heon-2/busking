@@ -212,7 +212,7 @@ export default function RTC() {
 
   const createSession = async (sessionId) => {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      APPLICATION_SERVER_URL + "api/rtc/sessions",
       { customSessionId: sessionId },
       {
         headers: { "Content-Type": "application/json" },
@@ -223,7 +223,7 @@ export default function RTC() {
 
   const createToken = async (sessionId) => {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      APPLICATION_SERVER_URL + "api/rtc/sessions/" + sessionId + "/connections",
       {},
       {
         headers: { "Content-Type": "application/json" },

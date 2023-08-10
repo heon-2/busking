@@ -24,11 +24,8 @@ class LoadUserInformationAdapter implements LoadUserInformationPort {
             list.add(userMapper.mapToDomainEntity(user));
 
         }
-
         return list;
-
     }
-
     @Override
     public Long totalPage(long companyId) {
         return viewUserRepository.countByCompanyId(companyId);

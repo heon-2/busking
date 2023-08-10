@@ -15,10 +15,12 @@ let userStore = (set) => ({
     },// JIRA..... 
     accessToken: '',
     refreshToken: '',
+    fcmToken : '',
 
     setUser: (payload) => set({ user: payload }),
     setAccessToken: (payload) => set({accessToken: payload}),
     setRefreshToken: (payload) => set({refreshToken: payload}),
+    setFcmToken: (payload) => set({fcmToken: payload}),
     logout: () => set({ user: '' }),
 });
 

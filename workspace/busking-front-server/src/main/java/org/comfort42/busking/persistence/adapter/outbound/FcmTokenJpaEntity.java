@@ -15,7 +15,7 @@ import lombok.Setter;
 public class FcmTokenJpaEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne

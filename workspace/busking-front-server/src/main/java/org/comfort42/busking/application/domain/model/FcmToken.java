@@ -13,10 +13,9 @@ public class FcmToken {
 
     private FcmTokenId id;
 
-    private final User userId;
+    private User userId;
 
-    private final String token;
-
+    private String token;
 
 
     @Value

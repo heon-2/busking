@@ -1,5 +1,5 @@
 package org.comfort42.busking.persistence.adapter.outbound;
-
+//SaveFcmTokenRepository
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;

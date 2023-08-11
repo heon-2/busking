@@ -32,6 +32,9 @@ public class Route {
     @Value
     public static class RouteId {
         private final Long value;
+
+        @Override
+        public String toString() {return value.toString();}
     }
 
     public static Route withId(Route.RouteId routeId,

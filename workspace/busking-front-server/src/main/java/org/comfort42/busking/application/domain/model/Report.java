@@ -30,6 +30,9 @@ public class Report {
     @Value
     public static class ReportId{
         private final Long value;
+
+        @Override
+        public String toString() {return value.toString();}
     }
 
     public static Report withId(ReportId reportId,

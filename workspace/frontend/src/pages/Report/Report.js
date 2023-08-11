@@ -19,6 +19,8 @@ export function Report() {
   const [reportContent, setReportContent] = useState("");
   const { busNum } = useUserStore();
   const { location } = useMapStore();
+  const { user } = useUserStore();
+  const [reportCheck, setReportCheck] = useState(false);
   // 경도
   const lat = location[0];
   // 위도
@@ -34,7 +36,7 @@ export function Report() {
     "응급 상황 발생 ( 교통사고, 환자 발생 등 )",
     "무정차 출발",
   ]);
-
+// busNum랑 companyId는 NULL값이 됨.. 
   function sendReport(reportContent) {
     console.log(reportContent);
 
@@ -72,30 +74,19 @@ export function Report() {
       });
   }
 
-  function getReport() {
-    axios
-      .get("/api/reports", {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 flex justify-center">
       <div>
         <TopBar content={"불편 사항 신고"} page={"report"}></TopBar>
-        <img src="/ssabus_logo.png" alt="싸버지 logo" className="h-80 mt-10" />
-        <p className="text-3xl my-20 text-blue-400 font-bold">신고하기</p>
+
+        <div className="flex justify-center">
+        <img src="/ssabus_logo.png" alt="싸버지 logo" className="flex justify-center items-center mt-5" />
+        </div>
+        <div>
+        <p className="text-3xl my-10 text-blue-400 font-bold">신고하기</p>
+        </div>
         <Card>
-          <List>
+          <List className="flex justify-center">
             {reportList.map((item, idx) => {
               return (
                 <ListItem

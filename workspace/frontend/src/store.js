@@ -96,3 +96,20 @@ busStore = persist(busStore, { name: 'bus_settings' });
 
 export const useBusStore = create(busStore)
 
+
+
+
+// ======================================================
+
+let qrStore = (set) => ({
+    selectedBus: [],
+    onStation: [],
+    offStation: ['SSAFY'],
+    setSelectedBus: (payload) => set({ selectedBus: payload }),
+    setOnStation: (payload) => set({ onStation: payload }),
+    setOffStation: (payload) => set({ offStation: payload }),
+})
+
+qrStore = persist(qrStore, { name: 'qr_settings' });
+
+export const useQrStore = create(qrStore)

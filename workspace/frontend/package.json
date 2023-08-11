@@ -75,5 +75,5 @@
     "html5-qrcode": "^2.3.8",
     "tailwindcss": "^3.3.3"
   },
-  "proxy": "https://i9c108.p.ssafy.io"
+  "proxy": "https://localhost:38443"
 }

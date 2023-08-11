@@ -37,9 +37,9 @@ export function Map() {
                     alert('아직 경로 생성이 안됐습니다.')
                 }
                 else {
-                    
+                    setStopCreate(true)
                 }
-            }}>한번에 되라</Button>
+            }}>정류장 선택하기</Button>
             <MapLayer 
             // FindMe={<FindMe></FindMe>}
             Dial={<Dial></Dial>}
@@ -48,7 +48,9 @@ export function Map() {
             // DragMarker={<DragMarker></DragMarker>}
             AdminPath={<AdminPath></AdminPath>}
             MouseLocation={<MouseLocation></MouseLocation>}
-            CreateStop={<CreateStop></CreateStop>}
+            CreateStop={
+                stopCreate ? <CreateStop></CreateStop> : null
+            }
             />
         </div>
     )

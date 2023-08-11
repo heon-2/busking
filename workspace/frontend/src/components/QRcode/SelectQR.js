@@ -1,6 +1,6 @@
 import { Select, Option } from "@material-tailwind/react";
 import { useQrStore } from '../../store.js';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export function SelectQR() {
@@ -10,6 +10,7 @@ export function SelectQR() {
     console.log(selectedBus)
     console.log(onStation)
     console.log(offStation)
+
 
     useEffect(() => {
         getDefaultBusList();
@@ -59,7 +60,8 @@ export function SelectQR() {
         <Option>4-4 호남파이프 건너편</Option>
         </Select>
         <Select color="teal" label="하자지 선택" className="shadow-lg bg-white">
-        <Option>{offStation}SSAFY</Option>
+        <Option>{offStation}</Option>
+        <Option>_</Option>
         </Select>
     </div>
 );

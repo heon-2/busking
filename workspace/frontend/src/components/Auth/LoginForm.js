@@ -11,7 +11,7 @@ export function LoginForm() {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
 
-  const { user, accessToken, setUser, setAccessToken, setRefreshToken } =
+  const { user, accessToken, setUser, setAccessToken, setRefreshToken, setFcmToken } =
     useUserStore();
   const navigate = useNavigate();
 
@@ -50,6 +50,7 @@ export function LoginForm() {
                 setAccessToken,
                 setRefreshToken,
                 navigate,
+                setFcmToken,
               })
             }
           >
@@ -68,6 +69,7 @@ async function onLogin({
   setAccessToken,
   setRefreshToken,
   navigate,
+  setFcmToken,
 }) {
   try {
     const response = await axios.post(
@@ -124,19 +126,22 @@ async function onLogin({
 
       console.log("알림 권한이 허용됨");
 
-      const FcmToken = await getToken(messaging, {
+      const fcmToken = await getToken(messaging, {
         vapidKey:
           "BLfRUhCf9PsDUckaFewDvWbYSzm23QhIBGuRFu4Z1GXBNwNEWKqmvyelHHQfbGM2r3pZUeXuqT3UTjZXYLFvm0c",
       });
 
-      if (FcmToken) console.log("token: ", typeof(FcmToken));
+      setFcmToken(fcmToken);
+      localStorage.setItem("setFcmToken", fcmToken);
+
+      if (fcmToken) console.log("token: ", fcmToken);
       else console.log("Can not get Token");
       // console.log(accessToken)
       // FCM token을 서버에 전송
       const response3 = await axios.post(
         "/api/fcm",
         {
-          token: FcmToken,
+          token: fcmToken,
         },
         {
           headers: {

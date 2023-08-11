@@ -12,6 +12,7 @@ import { Admin } from "./pages/Admin/Admin";
 import { ReportDetail } from "./components/Admin/ReportDetail";
 import { UserMap } from "./pages/Map/UserMap";
 import { QRreader } from "./pages/QRcode/QRreader";
+import { Emergency } from "./pages/Admin/Emergency";
 // import "./firebase-messaging-sw.js";
 {
   /* 지헌 import 추가한 부분 (Merge 할 때 주의) */
@@ -42,6 +43,8 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Page404 />} />
         <Route path="/report/:reportId" element={<ReportDetail />} />
+        <Route path="/emergency" element={<Emergency />} />
+
 
         {/* 지헌 테스트용 페이지 ( User 홈 ) */}
         <Route path="/usermap" element={<UserMap />} />

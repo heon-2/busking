@@ -8,19 +8,27 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
+
 } from "@material-tailwind/react";
 
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 // import "./App.css";
-import UserVideoComponent from "./UserVideoComponent";
-import { useUserStore } from "../../store";
+import UserVideoComponent from "./../../components/RTC/UserVideoComponent";
+import { useUserStore } from "./../../store.js";
+import { useNavigate } from "react-router-dom";
 
 // const APPLICATION_SERVER_URL =
 //   process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
 
 const APPLICATION_SERVER_URL = "https://i9c108.p.ssafy.io/";
-export default function RTC() {
+export function Emergency() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        joinSession(); // Automatically join the session when the component mounts
+        handleOpen("xl"); // Open the modal dialog
+      }, []);
 
   // 스토어에서 user를 불러와 user.fcmToken 사용하기
   const { user } = useUserStore();
@@ -262,31 +270,22 @@ export default function RTC() {
       console.log('왜 안 되냐 대체');
     });
 
-  // 점 3개 왔다갔다 하기.
-  const [dots, setDots] = useState("....");
+    // 점 3개 왔다갔다 하기.
+    const [dots, setDots] = useState("....");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prevDots) => (prevDots === "...." ? "" : prevDots + "."));
-    }, 500); // 0.5초마다 점 추가
-
-    return () => clearInterval(interval);
-  }, []);
-  ///
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setDots((prevDots) => (prevDots === "...." ? "" : prevDots + "."));
+      }, 500); // 0.5초마다 점 추가
+  
+      return () => clearInterval(interval);
+    }, []);
+    ///
 
   return (
     <div>
-      <div>
-        <Button
-          className="w-96 h-28 text-4xl"
-          onClick={() => {
-            handleOpen("xl");
-            joinSession();
-            pushAlarm();
-          }}
-        >
-          긴급 화상통화 연결
-        </Button>
+      <div className="h-screen w-screen bg-transparent">
+        
       </div>
       {/* {session === undefined ? (
         <div>
@@ -323,15 +322,15 @@ export default function RTC() {
             </div>
             <div className="flex items-center justify-center">
               {subscribers.length === 0 ? (
-                <div>
-                  <div>
-                  <Spinner className=" h-64 w-64 text-blue-500/10" />
-                  </div>
-
-                  <div className="fixed mt-5">
-                  <Typography className="text-2xl font-semibold text-gray-100 mr-3"> 관리자와 연결 중입니다{dots} </Typography>
-                  </div>
-                </div>
+                        <div>
+                        <div>
+                        <Spinner className=" h-64 w-64 text-blue-500/10" />
+                        </div>
+      
+                        <div className="fixed mt-5">
+                        <Typography className="text-2xl font-semibold text-gray-100 mr-3"> 관리자와 연결 중입니다{dots} </Typography>
+                        </div>
+                      </div>
               ) : (
                 <div>
                   {subscribers.map((sub, i) => (
@@ -366,6 +365,7 @@ export default function RTC() {
             onClick={() => {
               handleOpen(null);
               leaveSession();
+              navigate("/admin")
               
             }}
           >

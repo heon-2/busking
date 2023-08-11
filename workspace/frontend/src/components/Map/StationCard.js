@@ -11,11 +11,19 @@ export default function StationCard({ items, setItems }) {
 
     const scourceKey = source.droppableId;
     const destinationKey = destination.droppableId;
-
+    if (destinationKey === 'stations' && scourceKey !== destinationKey) {
+      const t = items[scourceKey][source.index]
+      console.log(t)
+      if (t.status === false) {
+        return;
+      }
+    }
     const _items = JSON.parse(JSON.stringify(items));
     const [targetItem] = _items[scourceKey].splice(source.index, 1);
+    console.log(source)
     _items[destinationKey].splice(destination.index, 0, targetItem);
-    console.log(targetItem)
+    console.log(_items)
+    setItems(_items); // 여기서 items가 업데이트가 안됨
     // 경로에 추가
     if (destinationKey === 'routes' && destinationKey != scourceKey) {
       console.log('맞아?')
@@ -24,7 +32,7 @@ export default function StationCard({ items, setItems }) {
       setHintPath(_hintPath)
       const _markers = [...markers]
       console.log(targetItem.lat)
-      _markers.splice(destination.index, 0, {marker: 1, name: `${targetItem.lat}${targetItem.lng}`, drag: false})
+      _markers.splice(destination.index, 0, {marker: 1, title: `${targetItem.title}`, drag: false, lat: parseFloat(targetItem.lat), lng: parseFloat(targetItem.lng)})
       setMarkers(_markers)
     }
     // 경로에서 삭제
@@ -46,10 +54,11 @@ export default function StationCard({ items, setItems }) {
       setHintPath(_hintPath)
       const _markers = [...markers]
       const targetMarker = _markers.splice(source.index, 1)
-      _markers.splice(destination.index, 0, targetMarker)
+      console.log(targetMarker)
+      _markers.splice(destination.index, 0, ...targetMarker)
       setMarkers(_markers)
+      console.log(_markers)
     }
-    setItems(_items);
     // setHintPath()
   };
 
@@ -102,7 +111,7 @@ export default function StationCard({ items, setItems }) {
                                 : ' shadow')
                             }
                           >
-                            <h5 className="font-semibold">{item.title}</h5>
+                            <h5 className="font-semibold">{item.title} ({index+1})</h5>
                             <span className="text-sm text-gray-500">Make the world beautiful</span>
                           </div>
                         )}

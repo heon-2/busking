@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { Marker, Popup, Tooltip } from 'react-leaflet'
-import { useAdminStore } from '../../store.js'
+import { useAdminStore, useBusStore } from '../../store.js'
 import L from 'leaflet'
 import axios from 'axios'
 import polyline from '@mapbox/polyline'
@@ -8,7 +8,8 @@ import { useMapEvents } from 'react-leaflet'
 import { IconButton, Button } from "@material-tailwind/react";
 
 export function CreateMarker() {
-  const { hintPath, newPath, markers, setHintPath, setNewPath, setMarkers } = useAdminStore() 
+  const { items, hintPath, newPath, markers, newStaion, setItems, setNewStation, setHintPath, setNewPath, setMarkers } = useAdminStore() 
+  // const { stations, setStations } = useBusStore();
     function MyComponent() {
         const map = useMapEvents({
             click: (e) => {
@@ -42,10 +43,13 @@ export function CreateMarker() {
             setHintPath(copy)
             console.log(copy)
             // 생성한 마커와 ID를 상태에 추가
-            setMarkers([...markers, { marker: 1, name: `${lat}${lng}`, drag: true }]);
+            setMarkers([...markers, { marker: 1, title: `경로${markers.length+1}`, drag: true, lat: lat, lng: lng }]);
             console.log('클릭 좌표:', lat, lng);
             console.log(newMarker)
             console.log(markers)
+            copy = JSON.parse(JSON.stringify(items))
+            copy['routes'].push({id: `경로${markers.length}`, title: `경로${markers.length+1}`, status: false, lat: lat, lng: lng})
+            setItems(copy)
             }
         });
     }
@@ -65,7 +69,7 @@ export function CreateMarker() {
       return (
         <>
           <MyComponent />
-          {markers.map(({ marker, drag }, index) => (
+          {markers.map(({ marker, title, drag }, index) => (
             <Marker
               key={index}
               position={hintPath[index]} // 이 부분도 수정이 필요할 수 있습니다.
@@ -82,7 +86,7 @@ export function CreateMarker() {
               
             >
               <Tooltip permanent>
-                {index+1}
+                {title}
               </Tooltip>
               <Popup>
                 Marker {index}

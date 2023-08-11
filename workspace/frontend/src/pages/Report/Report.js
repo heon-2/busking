@@ -6,6 +6,7 @@ import {
   ListItemPrefix,
   Typography,
   Button,
+  Alert,
 } from "@material-tailwind/react";
 
 import { TopBar } from "./../../components/Map/TopBar";
@@ -75,17 +76,22 @@ export function Report() {
   }
 
   return (
-    <div className="bg-gray-100 flex justify-center">
-      <div>
-        <TopBar content={"불편 사항 신고"} page={"report"}></TopBar>
+     
+    <div className="bg-[#F0F4F9] flex justify-center h-screen">
+      <div className="absoulte fixed top-2 left-2 right-2"> 
+        <TopBar content={"사용자 불편 신고"} page={"report"}></TopBar>
 
         <div className="flex justify-center">
-        <img src="/ssabus_logo.png" alt="싸버지 logo" className="flex justify-center items-center mt-5" />
+        <img
+      className="mt-5 mb-7 h-[30vh] lg:h-[60vh] overflow-scroll  w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
+      src="report.jpg"
+      alt="nature image"
+    />
         </div>
         <div>
-        <p className="text-3xl my-10 text-blue-400 font-bold">신고하기</p>
+        <Typography variant="h3" className="mb-7 text-[#0F6CBD]">신고 내용</Typography>
         </div>
-        <Card>
+        <Card className="shadow-blue-gray-900/20 rounded-md">
           <List className="flex justify-center">
             {reportList.map((item, idx) => {
               return (
@@ -122,10 +128,13 @@ export function Report() {
         </Card>
         <div className="mt-10">
           <Button
+            
             onClick={() => {
               sendReport(reportContent);
+              navigate('/usermap');
+              alert("신고가 완료됐습니다.");
             }}
-            className="bg-red-400"
+            className="bg-red-400 mr-10 w-[30vw]"
           >
             신고하기
           </Button>
@@ -134,11 +143,13 @@ export function Report() {
             onClick={() => {
               navigate(-1);
             }}
+            className="w-[30vw]"
           >
             뒤로가기
           </Button>
         </div>
       </div>
     </div>
+    
   );
 }

@@ -25,7 +25,8 @@ pipeline {
                 mattermostSend(message: '[Busking CI/CD] Start to build the GPS-mapper project ...')
 
                 dir('workspace/busking-gps-mapper') {
-                    sh 'go build -o app'
+                    sh 'mkdir .cache'
+                    sh 'GOCACHE=$(pwd)/.cache go build -o app'
                     archiveArtifacts(artifacts: 'app', fingerprint: true)
                     stash(name: 'gps-mapper.build', includes: 'app')
                 }

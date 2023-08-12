@@ -12,9 +12,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StationMapper {
 
+    private static StationMapper instance = null;
+
     private static final RouteStationMapper routeStationMapper = RouteStationMapper.getInstance();
 
     private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
+
+    public static StationMapper getInstance() {
+        if (instance == null) {
+            instance = new StationMapper();
+        }
+        return instance;
+    }
 
     Station mapToDomainEntity(
             StationJpaEntity station

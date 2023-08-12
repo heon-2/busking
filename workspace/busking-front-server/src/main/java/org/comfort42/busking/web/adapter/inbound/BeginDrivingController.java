@@ -35,25 +35,23 @@ public class BeginDrivingController {
 
     @PostMapping("/api/realtime/driving/begin")
     ResponseEntity<?> beginDriving(@RequestBody ObjectNode map) throws JsonProcessingException {
-        try{
+        try {
             final var busObj = map.get("bus");
             final var routeObj = (ObjectNode) map.get("route");
 
-            Map<String,Object> requestMap = new HashMap<>();
+            Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("bus", busObj);
 
-            final var  companyId = routeObj.get("id").asLong();
-            final var routeId= routeObj.get("id").asLong();
+            final var companyId = Company.CompanyId.of(routeObj.get("id").asLong());
+            final var routeId = Route.RouteId.of(routeObj.get("id").asLong());
+            final var route = loadRouteUseCase.loadRouteById(companyId, routeId);
 
-            LoadRouteController.RoutePayload route = loadRouteUseCase
-                    .loadRouteById(Company.CompanyId.of(companyId), new Route.RouteId(routeId));
+            routeObj.put("geometry", route.getGeometry());
+            requestMap.put("route", routeObj);
 
-            routeObj.put("geometry", route.geometry());
-            requestMap.put("route",routeObj);
-
-            String webclientResponse= WebClient.create()
+            String webclientResponse = WebClient.create()
                     .post()
-                    .uri(gpsMapperUrl+"/api/realtime/driving/begin")
+                    .uri(gpsMapperUrl + "/api/realtime/driving/begin")
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(objectMapper.writeValueAsString(requestMap))
                     .retrieve()
@@ -70,7 +68,7 @@ public class BeginDrivingController {
                     .ok()
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(webclientResponse);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>(e.toString(), HttpStatus.BAD_REQUEST);
         }

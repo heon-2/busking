@@ -1,19 +1,15 @@
 package org.comfort42.busking.application.domain.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.Value;
+import lombok.*;
 import org.comfort42.busking.persistence.adapter.outbound.RouteStationJpaEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Value
-@RequiredArgsConstructor
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Route {
 
     private final RouteId id;
@@ -24,9 +20,11 @@ public class Route {
 
     private final List<BusRoute> buses;
 
-    private final List<RouteStation> stations;
+    private final List<Station> stations;
 
     private final String geometry;
+
+    private final RouteDirection routeDirection;
 
 
     @Value
@@ -34,16 +32,22 @@ public class Route {
         private final Long value;
 
         @Override
-        public String toString() {return value.toString();}
+        public String toString() {
+            return value.toString();
+        }
+
+        public static RouteId of(final long value) {
+            return new RouteId(value);
+        }
     }
 
     public static Route withId(Route.RouteId routeId,
                                String name,
                                Company company,
                                List<BusRoute> buses,
-                               List<RouteStation> stations,
-                               String geometry
-                               ) {
-        return new Route(routeId, name,company,buses,stations,geometry);
+                               List<Station> stations,
+                               String geometry,
+                               RouteDirection routeDirection) {
+        return new Route(routeId, name, company, buses, stations, geometry, routeDirection);
     }
 }

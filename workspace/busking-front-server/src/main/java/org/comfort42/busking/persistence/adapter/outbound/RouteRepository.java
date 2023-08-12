@@ -8,8 +8,7 @@ import org.comfort42.busking.application.domain.model.Route;
 import org.comfort42.busking.application.domain.model.RouteStation;
 import org.comfort42.busking.application.domain.model.Station;
 import org.comfort42.busking.application.port.outbound.LoadRoutePort;
-import org.comfort42.busking.application.port.outbound.RegisterRoutePort;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.comfort42.busking.application.port.outbound.SaveRoutePort;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,43 +17,50 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class RouteRepository implements RegisterRoutePort, LoadRoutePort {
+public class RouteRepository implements SaveRoutePort, LoadRoutePort {
 
     @PersistenceContext
     private final EntityManager em;
-
-    private static final CompanyMapper companyMapper=CompanyMapper.getInstance();
+    private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
     private final StationMapper stationMapper;
     private final RouteMapper routeMapper;
 
 
     @Override
     @Transactional
-    public void registerRoute(Route route, List<Station> stationList) {
-        RouteJpaEntity routeJpaEntity=new RouteJpaEntity();
-        routeJpaEntity.setName(route.getName());
-        routeJpaEntity.setCompany(companyMapper.mapToJpaEntity(route.getCompany()));
-        routeJpaEntity.setGeometry(route.getGeometry());
+    public void registerRoute(final SaveRouteCommand cmd) {
+        RouteJpaEntity routeJpaEntity = new RouteJpaEntity(
+                null,
+                cmd.routeName(),
+                cmd.companyId().value(),
+                cmd.routeGeometry(),
+                cmd.routeDirection(),
+                null,
+                null,
+                cmd.stations()
+                        .stream()
+                        .map(
+                                stationId -> new StationJpaEntity(
+                                        stationId.getValue(),
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null
+                                )
+                        ).toList()
+        );
+
         em.persist(routeJpaEntity);
-//        System.out.println(routeJpaEntity.getId());
-        List<RouteStationJpaEntity> routeStationJpaEntities=new ArrayList<>();
-        for(Station station:stationList){
-            RouteStationJpaEntity routeStationJpaEntity =new RouteStationJpaEntity();
-            routeStationJpaEntity.setRoute(routeJpaEntity);
-            routeStationJpaEntity.setStation(stationMapper.mapToJpaEntity(station));
-            em.persist(routeStationJpaEntity);
-        }
-        routeJpaEntity.setStations(routeStationJpaEntities);
-        em.merge(routeJpaEntity);
     }
 
     @Override
     public List<Route> loadRouteList(Company.CompanyId companyId) {
-        List<RouteJpaEntity> list=em.createQuery("select r from RouteJpaEntity r where r.company.id = :companyId",RouteJpaEntity.class)
-                .setParameter("companyId",companyId.value())
+        List<RouteJpaEntity> list = em.createQuery("select r from RouteJpaEntity r where r.company.id = :companyId", RouteJpaEntity.class)
+                .setParameter("companyId", companyId.value())
                 .getResultList();
         List<Route> routeList = new ArrayList<>();
-        for(RouteJpaEntity routeJpaEntity: list){
+        for (RouteJpaEntity routeJpaEntity : list) {
             routeList.add(routeMapper.mapToDomainEntity(routeJpaEntity));
         }
         return routeList;
@@ -62,6 +68,6 @@ public class RouteRepository implements RegisterRoutePort, LoadRoutePort {
 
     @Override
     public Route loadRouteById(Route.RouteId routeId) {
-        return routeMapper.mapToDomainEntity(em.find(RouteJpaEntity.class,routeId.getValue()));
+        return routeMapper.mapToDomainEntity(em.find(RouteJpaEntity.class, routeId.getValue()));
     }
 }

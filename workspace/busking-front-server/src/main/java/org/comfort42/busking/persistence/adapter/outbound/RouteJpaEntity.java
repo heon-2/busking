@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.comfort42.busking.application.domain.model.BusRoute;
+import org.comfort42.busking.application.domain.model.RouteDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +24,26 @@ public class RouteJpaEntity {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private CompanyJpaEntity company;
-
-    @OneToMany(mappedBy = "route",cascade = CascadeType.REMOVE)
-    private List<BusRouteJpaEntity> buses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "route",cascade = CascadeType.REMOVE)
-    private List<RouteStationJpaEntity> stations = new ArrayList<>();
+    @Column(name = "company_id")
+    private Long companyId;
 
     private String geometry;
+
+    @Convert(converter = RouteDirectionConverter.class)
+    private RouteDirection direction;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", insertable = false, updatable = false)
+    private CompanyJpaEntity company;
+
+    @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
+    private List<BusRouteJpaEntity> buses = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "RouteAndStation",
+            joinColumns = @JoinColumn(name = "route_id"),
+            inverseJoinColumns = @JoinColumn(name = "station_id", insertable = false, updatable = false)
+    )
+    private List<StationJpaEntity> stations = new ArrayList<>();
 }

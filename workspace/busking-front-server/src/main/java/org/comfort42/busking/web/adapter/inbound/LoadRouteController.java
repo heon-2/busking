@@ -31,7 +31,7 @@ public class LoadRouteController {
     @GetMapping
     ResponseEntity<?> loadRouteList(@PathVariable Long companyId) {
         try {
-            return ResponseEntity.ok().body(loadRouteUseCase.loadRouteList(Company.CompanyId.of(companyId)));
+            return ResponseEntity.ok().body(loadRouteUseCase.loadAllRoutes(Company.CompanyId.of(companyId)));
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>("에러", HttpStatus.BAD_REQUEST);

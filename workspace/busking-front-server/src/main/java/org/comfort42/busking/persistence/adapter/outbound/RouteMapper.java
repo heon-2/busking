@@ -14,46 +14,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RouteMapper {
 
+    private static final BusRouteMapper busRouteMapper = BusRouteMapper.getInstance();
     private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
-    private static final RouteStationMapper routeStationMapper=RouteStationMapper.getInstance();
-    private static final BusRouteMapper busRouteMapper=BusRouteMapper.getInstance();
+    private static final StationMapper stationMapper = StationMapper.getInstance();
 
-    Route mapToDomainEntity(
-            RouteJpaEntity route
-    ) {
-        List<RouteStation> routeStations = new ArrayList<>();
-        for (RouteStationJpaEntity routeStationJpaEntity : route.getStations()) {
-            routeStations.add(routeStationMapper.mapToDomainEntity(routeStationJpaEntity));
-        }
-        List<BusRoute> busRoutes=new ArrayList<>();
-        for(BusRouteJpaEntity busRouteJpaEntity:route.getBuses()){
+    Route mapToDomainEntity(RouteJpaEntity routeJpaEntity) {
+        List<BusRoute> busRoutes = new ArrayList<>();
+        for (BusRouteJpaEntity busRouteJpaEntity : routeJpaEntity.getBuses()) {
             busRoutes.add(busRouteMapper.mapToDomainEntity(busRouteJpaEntity));
         }
 
-        return Route.withId(
-                new Route.RouteId(route.getId()),
-                route.getName(),
-                companyMapper.mapToDomainEntity(route.getCompany()),
+        final var stations = routeJpaEntity.getStations()
+                .stream()
+                .map(stationMapper::mapToDomainEntity)
+                .toList();
+
+        return new Route(
+                Route.RouteId.of(routeJpaEntity.getId()),
+                routeJpaEntity.getName(),
+                companyMapper.mapToDomainEntity(routeJpaEntity.getCompany()),
                 busRoutes,
-                routeStations,
-                route.getGeometry()
+                stations,
+                routeJpaEntity.getGeometry(),
+                routeJpaEntity.getDirection()
         );
     }
 
-    RouteJpaEntity mapToJpaEntity(
-            Route route
-    ){
-        List<RouteStationJpaEntity> routeStationJpaEntities=new ArrayList();
-        for(RouteStation routeStation:route.getStations()){
-            routeStationJpaEntities.add(routeStationMapper.mapToJpaEntity(routeStation));
-        }
+    RouteJpaEntity mapToJpaEntity(Route route) {
         return new RouteJpaEntity(
                 route.getId().getValue(),
                 route.getName(),
+                route.getCompany().id().value(),
+                route.getGeometry(),
+                route.getRouteDirection(),
                 companyMapper.mapToJpaEntity(route.getCompany()),
-                new ArrayList<BusRouteJpaEntity>(), // 사용할 때 수정 필요
-                routeStationJpaEntities,
-                route.getGeometry()
+                null,
+                route.getStations().stream().map(stationMapper::mapToJpaEntity).toList()
         );
     }
+
 }

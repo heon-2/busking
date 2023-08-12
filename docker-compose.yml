@@ -23,23 +23,47 @@ services:
     volumes:
     - 'busking_main_data:/var/lib/mysql'
 
+  busking_login_redis:
+    restart: on-failure
+    image: 'redis:latest'
+    container_name: busking_login_redis
+    networks:
+    - busking_network
+
+  busking_gps_redis:
+    restart: on-failure
+    image: 'redis:latest'
+    container_name: busking_gps_redis
+    networks:
+    - busking_network
+
+  busking_gps_mapper:
+    restart: on-failure
+    image: 'me0s/busking-gps-mapper:latest'
+    container_name: busking_gps_mapper
+    network_mode: 'service:busking_front_server'
+    environment:
+      GIN_MODE: release
+      BUSKING_GPS_REDIS_HOST: busking_gps_redis
+      BUSKING_GPS_REDIS_PORT: 6379
+
   busking_front_server:
     restart: on-failure
     depends_on:
     - busking_mysql
+    - busking_login_redis
+    - busking_gps_redis
     image: 'me0s/busking:latest'
     container_name: busking_front_server
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mysql://busking_mysql:3306/busking'
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: busking
+      BUSKING_LOGIN_REDIS_HOST: busking_login_redis
+      BUSKING_LOGIN_REDIS_PORT: 6379
+      BUSKING_GPS_REDIS_HOST: busking_gps_redis
+      BUSKING_GPS_REDIS_PORT: 6379
     ports:
     - '38443:5000'
     networks:
     - busking_network
-
-  busking_redis:
-    restart: on-failure
-    image: 'redis:latest'
-    container_name: busking_redis
-    network_mode: 'service:busking_front_server'

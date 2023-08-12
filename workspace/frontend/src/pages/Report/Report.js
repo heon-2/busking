@@ -18,6 +18,7 @@ import { useUserStore, useMapStore } from "../../store";
 export function Report() {
   const navigate = useNavigate();
   const [reportContent, setReportContent] = useState("");
+  // busStore에서 가져와야 하는 거 아닌가 체크해보자.
   const { busNum } = useUserStore();
   const { location } = useMapStore();
   const { user } = useUserStore();
@@ -77,13 +78,13 @@ export function Report() {
 
   return (
      
-    <div className="bg-[#F0F4F9] flex justify-center h-screen">
-      <div className="absoulte fixed top-2 left-2 right-2"> 
+    <div className="bg-[#F0F4F9] flex justify-center h-screen overflow-y-scroll">
+      <div className="absoulte fixed top-2 left-2 right-2 "> 
         <TopBar content={"사용자 불편 신고"} page={"report"}></TopBar>
 
         <div className="flex justify-center">
         <img
-      className="mt-5 mb-7 h-[30vh] lg:h-[60vh] overflow-scroll  w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
+      className="mt-5 mb-7 h-[30vh] lg:h-[60vh] lg:object-contain lg:w-1/2 w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
       src="report.jpg"
       alt="nature image"
     />

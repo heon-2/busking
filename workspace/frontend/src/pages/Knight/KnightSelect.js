@@ -1,10 +1,13 @@
 import { Button } from "@material-tailwind/react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useBusStore } from "../../store";
+
 
 export function KnightSelect() {
   const navigate = useNavigate();
   let [choiceBus, setChoiceBus] = useState([false, false, false, false]);
+  const { busNumber, setBusNumber } = useBusStore();
 
   const choiceButtonClick = (idx) => {
     const copy = [...choiceBus];
@@ -25,6 +28,7 @@ export function KnightSelect() {
               // className="gap-8"
               onClick={() => {
                 choiceButtonClick(idx);
+                setBusNumber(idx+1);
                 // navigate("/knightmap/"+(idx+1));
                 navigate("/knightmap/");
                 // useEffect 사용해서 바꿔야할듯. state값 변경하고, 그거에 맞는 경로 렌더링 하도록하기

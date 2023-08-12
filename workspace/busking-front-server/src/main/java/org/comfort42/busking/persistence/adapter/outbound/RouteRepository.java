@@ -5,8 +5,6 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.domain.model.Route;
-import org.comfort42.busking.application.domain.model.RouteStation;
-import org.comfort42.busking.application.domain.model.Station;
 import org.comfort42.busking.application.port.outbound.LoadRoutePort;
 import org.comfort42.busking.application.port.outbound.SaveRoutePort;
 import org.springframework.stereotype.Repository;
@@ -19,36 +17,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RouteRepository implements SaveRoutePort, LoadRoutePort {
 
+    private static  final RouteMapper routeMapper = RouteMapper.getInstance();
+
     @PersistenceContext
     private final EntityManager em;
-    private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
-    private final StationMapper stationMapper;
-    private final RouteMapper routeMapper;
-
 
     @Override
     @Transactional
     public void registerRoute(final SaveRouteCommand cmd) {
-        RouteJpaEntity routeJpaEntity = new RouteJpaEntity(
+        final var stations = cmd.stations()
+                .stream()
+                .map(
+                        stationId -> new StationJpaEntity(
+                                stationId.value(),
+                                null,
+                                null,
+                                null,
+                                null
+                        )
+                ).toList();
+
+        final RouteJpaEntity routeJpaEntity = new RouteJpaEntity(
                 null,
                 cmd.routeName(),
                 cmd.companyId().value(),
                 cmd.routeGeometry(),
                 cmd.routeDirection(),
                 null,
-                null,
-                cmd.stations()
-                        .stream()
-                        .map(
-                                stationId -> new StationJpaEntity(
-                                        stationId.getValue(),
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null
-                                )
-                        ).toList()
+                stations
         );
 
         em.persist(routeJpaEntity);
@@ -56,7 +52,12 @@ public class RouteRepository implements SaveRoutePort, LoadRoutePort {
 
     @Override
     public List<Route> loadRouteList(Company.CompanyId companyId) {
-        List<RouteJpaEntity> list = em.createQuery("select r from RouteJpaEntity r where r.company.id = :companyId", RouteJpaEntity.class)
+        List<RouteJpaEntity> list = em.createQuery("""
+                        SELECT r
+                          FROM RouteJpaEntity r
+                          JOIN FETCH r.stations
+                          JOIN FETCH r.company
+                         WHERE r.company.id = :companyId""", RouteJpaEntity.class)
                 .setParameter("companyId", companyId.value())
                 .getResultList();
         List<Route> routeList = new ArrayList<>();

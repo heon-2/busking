@@ -18,8 +18,6 @@ public class Route {
 
     private final Company company;
 
-    private final List<BusRoute> buses;
-
     private final List<Station> stations;
 
     private final String geometry;
@@ -29,11 +27,11 @@ public class Route {
 
     @Value
     public static class RouteId {
-        private final Long value;
+        private final long value;
 
         @Override
         public String toString() {
-            return value.toString();
+            return Long.toString(value);
         }
 
         public static RouteId of(final long value) {
@@ -44,10 +42,9 @@ public class Route {
     public static Route withId(Route.RouteId routeId,
                                String name,
                                Company company,
-                               List<BusRoute> buses,
                                List<Station> stations,
                                String geometry,
                                RouteDirection routeDirection) {
-        return new Route(routeId, name, company, buses, stations, geometry, routeDirection);
+        return new Route(routeId, name, company, stations, geometry, routeDirection);
     }
 }

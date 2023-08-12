@@ -1,9 +1,12 @@
 package org.comfort42.busking.application.port.inbound;
 
+import org.comfort42.busking.application.domain.model.Bus;
+import org.comfort42.busking.application.domain.model.Company;
+
 import java.util.List;
 
 public interface LoadBusUseCase {
-    List<BusCommand> loadBusList();
+    List<Bus> loadAllBuses(Company.CompanyId companyId);
 
-    BusCommand loadBusById(BusCommand busCommand);
+    Bus loadBusById(Bus.BusId id);
 }

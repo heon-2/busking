@@ -1,20 +1,20 @@
 package org.comfort42.busking.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
+import org.comfort42.busking.application.domain.model.Bus;
 import org.comfort42.busking.application.domain.model.Route;
-import org.comfort42.busking.application.port.inbound.AssignBusRouteUseCase;
-import org.comfort42.busking.application.port.outbound.AssignBusRoutePort;
+import org.comfort42.busking.application.port.inbound.AssignBusToRouteUseCase;
+import org.comfort42.busking.application.port.outbound.AssignBusToRoutePort;
 import org.comfort42.busking.common.UseCase;
-import org.comfort42.busking.persistence.adapter.outbound.BusPK;
 
 @UseCase
 @RequiredArgsConstructor
-public class AssignBusRouteService implements AssignBusRouteUseCase {
+public class AssignBusRouteService implements AssignBusToRouteUseCase {
 
-    private final AssignBusRoutePort assignBusRoutePort;
+    private final AssignBusToRoutePort assignBusRoutePort;
 
     @Override
-    public void assignBusRoute(BusPK busPK, Route.RouteId routeId) {
-        assignBusRoutePort.assignBusRoute(busPK,routeId);
+    public boolean assignBusRoute(Bus.BusId busId, Route.RouteId routeId) {
+        return assignBusRoutePort.assignBusToRoute(busId, routeId);
     }
 }

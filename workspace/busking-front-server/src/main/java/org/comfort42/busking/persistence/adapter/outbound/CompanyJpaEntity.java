@@ -23,7 +23,8 @@ public class CompanyJpaEntity {
 
     private String name = null;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany
+    @JoinColumn(name = "company_id", insertable = false, updatable = false)
     private List<BusJpaEntity> buses = null;
 
 }

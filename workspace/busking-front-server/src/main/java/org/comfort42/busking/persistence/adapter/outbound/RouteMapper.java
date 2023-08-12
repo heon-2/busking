@@ -1,29 +1,23 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import lombok.RequiredArgsConstructor;
-import org.comfort42.busking.application.domain.model.BusRoute;
 import org.comfort42.busking.application.domain.model.Route;
-import org.comfort42.busking.application.domain.model.RouteStation;
-import org.comfort42.busking.application.domain.model.Station;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Component
 @RequiredArgsConstructor
-public class RouteMapper {
+class RouteMapper {
 
-    private static final BusRouteMapper busRouteMapper = BusRouteMapper.getInstance();
+    private static RouteMapper instance = null;
     private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
     private static final StationMapper stationMapper = StationMapper.getInstance();
 
-    Route mapToDomainEntity(RouteJpaEntity routeJpaEntity) {
-        List<BusRoute> busRoutes = new ArrayList<>();
-        for (BusRouteJpaEntity busRouteJpaEntity : routeJpaEntity.getBuses()) {
-            busRoutes.add(busRouteMapper.mapToDomainEntity(busRouteJpaEntity));
+    static RouteMapper getInstance() {
+        if (instance == null) {
+            instance = new RouteMapper();
         }
+        return instance;
+    }
 
+    Route mapToDomainEntity(RouteJpaEntity routeJpaEntity) {
         final var stations = routeJpaEntity.getStations()
                 .stream()
                 .map(stationMapper::mapToDomainEntity)
@@ -33,7 +27,6 @@ public class RouteMapper {
                 Route.RouteId.of(routeJpaEntity.getId()),
                 routeJpaEntity.getName(),
                 companyMapper.mapToDomainEntity(routeJpaEntity.getCompany()),
-                busRoutes,
                 stations,
                 routeJpaEntity.getGeometry(),
                 routeJpaEntity.getDirection()
@@ -48,7 +41,6 @@ public class RouteMapper {
                 route.getGeometry(),
                 route.getRouteDirection(),
                 companyMapper.mapToJpaEntity(route.getCompany()),
-                null,
                 route.getStations().stream().map(stationMapper::mapToJpaEntity).toList()
         );
     }

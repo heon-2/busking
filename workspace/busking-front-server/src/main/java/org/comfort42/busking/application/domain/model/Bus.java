@@ -1,13 +1,10 @@
 package org.comfort42.busking.application.domain.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
-import org.comfort42.busking.persistence.adapter.outbound.BusPK;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Value
@@ -18,26 +15,11 @@ public class Bus {
 
     private final BusId id;
 
-    private final Long busNum;
+    private final List<Route> routes;
 
-    private final List<BusRoute> routes;
-
-    @Value
-    public static class BusId {
-        private final BusPK value;
-
-        public BusId(Long companyId, Long busNum) {
-            this.value = new BusPK(companyId, busNum);
+    public record BusId(Company.CompanyId companyId, long no) {
+        public static BusId of(Company.CompanyId companyId, long no) {
+            return new BusId(companyId, no);
         }
-
-        public BusId(BusPK busPK) {
-            this.value = busPK;
-        }
-    }
-
-    public static Bus withId(BusId busId,
-                             Long busNum,
-                             List<BusRoute> routes) {
-        return new Bus(busId, busNum, routes);
     }
 }

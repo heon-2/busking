@@ -32,7 +32,4 @@ public class StationJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private CompanyJpaEntity company;
-
-    @OneToMany(mappedBy = "station", cascade = CascadeType.REMOVE)
-    private List<RouteStationJpaEntity> routes = new ArrayList<>();
 }

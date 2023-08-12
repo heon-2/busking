@@ -3,9 +3,10 @@ package org.comfort42.busking.persistence.adapter.outbound;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.comfort42.busking.application.domain.model.Bus;
+import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.port.outbound.LoadBusPort;
-import org.comfort42.busking.application.port.outbound.RegisterBusPort;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.comfort42.busking.application.port.outbound.SaveBusCommand;
+import org.comfort42.busking.application.port.outbound.SaveBusPort;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,29 +14,54 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class BusRepository implements RegisterBusPort, LoadBusPort {
+public class BusRepository implements SaveBusPort, LoadBusPort {
+
+    private static final BusMapper busMapper = BusMapper.getInstance();
+
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
-    public BusJpaEntity registerBus(Bus bus) {
-        BusJpaEntity busJpaEntity=new BusJpaEntity();
-        BusPK busPK = bus.getId().getValue();
-        busJpaEntity.setId(busPK);
-        busJpaEntity.setCompany(em.getReference(CompanyJpaEntity.class,bus.getId().getValue().getCompanyId()));
+    public void saveBus(final SaveBusCommand cmd) {
+        final BusJpaEntity busJpaEntity = new BusJpaEntity(
+                new BusIdJpaEntity(cmd.busId().companyId().value(), cmd.busId().no()),
+                null
+        );
+
         em.persist(busJpaEntity);
-        return busJpaEntity;
     }
 
     @Override
-    public List<BusJpaEntity> loadBusList() {
-        return em.createQuery("select b from BusJpaEntity b", BusJpaEntity.class)
-                .getResultList();
+    public List<Bus> loadAllBuses(final Company.CompanyId companyId) {
+        return em
+                .createQuery("""
+                        SELECT b
+                          FROM BusJpaEntity b
+                          LEFT JOIN FETCH b.routes AS r
+                          JOIN FETCH r.company
+                         WHERE b.id.companyId=:companyId""", BusJpaEntity.class)
+                .setParameter("companyId", companyId.value())
+                .getResultList()
+                .stream()
+                .map(busMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
-    public BusJpaEntity loadBusById(Bus.BusId bus) {
-        return em.find(BusJpaEntity.class,bus.getValue());
+    public Bus loadBusById(final Bus.BusId busId) {
+        final var busIdJpaEntity = new BusIdJpaEntity(busId.companyId().value(), busId.no());
+
+        final var busJpaEntity = em
+                .createQuery("""
+                    SELECT b
+                      FROM BusJpaEntity b
+                      LEFT JOIN FETCH b.routes AS r
+                      JOIN FETCH r.company
+                     WHERE b.id=:busId
+                """, BusJpaEntity.class)
+                .setParameter("busId", busIdJpaEntity)
+                .getSingleResult();
+        return busMapper.mapToDomainEntity(busJpaEntity);
     }
+
 }

@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 export function SetQR() {
     let navigate = useNavigate();
     return (
-        <div className='bg-blue-50 bg-opacity-50 h-full overflow-y-auto'>
-            <div className="font-bold text-2xl h-20 mt-10">
+        <div className='h-full overflow-y-auto bg-opacity-50 bg-blue-50'>
+            <div className="h-20 mt-10 text-2xl font-bold">
                 탑승할 버스와 하차지를 선택하세요
             </div>
-            <div className="logo p-4 mt-10 mb-20 flex justify-center">
-            <div className="h-96 w-96 rounded-full bg-white shadow-lg flex justify-center items-center">
-            <img src="/ssabus_logo.png" alt="싸버지 로고" className='h-80'/>
+            <div className="flex justify-center p-4 mt-5 mb-14 logo">
+            <div className="flex items-center justify-center bg-white rounded-full shadow-lg h-60 w-60">
+            <img src="/ssabus_logo.png" alt="싸버지 로고" className='h-40'/>
 
             </div>
                 
@@ -22,12 +22,12 @@ export function SetQR() {
             <SelectQR />
             </div>
 
-            <div className="flex flex-col gap-5 m-16 bg-blue-50 bg-opacity-50">
+            <div className="flex flex-col gap-5 m-16 bg-opacity-50 bg-blue-50">
                 <Button onClick={()=> {
                     navigate("/scanQR");
                 }}>QR 생성</Button>
                 <Button className='bg-gray-400' onClick={()=> {
-                    navigate("/map");
+                    navigate("/usermap");
                 }}>홈 화면 가기</Button>
                 
             </div>

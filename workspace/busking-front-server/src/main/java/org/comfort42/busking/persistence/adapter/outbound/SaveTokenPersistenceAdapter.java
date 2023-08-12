@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.comfort42.busking.application.domain.model.Token;
 import org.comfort42.busking.application.port.outbound.SaveTokenPort;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
@@ -14,9 +15,11 @@ class SaveTokenPersistenceAdapter implements SaveTokenPort {
 
     private final ValueOperations<String, String> redisValueOps;
 
-    SaveTokenPersistenceAdapter(final ObjectMapper objectMapper, final RedisTemplate<String, String> redisTemplate) {
+    SaveTokenPersistenceAdapter(
+            final ObjectMapper objectMapper,
+            @Qualifier("buskingLoginRedisTemplate") final RedisTemplate<String, String> buskingLoginRedisTemplate) {
         this.objectMapper = objectMapper;
-        this.redisValueOps = redisTemplate.opsForValue();
+        this.redisValueOps = buskingLoginRedisTemplate.opsForValue();
     }
 
     @Override

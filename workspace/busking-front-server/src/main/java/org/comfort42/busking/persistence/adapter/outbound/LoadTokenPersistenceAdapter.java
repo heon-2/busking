@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.comfort42.busking.application.domain.model.Token;
 import org.comfort42.busking.application.domain.model.User;
 import org.comfort42.busking.application.port.outbound.LoadTokenPort;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
@@ -17,9 +18,10 @@ class LoadTokenPersistenceAdapter implements LoadTokenPort {
     private final ObjectMapper objectMapper;
     private final ValueOperations<String, String> redisValueOps;
 
-    LoadTokenPersistenceAdapter(final ObjectMapper objectMapper, final RedisTemplate<String, String> redisTemplate) {
+    LoadTokenPersistenceAdapter(final ObjectMapper objectMapper,
+                                @Qualifier("buskingLoginRedisTemplate") final RedisTemplate<String, String> buskingLoginRedisTemplate) {
         this.objectMapper = objectMapper;
-        this.redisValueOps = redisTemplate.opsForValue();
+        this.redisValueOps = buskingLoginRedisTemplate.opsForValue();
     }
 
     @Override

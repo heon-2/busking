@@ -1,4 +1,4 @@
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { Card, Input, Button, Typography, CardHeader,CardBody } from "@material-tailwind/react";
 import { useState } from "react";
 import axios from "axios";
 import { useUserStore } from "../../store.js";
@@ -16,16 +16,28 @@ export function LoginForm() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Card color="transparent" shadow={true} className="p-8 bg-white">
-        <Typography variant="h4" color="blue-gray">
-          로그인
+      <div className="flex flex-col items-center justify-center flex-grow h-screen p-4 pl-4 pr-8">
+      <div className="bg-transparent shadow-none">
+      <div className="absolute h-[400px] transform bg-orange-200 shadow-lg w-[350px] card rounded-3xl rotate-12"></div>
+      <div className="absolute h-[400px] transform bg-blue-200 shadow-lg w-[350px] card rounded-3xl -rotate-12"></div>
+      <Card className="m-2 w-full max-w-[24rem]">
+      
+      
+      <CardHeader
+            variant="gradient"
+            color="blue"
+            className="grid mb-4 h-28 place-items-center"
+          >
+        <Typography 
+        className="text-transparent bg-clip-text bg-gradient-to-r from-blue-100 to-white"
+        variant="h4" color="white">
+          SSABUS
         </Typography>
-        <Typography color="gray" className="mt-1 font-normal">
-          교육생의 정보를 입력해주세요.
-        </Typography>
-        <form className="max-w-screen-lg mt-8 mb-2 w-80 sm:w-96">
-          <div className="flex flex-col gap-6 mb-4">
+        </CardHeader>
+        <div className="inline-block text-sm font-medium text-transparent bg-clip-text bg-gradient-to-l from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400">
+                싸피에게 가는 길
+        </div>
+        <CardBody className="flex flex-col gap-4 ml-3 mr-2 w-80">
             <Input
               size="lg"
               label="아이디"
@@ -39,7 +51,6 @@ export function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          </div>
           <Button
             className="mt-6"
             onClick={() =>
@@ -54,10 +65,11 @@ export function LoginForm() {
               })
             }
           >
-            Login
+            로그인
           </Button>
-        </form>
+        </CardBody>
       </Card>
+      </div>
     </div>
   );
 }

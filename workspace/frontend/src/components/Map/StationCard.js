@@ -1,10 +1,47 @@
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useAdminStore, useBusStore } from '../../store';
+import {
+  Card,
+  Typography,
+  Button,
+  Dialog,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Input,
+  IconButton,
+} from "@material-tailwind/react";
 
 export default function StationCard({ items, setItems }) {
   const { hintPath, markers, route, stationMarkers, newStation, setHintPath, setMarkers, setRoute, setStationMarkers, setNewStation } = useAdminStore();
   const { stations, setStations } = useBusStore();
+
+  const deleteMarker = (markerId, title) => {
+    console.log(markerId)
+    let copy = [...markers]
+    copy.splice(markerId, 1)
+    setMarkers(copy);
+    copy = [...hintPath]
+    copy.splice(markerId, 1)
+    setHintPath(copy)
+    copy = JSON.parse(JSON.stringify(items))
+    let targetItem = null;
+    let targetNum = 0; 
+    console.log(copy)
+    for (let i = 0; i < copy['routes'].length; i++){
+      if (copy['routes'][i].title === title) {
+        targetItem = copy['routes'][i]
+        targetNum = i;
+      } 
+    }
+    console.log(targetItem)
+    copy['routes'].splice(targetNum, 1);
+    if (targetItem.isExist === true) {
+      copy['stations'].push(targetItem)
+    }
+    setItems(copy)
+  };
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return;
@@ -26,14 +63,14 @@ export default function StationCard({ items, setItems }) {
     setItems(_items); // 여기서 items가 업데이트가 안됨
     // 경로에 추가
     if (destinationKey === 'routes' && destinationKey != scourceKey) {
-      console.log('맞아?')
       const _hintPath = [...hintPath]
       _hintPath.splice(destination.index, 0, [parseFloat(targetItem.lat), parseFloat(targetItem.lng)])
       setHintPath(_hintPath)
       const _markers = [...markers]
       console.log(targetItem.lat)
-      _markers.splice(destination.index, 0, {marker: 1, title: `${targetItem.title}`, drag: false, lat: parseFloat(targetItem.lat), lng: parseFloat(targetItem.lng)})
+      _markers.splice(destination.index, 0, {marker: 1, title: `${targetItem.title}`, drag: false, lat: parseFloat(targetItem.lat), lng: parseFloat(targetItem.lng), stop: true})
       setMarkers(_markers)
+      
     }
     // 경로에서 삭제
     else if (destinationKey === 'stations' && destinationKey != scourceKey) {
@@ -111,9 +148,11 @@ export default function StationCard({ items, setItems }) {
                                 : ' shadow')
                             }
                           >
-                            <h5 className="font-semibold">{item.title} ({index+1})</h5>
-                            <span className="text-sm text-gray-500">Make the world beautiful</span>
-                          </div>
+                            <h5 className="font-semibold">{item.title} 
+                            {
+                              key === 'routes' ? <>({index + 1}) &nbsp;&nbsp;&nbsp;<Button onClick={() => deleteMarker(index, item.title)}>x</Button></> : null
+                            }</h5>
+                            </div>
                         )}
                       </Draggable>
                     ))}

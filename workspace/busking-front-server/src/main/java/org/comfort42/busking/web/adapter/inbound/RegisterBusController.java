@@ -1,6 +1,8 @@
 package org.comfort42.busking.web.adapter.inbound;
 
 import lombok.RequiredArgsConstructor;
+import org.comfort42.busking.application.domain.model.Bus;
+import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.port.inbound.BusCommand;
 import org.comfort42.busking.application.port.inbound.RegisterBusUseCase;
 import org.springframework.http.HttpStatus;
@@ -16,19 +18,18 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class RegisterBusController {
 
-    record RegisterBusWebRequest(Long busNum) {
+    record RegisterBusRequestBody(Long busNum) {
     }
 
     private final RegisterBusUseCase registerBusUseCase;
 
     @PostMapping
-    ResponseEntity<?> registerBus(@RequestBody RegisterBusWebRequest req,
-                                  @PathVariable Long companyId,
-                                  final Authentication authentication) {
+    ResponseEntity<?> registerBus(@RequestBody RegisterBusRequestBody req,
+                                  @PathVariable Long companyId) {
         try {
-            registerBusUseCase.registerBus(new BusCommand(companyId, req.busNum(),new ArrayList<>()));
+            registerBusUseCase.registerBus(Bus.BusId.of(Company.CompanyId.of(companyId), req.busNum()));
             return ResponseEntity
-                    .created(new URI(String.format("/api/companies/%d/buses/register", companyId)))
+                    .created(new URI(String.format("/api/companies/%d/buses/%d", companyId, req.busNum())))
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

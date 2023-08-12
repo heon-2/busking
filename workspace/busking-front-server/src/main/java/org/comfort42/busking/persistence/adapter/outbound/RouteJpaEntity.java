@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.comfort42.busking.application.domain.model.RouteDirection;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +37,6 @@ public class RouteJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", insertable = false, updatable = false)
     private CompanyJpaEntity company;
-
-    @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
-    private List<BusRouteJpaEntity> buses = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(

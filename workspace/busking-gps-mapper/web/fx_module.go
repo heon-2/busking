@@ -26,7 +26,7 @@ var Module = fx.Module(
 		fx.Annotate(
 			func(handler *gin.Engine) *http.Server {
 				return &http.Server{
-					Addr:    ":8080",
+					Addr:    ":50000",
 					Handler: handler,
 				}
 			},

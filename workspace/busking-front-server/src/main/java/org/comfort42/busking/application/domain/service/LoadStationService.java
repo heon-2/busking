@@ -22,11 +22,11 @@ public class LoadStationService implements LoadStationUseCase {
         List<StationCommand> stationList = new ArrayList<>();
         for (Station station : loadStationPort.loadStationList(companyId)) {
             stationList.add(new StationCommand(
-                    station.getId(),
-                    station.getName(),
-                    station.getLng(),
-                    station.getLat(),
-                    station.getCompany().id()));
+                    station.id(),
+                    station.name(),
+                    station.lng(),
+                    station.lat(),
+                    station.company().id()));
         }
         return stationList;
     }

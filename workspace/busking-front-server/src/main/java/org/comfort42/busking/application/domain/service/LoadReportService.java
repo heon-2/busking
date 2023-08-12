@@ -18,17 +18,17 @@ public class LoadReportService implements LoadReportUseCase {
 
     @Override
     public List<ReportCommand> loadReportList() {
-        List<ReportCommand> reports=new ArrayList<>();
-        for(Report report:loadReportPort.loadReportList()){
-            ReportCommand reportCommand=new ReportCommand(
+        List<ReportCommand> reports = new ArrayList<>();
+        for (Report report : loadReportPort.loadReportList()) {
+            ReportCommand reportCommand = new ReportCommand(
                     report.getId(),
                     report.getReporter().id(),
                     report.getDescription(),
-                    report.getCreated_at(),
+                    report.getCreatedAt(),
                     report.getLng(),
                     report.getLat(),
-                    report.getBus().getBusNum(),
-                    report.getBus().getId().getValue().getCompanyId(),
+                    report.getBus().getId().no(),
+                    report.getBus().getId().companyId().value(),
                     report.getReporter().username()
             );
             reports.add(reportCommand);
@@ -38,16 +38,16 @@ public class LoadReportService implements LoadReportUseCase {
 
     @Override
     public ReportCommand loadReportById(Report.ReportId reportId) {
-        Report report=loadReportPort.loadReportById(reportId);
+        Report report = loadReportPort.loadReportById(reportId);
         return new ReportCommand(
                 report.getId(),
                 report.getReporter().id(),
                 report.getDescription(),
-                report.getCreated_at(),
+                report.getCreatedAt(),
                 report.getLng(),
                 report.getLat(),
-                report.getBus().getBusNum(),
-                report.getBus().getId().getValue().getCompanyId(),
+                report.getBus().getId().no(),
+                report.getBus().getId().companyId().value(),
                 report.getReporter().username()
         );
     }

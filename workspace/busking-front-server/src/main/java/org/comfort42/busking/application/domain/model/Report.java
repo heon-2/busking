@@ -19,7 +19,7 @@ public class Report {
 
     private final String description;
 
-    private final LocalDateTime created_at;
+    private final LocalDateTime createdAt;
 
     private final Double lng;
 

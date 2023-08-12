@@ -25,7 +25,8 @@ pipeline {
                 mattermostSend(message: '[Busking CI/CD] Start to build the GPS-mapper project ...')
 
                 dir('workspace/busking-gps-mapper') {
-                    sh 'go build -o app'
+                    sh 'mkdir -p .cache'
+                    sh 'GOCACHE=$(pwd)/.cache go build -o app'
                     archiveArtifacts(artifacts: 'app', fingerprint: true)
                     stash(name: 'gps-mapper.build', includes: 'app')
                 }
@@ -53,7 +54,7 @@ pipeline {
                         FROM golang:1.21
                         COPY app /app
                         EXPOSE 8080
-                        CMD [ "GIN_MODE=release /app" ]
+                        CMD [ "/app" ]
                     '''.stripIndent())
 
                     sh 'docker build -t me0s/busking-gps-mapper:latest .'

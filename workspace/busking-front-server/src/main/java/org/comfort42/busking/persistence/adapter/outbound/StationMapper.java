@@ -1,7 +1,6 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import lombok.RequiredArgsConstructor;
-import org.comfort42.busking.application.domain.model.RouteStation;
 import org.comfort42.busking.application.domain.model.Station;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +12,6 @@ import java.util.List;
 public class StationMapper {
 
     private static StationMapper instance = null;
-
-    private static final RouteStationMapper routeStationMapper = RouteStationMapper.getInstance();
-
     private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
 
     public static StationMapper getInstance() {
@@ -25,39 +21,24 @@ public class StationMapper {
         return instance;
     }
 
-    Station mapToDomainEntity(
-            StationJpaEntity station
-    ) {
-        List<RouteStation> routeStations = new ArrayList<>();
-        for (RouteStationJpaEntity routeStationJpaEntity : station.getRoutes()) {
-            routeStations.add(routeStationMapper.mapToDomainEntity(routeStationJpaEntity));
-        }
-        return Station.withId(
-                new Station.StationId(station.getId()),
+    Station mapToDomainEntity(final StationJpaEntity station) {
+        return new Station(
+                Station.StationId.of(station.getId()),
                 station.getName(),
                 station.getLng(),
                 station.getLat(),
-                companyMapper.mapToDomainEntity(station.getCompany()),
-                routeStations
+                companyMapper.mapToDomainEntity(station.getCompany())
         );
     }
 
-    StationJpaEntity mapToJpaEntity(
-            Station station
-    ) {
-        List<RouteStationJpaEntity> routeStationJpaEntities = new ArrayList<>();
-        for (RouteStation routeStation : station.getRoutes()) {
-            routeStationJpaEntities.add(routeStationMapper.mapToJpaEntity(routeStation));
-        }
+    StationJpaEntity mapToJpaEntity(final Station station) {
         return new StationJpaEntity(
-                station.getId().getValue(),
-                station.getName(),
-                station.getLng(),
-                station.getLat(),
-                companyMapper.mapToJpaEntity(station.getCompany()),
-                routeStationJpaEntities
+                station.id().value(),
+                station.name(),
+                station.lng(),
+                station.lat(),
+                companyMapper.mapToJpaEntity(station.company())
         );
-
     }
 
 }

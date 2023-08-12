@@ -8,9 +8,9 @@ import java.util.Map;
 
 @AllArgsConstructor
 public enum RouteDirection {
-    UNKNOWN(0, "UNKNOWN"),
-    INBOUND(1, "INBOUND"),
-    OUTBOUND(2, "OUTBOUND");
+    UNKNOWN(0, "unknown"),
+    INBOUND(1, "inbound"),
+    OUTBOUND(2, "outbound");
 
     @Getter
     private final int intValue;
@@ -26,7 +26,7 @@ public enum RouteDirection {
     }
 
     public static RouteDirection of(final String value) {
-        final RouteDirection routeDirection = STR_TO_ENUM.get(value);
+        final RouteDirection routeDirection = STR_TO_ENUM.get(value.toLowerCase());
         return routeDirection != null ? routeDirection : UNKNOWN;
     }
 

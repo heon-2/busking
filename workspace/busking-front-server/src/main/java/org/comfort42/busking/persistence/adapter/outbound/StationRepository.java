@@ -7,7 +7,6 @@ import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.domain.model.Station;
 import org.comfort42.busking.application.port.outbound.LoadStationPort;
 import org.comfort42.busking.application.port.outbound.RegisterStationPort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +27,10 @@ public class StationRepository implements RegisterStationPort, LoadStationPort {
     @Transactional
     public void registerStation(Station station) {
         StationJpaEntity stationJpaEntity = new StationJpaEntity();
-        stationJpaEntity.setName(station.getName());
-        stationJpaEntity.setLng(station.getLng());
-        stationJpaEntity.setLat(station.getLat());
-        CompanyJpaEntity companyJpaEntity = companyMapper.mapToJpaEntity(station.getCompany());
+        stationJpaEntity.setName(station.name());
+        stationJpaEntity.setLng(station.lng());
+        stationJpaEntity.setLat(station.lat());
+        CompanyJpaEntity companyJpaEntity = companyMapper.mapToJpaEntity(station.company());
         stationJpaEntity.setCompany(companyJpaEntity);
         em.persist(stationJpaEntity);
     }
@@ -50,6 +49,6 @@ public class StationRepository implements RegisterStationPort, LoadStationPort {
 
     @Override
     public Station loadStationById(Station.StationId stationId) {
-        return stationMapper.mapToDomainEntity(em.find(StationJpaEntity.class, stationId.getValue()));
+        return stationMapper.mapToDomainEntity(em.find(StationJpaEntity.class, stationId.value()));
     }
 }

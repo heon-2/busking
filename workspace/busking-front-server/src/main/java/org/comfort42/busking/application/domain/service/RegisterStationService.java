@@ -2,7 +2,6 @@ package org.comfort42.busking.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Company;
-import org.comfort42.busking.application.domain.model.RouteStation;
 import org.comfort42.busking.application.domain.model.Station;
 import org.comfort42.busking.application.port.inbound.RegisterStaionUseCase;
 import org.comfort42.busking.application.port.inbound.StationCommand;
@@ -28,8 +27,7 @@ public class RegisterStationService implements RegisterStaionUseCase {
                         stationCommand.getName(),
                         stationCommand.getLng(),
                         stationCommand.getLat(),
-                        company,
-                        new ArrayList<RouteStation>()
+                        company
                 )
         );
     }

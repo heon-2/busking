@@ -31,7 +31,7 @@ export function TopBar(props) {
           </div> */}
           </div>
 
-          <Typography className="items-center flex text-gray-600 font-medium font-main text-lg whitespace-pre">
+          <Typography className="items-center flex text-gray-400 font-medium font-main text-lg whitespace-pre">
             {/* Added this Typography */}
 
             {props.page === "usermap" && props.content}

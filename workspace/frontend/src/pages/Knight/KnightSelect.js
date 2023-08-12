@@ -12,8 +12,8 @@ export function KnightSelect() {
     setChoiceBus(copy);
   };
   return (
-    <div className="grid grid-cols-2 grid-rows-5 h-screen bg-blue-50">
-      <div className="col-span-2 text-8xl flex items-center justify-center text-[#258fff] font-bold">
+    <div className="grid grid-cols-2 grid-rows-5 h-screen bg-concept1">
+      <div className="col-span-2 text-8xl flex items-center justify-center text-concept3 font-bold">
         호차를 선택해주세요
       </div>
       {/* onClick = { ()=> { navigate("이동할주소");}} */}
@@ -21,7 +21,7 @@ export function KnightSelect() {
         return (
           <div className="row-span-2 flex items-center justify-center">
             <Button
-              className="w-full h-80 m-10 text-9xl border rounded-2xl"
+              className="w-full h-[35vh] m-10 text-9xl border rounded-2xl "
               // className="gap-8"
               onClick={() => {
                 choiceButtonClick(idx);

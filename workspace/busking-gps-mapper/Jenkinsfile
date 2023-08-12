@@ -54,7 +54,7 @@ pipeline {
                         FROM golang:1.21
                         COPY app /app
                         EXPOSE 8080
-                        CMD [ "GIN_MODE=release /app" ]
+                        CMD [ "/app" ]
                     '''.stripIndent())
 
                     sh 'docker build -t me0s/busking-gps-mapper:latest .'

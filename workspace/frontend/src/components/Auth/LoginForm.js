@@ -163,7 +163,7 @@ async function onLogin({
     ///////////////////////////////////////////////////////////////
     await setUser(response2.data);
     if (response2.data.role === "EMPLOYEE") {
-      navigate("/map");
+      navigate("/usermap");
     } else if (response2.data.role === "COMPANY_ADMIN") {
       navigate("/admin");
     } else {

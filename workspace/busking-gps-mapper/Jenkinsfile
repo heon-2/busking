@@ -1,0 +1,93 @@
+/* groovylint-disable CompileStatic, DuplicateStringLiteral */
+
+MSG_PREFIX = '[Busking CI/CD] '
+
+void sendErrorMessage(String msg) {
+    mattermostSend(message: MSG_PREFIX + msg, color: '#FF0000')
+}
+
+void sendSuccessMessage(String msg) {
+    mattermostSend(message: MSG_PREFIX + msg, color: '#8BC34A')
+}
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build GPS-mapper Project') {
+            agent {
+                docker {
+                    image 'golang:1.21'
+                }
+            }
+
+            steps {
+                mattermostSend(message: '[Busking CI/CD] Start to build the GPS-mapper project ...')
+
+                dir('workspace/gps-mapper') {
+                    sh 'go build -o app'
+                    archiveArtifacts(artifacts: 'app', fingerprint: true)
+                    stash(name: 'gps-mapper.build', includes: 'app')
+                }
+            }
+
+            post {
+                failure {
+                    sendErrorMessage('Building the GPS-mapper project was failed.')
+                }
+
+                success {
+                    sendSuccessMessage('The GPS-mapper project was successfully built.')
+                }
+            }
+        }
+
+        stage('Build Container Image') {
+            steps {
+                sh 'rm -rf Dockerfile && mkdir Dockerfile'
+
+                dir('Dockerfile') {
+                    unstash(name: 'gps-mapper.build')
+
+                    writeFile(file: 'Dockerfile', text: '''
+                        FROM golang:1.21
+                        COPY app /app
+                        EXPOSE 8080
+                        CMD [ "GIN_MODE=release /app" ]
+                    '''.stripIndent())
+
+                    sh 'docker build -t me0s/busking-gps-mapper:latest .'
+                    sh 'docker image prune'
+                }
+            }
+
+            post {
+                failure {
+                    sendErrorMessage('Failure on building a container image.')
+                }
+            }
+        }
+
+        stage('Deploy Container Image') {
+            steps {
+                sh 'echo $DOCKERHUB_TOKEN | docker login -u me0s --password-stdin'
+                sh 'docker push me0s/busking-gps-mapper:latest'
+            }
+
+            post {
+                always {
+                    sh 'docker logout'
+                }
+
+                failure {
+                    sendErrorMessage('Failure on deploying a container image to Docker Hub.')
+                }
+
+                success {
+                    /* groovylint-disable-next-line LineLength */
+                    sendSuccessMessage('The container image was deployed. Visit https://hub.docker.com/repository/docker/me0s/busking-gps-mapper !')
+                }
+            }
+        }
+    }
+}

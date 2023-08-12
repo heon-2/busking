@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import {BusInfo} from './BusInfo';
 import { FindMe } from "../../common/FindMe.js";
 import { MapContainer } from 'react-leaflet';
+import { StationDetail } from './StationDetail.js';
 export function BusNum() {
     const navigate = useNavigate();
     const [num, setNum] = useState([false, false, false, false]);
@@ -48,8 +49,11 @@ export function BusNum() {
         return value && <BusInfo index={index+1}></BusInfo>;
     })}
 </div>
+<div className="bg-white-h-1/5">
+    <StationDetail></StationDetail>
+</div>
 
-
+<div className=""></div>
 
     <div className="w-screen">
     <Button className="w-full h-14 text-lg" onClick={()=> navigate('/setQR')}>탑승하기</Button>

@@ -1,10 +1,13 @@
 import { Button } from "@material-tailwind/react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useBusStore } from "../../store";
+
 
 export function KnightSelect() {
   const navigate = useNavigate();
   let [choiceBus, setChoiceBus] = useState([false, false, false, false]);
+  const { busNumber, setBusNumber } = useBusStore();
 
   const choiceButtonClick = (idx) => {
     const copy = [...choiceBus];
@@ -12,8 +15,8 @@ export function KnightSelect() {
     setChoiceBus(copy);
   };
   return (
-    <div className="grid grid-cols-2 grid-rows-5 h-screen bg-blue-50">
-      <div className="col-span-2 text-8xl flex items-center justify-center text-[#258fff] font-bold">
+    <div className="grid grid-cols-2 grid-rows-5 h-screen bg-concept1">
+      <div className="col-span-2 text-8xl flex items-center justify-center text-concept3 font-bold">
         호차를 선택해주세요
       </div>
       {/* onClick = { ()=> { navigate("이동할주소");}} */}
@@ -21,10 +24,11 @@ export function KnightSelect() {
         return (
           <div className="row-span-2 flex items-center justify-center">
             <Button
-              className="w-full h-80 m-10 text-9xl border rounded-2xl"
+              className="w-full h-[35vh] m-10 text-9xl border rounded-2xl "
               // className="gap-8"
               onClick={() => {
                 choiceButtonClick(idx);
+                setBusNumber(idx+1);
                 // navigate("/knightmap/"+(idx+1));
                 navigate("/knightmap/");
                 // useEffect 사용해서 바꿔야할듯. state값 변경하고, 그거에 맞는 경로 렌더링 하도록하기

@@ -138,7 +138,7 @@ export function ReportList() {
                     color="blue"
                     className="font-medium"
                   >
-                    {row.localDateTime}
+                    {row.localDateTime.at(0)}년 {row.localDateTime.at(1)}월{" "} {row.localDateTime.at(2)}일{" "} {row.localDateTime.at(3)}시{" "} {row.localDateTime.at(4)}분{" "} {row.localDateTime.at(5)}초{" "}
                     {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

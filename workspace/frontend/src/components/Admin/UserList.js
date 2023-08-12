@@ -100,7 +100,7 @@ export function UserList() {
 
 
   return (
-      <div className="flex flex-col flex-grow pl-4 pr-8 p-4">
+      <div className="flex flex-col flex-grow p-4 pl-4 pr-8">
         <Button onClick={handleOpen} variant="gradient" className="self-end">
         교육생 등록
       </Button>
@@ -114,7 +114,7 @@ export function UserList() {
           <CardHeader
             variant="gradient"
             color="blue"
-            className="mb-4 grid h-28 place-items-center"
+            className="grid mb-4 h-28 place-items-center"
           >
             <Typography variant="h3" color="white">
               교육생 등록
@@ -134,12 +134,12 @@ export function UserList() {
           </CardFooter>
         </Card>
       </Dialog>
-          <Card className="h-full w-full overflow-y-auto mt-4">
-      <table className="w-full min-w-max table-auto text-left">
+          <Card className="w-full h-full mt-4 overflow-y-auto">
+      <table className="w-full text-left table-auto min-w-max">
         <thead>
           <tr>
             {TABLE_HEAD.map((head) => (
-              <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              <th key={head} className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                 <Typography
                   variant="small"
                   color="blue-gray"
@@ -193,7 +193,7 @@ export function UserList() {
           <CardHeader
             variant="gradient"
             color="blue"
-            className="mb-4 grid h-28 place-items-center"
+            className="grid mb-4 h-28 place-items-center"
           >
             <Typography variant="h3" color="white">
               교육생 정보 수정

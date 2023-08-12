@@ -13,6 +13,7 @@ function useLocation() {
 
   useEffect(() => {
     if (coords !== undefined) {
+      console.log(coords)
       setLocation([coords.latitude, coords.longitude]);
       console.log(coords.latitude)
     }

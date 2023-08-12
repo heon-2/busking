@@ -1,7 +1,7 @@
 package org.comfort42.busking.application.port.inbound;
 
 import lombok.*;
-import org.comfort42.busking.web.adapter.inbound.LoadRouteController;
+import org.comfort42.busking.application.domain.model.Route;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import java.util.List;
 public class BusCommand {
     private final Long companyId;
     private final Long busNum;
-    private final List<LoadRouteController.RoutePayload> routePayloads;
+    private final List<Route> routes;
 }

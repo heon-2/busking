@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface LoadRouteUseCase {
 
-    List<LoadRouteController.RoutePayload> loadRouteList(Company.CompanyId companyId);
-
-    LoadRouteController.RoutePayload loadRouteById(Company.CompanyId companyId, Route.RouteId routeId);
+    List<Route> loadAllRoutes(Company.CompanyId companyId);
+    Route loadRouteById(Company.CompanyId companyId, Route.RouteId routeId);
 }

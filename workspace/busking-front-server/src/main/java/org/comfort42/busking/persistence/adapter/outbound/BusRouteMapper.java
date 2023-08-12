@@ -1,10 +1,7 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import lombok.RequiredArgsConstructor;
-import org.comfort42.busking.application.domain.model.Bus;
-import org.comfort42.busking.application.domain.model.BusRoute;
-import org.comfort42.busking.application.domain.model.Route;
-import org.comfort42.busking.application.domain.model.RouteStation;
+import org.comfort42.busking.application.domain.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.ArrayList;
 public class BusRouteMapper {
 
     private static BusRouteMapper instance = null;
+    private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
 
     public static BusRouteMapper getInstance() {
         if (instance == null) {
@@ -21,23 +19,20 @@ public class BusRouteMapper {
         return instance;
     }
 
-    private static final CompanyMapper companyMapper = CompanyMapper.getInstance();
     private BusMapper busMapper = new BusMapper();
     private RouteMapper routeMapper = new RouteMapper();
 
-    BusRoute mapToDomainEntity(
-            BusRouteJpaEntity busRouteJpaEntity
-    ) {
-        Bus bus = Bus.withId(new Bus.BusId(busRouteJpaEntity.getBus().getId()),
-                busRouteJpaEntity.getBus().getBusNum(),
-                new ArrayList<>());
+    BusRoute mapToDomainEntity(final BusRouteJpaEntity busRouteJpaEntity) {
+        Bus bus = Bus.withId(new Bus.BusId(busRouteJpaEntity.getBus().getId()), busRouteJpaEntity.getBus().getBusNum(), new ArrayList<>());
 
-        Route route = Route.withId(new Route.RouteId(busRouteJpaEntity.getId()),
+        Route route = Route.withId(
+                new Route.RouteId(busRouteJpaEntity.getId()),
                 busRouteJpaEntity.getRoute().getName(),
                 companyMapper.mapToDomainEntity(busRouteJpaEntity.getRoute().getCompany()),
                 new ArrayList<>(),
                 new ArrayList<>(),
-                busRouteJpaEntity.getRoute().getGeometry());
+                busRouteJpaEntity.getRoute().getGeometry(),
+                RouteDirection.UNKNOWN);
 
         return BusRoute.withId(
                 new BusRoute.BusRouteId(busRouteJpaEntity.getId()),

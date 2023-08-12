@@ -25,15 +25,20 @@ public class Station {
 
     private final Company company;
 
-
     private final List<RouteStation> routes;
 
     @Value
     public static class StationId {
-        private final Long value;
+        private final long value;
 
         @Override
-        public String toString() {return value.toString();}
+        public String toString() {
+            return Long.toString(value);
+        }
+
+        public static StationId of(final long value) {
+            return new StationId(value);
+        }
     }
 
     public static Station withId(StationId stationId,
@@ -42,8 +47,7 @@ public class Station {
                                  Double lat,
                                  Company company,
                                  List<RouteStation> routes
-                                 ) {
-
-        return new Station(stationId,name,lng,lat,company,routes);
+    ) {
+        return new Station(stationId, name, lng, lat, company, routes);
     }
 }

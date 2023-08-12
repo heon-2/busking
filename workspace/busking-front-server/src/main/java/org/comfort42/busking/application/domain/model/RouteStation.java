@@ -17,7 +17,6 @@ import java.util.List;
 @Setter
 public class RouteStation {
 
-
     private RouteStationId id;
 
     private final Station station;
@@ -34,6 +33,6 @@ public class RouteStation {
                                       Route route
     ) {
 
-        return new RouteStation(routeStationId,station,route);
+        return new RouteStation(routeStationId, station, route);
     }
 }

@@ -12,7 +12,8 @@ import java.util.List;
 
 @Value
 @RequiredArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class Bus {
 
     private final BusId id;
@@ -22,18 +23,21 @@ public class Bus {
     private final List<BusRoute> routes;
 
     @Value
-    public static class BusId{
+    public static class BusId {
         private final BusPK value;
 
-        public BusId(Long companyId,Long busNum){this.value=new BusPK(companyId,busNum);}
+        public BusId(Long companyId, Long busNum) {
+            this.value = new BusPK(companyId, busNum);
+        }
 
-        public BusId(BusPK busPK){this.value=busPK;}
+        public BusId(BusPK busPK) {
+            this.value = busPK;
+        }
     }
 
     public static Bus withId(BusId busId,
                              Long busNum,
-                             List<BusRoute> routes
-    ) {
-        return new Bus(busId,busNum,routes);
+                             List<BusRoute> routes) {
+        return new Bus(busId, busNum, routes);
     }
 }

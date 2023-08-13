@@ -5,7 +5,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RTC from "../../components/RTC/RTC";
 import { useMapStore, useBusStore, useUserStore } from "../../store";
-import { useQuery } from "react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 
 export function KnightMap() {
   const { location } = useMapStore();
@@ -16,36 +20,46 @@ export function KnightMap() {
   // ReactQuery 연습
   // 장점1. 성공/실패/로딩중 쉽게 파악 가능
 
-  const rlt = useQuery("ㅇㅇㅇ", () => {
-    return axios
-      .post(
-        "/api/realtime/driving/begin",
-        {
-          bus: {
-            companyId: 1,
-            no: 3,
-          },
-          route: {
-            id: 1,
-          },
-        },
-        {
-          headers: {
-            Accept: "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        return console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
-        console.error(error);
-      });
-  });
+  // const gps = useQuery(
+  //   ["sendGps"],
+  //   () => {
+  //     return axios
+  //       .put(
+  //         "/api/realtime/driving/drive",
+  //         {
+  //           bus: {
+  //             companyId: 1,
+  //             no: 1,
+  //           },
+  //           gps: {
+  //             timestamp: new Date().getTime(),
+  //             accuracy: "", // 추가 예정
+  //             latlng: {
+  //               lat: location[0],
+  //               lng: location[1],
+  //             },
+  //           },
+  //         },
+  //         {
+  //           headers: {
+  //             Accept: "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         return response.data;
+  //       })
+  //       .catch((error) => {
+  //         console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
+  //         return error;
+  //       });
+  //   },
+  //   { staleTime: 2000 }
+  // );
   // function startDrive() {
 
-  const result = useQuery(
+  /*
+  const practice = useQuery(
     "todos",
     () => {
       return axios
@@ -66,24 +80,26 @@ export function KnightMap() {
 
     { staleTime: 2000 }
   );
+  */
 
   ////////////////
-  function sendLocation() {
-    console.log(location);
+
+  ////////////////
+  function sendLocation(lat, lng) {
     axios
       .put(
         "/api/realtime/driving/drive",
         {
           bus: {
             companyId: 1,
-            no: 3,
+            no: 1,
           },
           gps: {
-            timestamp: 1508367639600,
-            accuracy: null,
+            timestamp: new Date().getTime(),
+            accuracy: "", // 추가 예정
             latlng: {
-              lat: location[0],
-              lng: location[1],
+              lat: lat,
+              lng: lng,
             },
           },
         },
@@ -103,6 +119,15 @@ export function KnightMap() {
       });
   }
 
+  setInterval(() => {
+    console.log(location);
+
+    const lat = location[0]; // 경도 값을 가져와서 설정
+    const lng = location[1]; // 위도 값을 가져와서 설정
+    sendLocation(lat, lng);
+    console.log(lat, lng);
+  }, 1000); // 1분을 밀리초로 표현한 값
+
   return (
     <div>
       <div className="z-0">
@@ -110,23 +135,31 @@ export function KnightMap() {
       </div>
       {/* 나중에 zindex 조정하기 */}
       <div className="flex fixed bottom-10 left-10" style={{ zIndex: 1000 }}>
-        <RTC></RTC>
+        {/* <RTC></RTC> */}
       </div>
       <div className="flex fixed bottom-10 right-10" style={{ zIndex: 1000 }}>
+        <Button
+          onClick={() => {
+            sendLocation();
+          }}
+        >
+          지피에스 정보 쏘기
+        </Button>
         <Button
           className="w-96 h-28 text-4xl"
           onClick={() => {
             navigate("/knightquit");
+            // sendLocation();
             // startDrive();
             // sendLocation();
           }}
           color="red"
         >
           {/* && 연산자로도 사용 가능 */}
-          운행 종료 데이터:{result.data ? result.data.name : "데이터없음"}
+          {/* 운행 종료 데이터:{result.data ? result.data.name : "데이터없음"}
           에러:{result.error ? "에러발생" : "에러없음"}
-          로딩:{result.isLoading ? "로딩중" : "로딩완료"}
-          {busNumber}
+          로딩:{result.isLoading ? "로딩중" : "로딩완료"} */}
+          운행 종료
         </Button>
       </div>
     </div>

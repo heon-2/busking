@@ -54,6 +54,10 @@ mapStore = persist(mapStore, { name: 'map_settings' });
 export const useMapStore = create(mapStore)
 
 let adminStore = (set) => ({
+    busNo: '',
+    direction: false,
+    stationPath: [],
+    geometry: '',
     route: [],
     mouseLocation: [],
     stationMarkers: [],
@@ -63,6 +67,10 @@ let adminStore = (set) => ({
     newStation: [],
     items: {},
     stopCreate: false,
+    setBusNo: (payload) => set({ busNo: payload }),
+    setDirection: () => set((state) => ({ direction: !state.direction })),
+    setStationPath: (payload) => set({ stationPath: payload }),
+    setGeometry: (payload) => set({ geometry: payload }),
     setItems: (payload) => set({ items: payload }),
     setRoute: (payload) => set({ route: payload}),
     setHintPath: (payload) => set({ hintPath: payload }),

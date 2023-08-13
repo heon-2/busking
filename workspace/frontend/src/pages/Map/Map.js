@@ -90,7 +90,7 @@ export function Map() {
             {/* <Button variant="gradient" onClick={() => {handleCreate(); CreateRoute(); setPathName('')}} fullWidth>
               등록
             </Button> */}
-            <CreateRoute handleCreate={handleCreate} setPathName={setPathName} pathName={pathName}></CreateRoute>
+            <CreateRoute handleCreate={handleCreate} setPathName={setPathName} pathName={pathName} busNo={busNo}></CreateRoute>
           </CardFooter>
             <Checkbox label={'퇴근'} onClick={() => setDirection()}></Checkbox>
         </Card>

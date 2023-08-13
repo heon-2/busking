@@ -29,6 +29,7 @@ public class RouteJpaEntity {
     @Column(name = "company_id")
     private Long companyId;
 
+    @Column(name = "geometry", length = 8192)
     private String geometry;
 
     @Convert(converter = RouteDirectionConverter.class)

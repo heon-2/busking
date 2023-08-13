@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserStore, useMapStore } from "../../store";
 
 export function Report() {
+  const [alert, setAlert] = useState(false);
   const navigate = useNavigate();
   const [reportContent, setReportContent] = useState("");
   // busStore에서 가져와야 하는 거 아닌가 체크해보자.
@@ -38,7 +39,7 @@ export function Report() {
     "응급 상황 발생 ( 교통사고, 환자 발생 등 )",
     "무정차 출발",
   ]);
-// busNum랑 companyId는 NULL값이 됨.. 
+  // busNum랑 companyId는 NULL값이 됨..
   function sendReport(reportContent) {
     console.log(reportContent);
 
@@ -77,20 +78,31 @@ export function Report() {
   }
 
   return (
-     
     <div className="bg-[#F0F4F9] flex justify-center h-screen overflow-y-scroll">
-      <div className="absoulte fixed top-2 left-2 right-2 "> 
+      <div className="absoulte fixed top-2 left-2 right-2 ">
         <TopBar content={"사용자 불편 신고"} page={"report"}></TopBar>
-
+        {alert && (
+          <Alert
+            color="green"
+            animate={{
+              mount: { y: 0 },
+              unmount: { y: 100 },
+            }}
+          >
+            고객님의 신고 접수가 정상 처리되었습니다.
+          </Alert>
+        )}
         <div className="flex justify-center">
-        <img
-      className="mt-5 mb-7 h-[30vh] lg:h-[60vh] lg:object-contain lg:w-1/2 w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
-      src="report.jpg"
-      alt="nature image"
-    />
+          <img
+            className="mt-5 mb-7 h-[30vh] lg:h-[30vh] lg:object-fill lg:w-1/4 w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
+            src="report.jpg"
+            alt="nature image"
+          />
         </div>
         <div>
-        <Typography variant="h3" className="mb-7 text-[#0F6CBD]">신고 내용</Typography>
+          <Typography variant="h3" className="mb-7 text-[#0F6CBD]">
+            신고 내용
+          </Typography>
         </div>
         <Card className="shadow-blue-gray-900/20 rounded-md">
           <List className="flex justify-center">
@@ -129,12 +141,16 @@ export function Report() {
         </Card>
         <div className="mt-10">
           <Button
-            
-            onClick={() => {
-              sendReport(reportContent);
-              navigate('/usermap');
-              alert("신고가 완료됐습니다.");
-            }}
+            onClick={
+              () => {
+                sendReport(reportContent);
+                setAlert(true);
+                setTimeout(() => {
+                  navigate("/usermap");
+                }, 2000);
+              }
+              // alert("신고가 완료됐습니다.");
+            }
             className="bg-red-400 mr-10 w-[30vw]"
           >
             신고하기
@@ -151,6 +167,5 @@ export function Report() {
         </div>
       </div>
     </div>
-    
   );
 }

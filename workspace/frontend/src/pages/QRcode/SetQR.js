@@ -8,7 +8,7 @@ export function SetQR() {
     return (
         <div className='h-full overflow-y-auto bg-opacity-50 bg-blue-50'>
             <div className="h-20 mt-10 text-2xl font-bold">
-                탑승할 버스와 하차지를 선택하세요
+                QR 생성을 위한 버스 및 정류장 선택
             </div>
             <div className="flex justify-center p-4 mt-5 mb-14 logo">
             <div className="flex items-center justify-center bg-white rounded-full shadow-lg h-60 w-60">

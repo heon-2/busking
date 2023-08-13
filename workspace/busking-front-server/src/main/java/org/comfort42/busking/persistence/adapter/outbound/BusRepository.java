@@ -38,7 +38,7 @@ public class BusRepository implements SaveBusPort, LoadBusPort {
                         SELECT b
                           FROM BusJpaEntity b
                           LEFT JOIN FETCH b.routes AS r
-                          JOIN FETCH r.company
+                          LEFT JOIN FETCH r.company
                          WHERE b.id.companyId=:companyId""", BusJpaEntity.class)
                 .setParameter("companyId", companyId.value())
                 .getResultList()
@@ -56,7 +56,7 @@ public class BusRepository implements SaveBusPort, LoadBusPort {
                     SELECT b
                       FROM BusJpaEntity b
                       LEFT JOIN FETCH b.routes AS r
-                      JOIN FETCH r.company
+                      LEFT JOIN FETCH r.company
                      WHERE b.id=:busId
                 """, BusJpaEntity.class)
                 .setParameter("busId", busIdJpaEntity)

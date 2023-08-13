@@ -41,6 +41,10 @@ export function CreateRoute(props) {
 async function RegisterRoute({direction, items, newRoute, stationIds, geometry, bound, setStationIds, setNewRoute, pName, pNo}) {
     const sIds = []
     let flag = 0;
+    let b = 'inbound'
+    if (direction == true) {
+        b = 'outbound'
+    }
     try {
         const accessToken = localStorage.getItem('accessToken')
         const response = await axios.get('/api/companies/1/stations')
@@ -86,7 +90,7 @@ async function RegisterRoute({direction, items, newRoute, stationIds, geometry, 
             stations: sIds,
             name: pName,
             geometry: geometry,
-            direction : direction,
+            direction : b,
         },
         {
             headers: {

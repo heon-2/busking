@@ -15,10 +15,9 @@ import {
 } from "@heroicons/react/24/solid";
 
 import { UserList } from "../../components/Admin/UserList";
-// import { UserCreate } from "../../components/Admin/UserCreate";
 import RTC from "./../../components/RTC/RTC";
 import { ReportList } from "./../../components/Admin/ReportList";
-// import { BusInfo } from "./../../components/Map/BusInfo";
+import { BusList } from "./../../components/Admin/BusList";
 import { Map } from "./../../pages/Map/Map";
 export function Admin() {
   const [display, setDisplay] = useState("UserList");
@@ -45,6 +44,12 @@ export function Admin() {
                   <InboxIcon className="h-5 w-5" />
                 </ListItemPrefix>
                 버스 정보 조회
+              </ListItem>
+              <ListItem onClick={() => setDisplay("RegisterBusRoute")}>
+                <ListItemPrefix>
+                  <InboxIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                버스 노선 등록
               </ListItem>
               <ListItem onClick={() => setDisplay("ReportList")}>
                 <ListItemPrefix>
@@ -82,7 +87,8 @@ export function Admin() {
 
         <div className="flex flex-col flex-grow pl-4 mt-1 pr-8 p-4">
           {display === "UserList" && <UserList />}
-          {/* {display === "BusList" && <BusInfo />} */}
+          {display === "BusList" && <BusList />}
+          {display === "RegisterBusRoute" && <Map />}
           {display === "ReportList" && <ReportList />}
           <div className="flex items-center h-full justify-center">
             {display === "RTC" && <RTC />}

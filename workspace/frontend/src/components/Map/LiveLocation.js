@@ -1,9 +1,36 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Marker } from "react-leaflet";
-
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 export function LiveLocation() {
   const [markerLocation, setMarkerLocation] = useState(null);
+
+  // r-query 공부해야할부분
+  // const { data, error, isLoading } = useQuery("busLocation", getLocation);
+  // const queryClient = useQueryClient();
+
+  // useInterval(() => {
+  //   queryClient.invalidateQueries("busLocation"); // Invalidate the query cache to refetch data
+  // }, 3000); // Update every 3 seconds
+
+  // function useInterval(callback, delay) {
+  //   const savedCallback = useRef();
+
+  //   useEffect(() => {
+  //     savedCallback.current = callback;
+  //   }, [callback]);
+
+  //   useEffect(() => {
+  //     function tick() {
+  //       savedCallback.current();
+  //     }
+  //     if (delay !== null) {
+  //       const id = setInterval(tick, delay);
+  //       return () => clearInterval(id);
+  //     }
+  //   }, [delay]);
+  // }
+  //////////////////////
   function getLocation() {
     axios
       .post(
@@ -21,13 +48,14 @@ export function LiveLocation() {
         }
       )
       .then((response) => {
-        // console.log("제발 보내져라 제발 제발 ");
-        const rlt = response.data.data;
-        setMarkerLocation([rlt.lat, rlt.lng]);
-        console.log("위치수신함", rlt.lat, rlt.lng);
+        console.log("제발 보내져라 제발 제발 ");
+        console.log(response);
+        // const rlt = response.data.data;
+        // setMarkerLocation([rlt.lat, rlt.lng]);
+        // console.log("위치수신함", rlt.lat, rlt.lng);
       })
       .catch((error) => {
-        console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
+        // console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
         console.error(error);
       });
   }

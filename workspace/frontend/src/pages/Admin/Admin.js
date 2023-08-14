@@ -18,7 +18,8 @@ import { UserList } from "../../components/Admin/UserList";
 // import { UserCreate } from "../../components/Admin/UserCreate";
 import RTC from "./../../components/RTC/RTC";
 import { ReportList } from "./../../components/Admin/ReportList";
-
+// import { BusInfo } from "./../../components/Map/BusInfo";
+import { Map } from "./../../pages/Map/Map";
 export function Admin() {
   const [display, setDisplay] = useState("UserList");
 
@@ -81,7 +82,7 @@ export function Admin() {
 
         <div className="flex flex-col flex-grow pl-4 mt-1 pr-8 p-4">
           {display === "UserList" && <UserList />}
-          {/* {display === "BusList" && <BusList />} */}
+          {/* {display === "BusList" && <BusInfo />} */}
           {display === "ReportList" && <ReportList />}
           <div className="flex items-center h-full justify-center">
             {display === "RTC" && <RTC />}

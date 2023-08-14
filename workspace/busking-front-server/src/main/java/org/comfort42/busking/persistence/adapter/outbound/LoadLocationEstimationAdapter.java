@@ -1,6 +1,5 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
-import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.domain.model.LocationEstimation;
 import org.comfort42.busking.application.port.outbound.LoadLocationEstimationPort;
@@ -16,11 +15,15 @@ import java.util.NoSuchElementException;
 @Repository
 class LoadLocationEstimationAdapter implements LoadLocationEstimationPort {
 
-    private final static List<Object> LAT_AND_LNG = new ArrayList<>();
+    private final static List<Object> REDIS_FIELDS = new ArrayList<>();
 
     static {
-        LAT_AND_LNG.add("lat");
-        LAT_AND_LNG.add("lng");
+        REDIS_FIELDS.add("at");
+        REDIS_FIELDS.add("rawLat");
+        REDIS_FIELDS.add("rawLng");
+        REDIS_FIELDS.add("adjAt");
+        REDIS_FIELDS.add("adjLat");
+        REDIS_FIELDS.add("adjLng");
     }
 
     @Autowired
@@ -31,13 +34,14 @@ class LoadLocationEstimationAdapter implements LoadLocationEstimationPort {
     public LocationEstimation loadLocationEstimation(final Company.CompanyId companyId, final long busNo) {
         final var busId = String.format("bus:%s:%d", companyId, busNo);
 
-        final var values = redisTemplate.opsForHash().multiGet(busId, LAT_AND_LNG);
-        final var latitude = (String) values.get(0) ;
-        final var longitude = (String) values.get(1) ;
-        if (latitude == null || longitude == null) {
-            throw new NoSuchElementException();
-        }
-
-        return new LocationEstimation(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        final var values = redisTemplate.opsForHash().multiGet(busId, REDIS_FIELDS);
+        return new LocationEstimation(
+                Long.parseLong((String) values.get(0)),
+                Double.parseDouble((String) values.get(1)),
+                Double.parseDouble((String) values.get(2)),
+                Long.parseLong((String) values.get(3)),
+                Double.parseDouble((String) values.get(4)),
+                Double.parseDouble((String) values.get(5))
+        );
     }
 }

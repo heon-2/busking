@@ -35,13 +35,35 @@ class TrackDrivingController {
             final var loc = loadLocationEstimationUseCase.loadLocationEstimation(
                     Company.CompanyId.of(payload.bus().companyId()), payload.bus().no());
 
-            final var latlng = objectMapper.createObjectNode();
-            latlng.put("lat", loc.latitude());
-            latlng.put("lng", loc.longitude());
+            final var locJson = objectMapper.createObjectNode();
+
+            final var rawLatLng = objectMapper.createObjectNode();
+            rawLatLng.put("lat", loc.rawLatitude());
+            rawLatLng.put("lng", loc.rawLongitude());
+
+            final var raw = objectMapper.createObjectNode();
+            raw.put("timestamp", loc.at());
+            raw.set("latlng", rawLatLng);
+
+            locJson.set("raw", raw);
+
+            if (loc.adjustedAt() != -1) {
+                final var adjLatLng = objectMapper.createObjectNode();
+                adjLatLng.put("lat", loc.rawLatitude());
+                adjLatLng.put("lng", loc.rawLongitude());
+
+                final var adj = objectMapper.createObjectNode();
+                adj.put("timestamp", loc.adjustedAt());
+                adj.set("latlng", adjLatLng);
+
+                locJson.set("adj", adj);
+            } else {
+                locJson.set("adj", null);
+            }
 
             final var obj = objectMapper.createObjectNode();
             obj.put("status", "200 ok");
-            obj.set("data", latlng);
+            obj.set("data", locJson);
 
             return ResponseEntity
                     .status(HttpStatus.OK)

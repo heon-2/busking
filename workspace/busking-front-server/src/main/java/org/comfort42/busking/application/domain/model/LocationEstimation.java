@@ -1,6 +1,10 @@
 package org.comfort42.busking.application.domain.model;
 
 public record LocationEstimation(
-        double latitude,
-        double longitude) {
+        long at,
+        double rawLatitude,
+        double rawLongitude,
+        long adjustedAt,
+        double adjustedLatitude,
+        double adjustedLongitude) {
 }

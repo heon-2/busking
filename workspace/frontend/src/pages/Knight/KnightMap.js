@@ -12,6 +12,7 @@ import {
 } from "@tanstack/react-query";
 
 export function KnightMap() {
+  const [latlng, setLatlng] = useState(null);
   const { location } = useMapStore();
   const { busNumber } = useBusStore();
   const navigate = useNavigate();
@@ -85,7 +86,25 @@ export function KnightMap() {
   ////////////////
 
   ////////////////
-  function sendLocation(lat, lng) {
+  
+
+  const options = {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    // timeout: 27000,
+  };
+  // function success(position) {
+  //   // setLocation([position.coords.latitude, position.coords.longitude]);
+  //   setLatlng([position.coords.latitude, position.coords.longitude]);
+  //   console.log(position);
+  // }
+  navigator.geolocation.watchPosition(success, error, options);
+
+  function success(position) {
+    // setLocation([position.coords.latitude, position.coords.longitude]);
+    const la = position.coords.latitude;
+    const ln = position.coords.longitude;
+
     axios
       .put(
         "/api/realtime/driving/drive",
@@ -101,8 +120,8 @@ export function KnightMap() {
               // 이거 lat,lng로 넣어야함.
               // lat: 35.17433,
               // lng: 126.81739,
-              lat: lat,
-              lng: lng,
+              lat: la,
+              lng: ln,
             },
           },
         },
@@ -115,26 +134,78 @@ export function KnightMap() {
       .then((response) => {
         // console.log("제발 보내져라 제발 제발 ");
         console.log(response);
-        console.log(lat, lng);
+        console.log(la, ln);
       })
       .catch((error) => {
         // console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
         console.error(error);
       });
-  }
-  useEffect(() => {
-    const timer = setInterval(() => {
-      // console.log(location);
 
-      const lat = location[0]; // 경도 값을 가져와서 설정
-      const lng = location[1]; // 위도 값을 가져와서 설정
-      sendLocation(lat, lng);
-      // console.log(lat, lng);
-    }, 5000);
-    return () => {
-      clearInterval(timer);
-    }; // 1분을 밀리초로 표현한 값
-  }, []);
+  }
+
+  function error() {
+    alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");
+  }
+
+
+
+  // function sendLocation(lat, lng) {
+  //   axios
+  //     .put(
+  //       "/api/realtime/driving/drive",
+  //       {
+  //         bus: {
+  //           companyId: 1,
+  //           no: 1,
+  //         },
+  //         gps: {
+  //           timestamp: new Date().getTime(),
+  //           accuracy: "", // 추가 예정
+  //           latlng: {
+  //             // 이거 lat,lng로 넣어야함.
+  //             // lat: 35.17433,
+  //             // lng: 126.81739,
+  //             lat: lat,
+  //             lng: lng,
+  //           },
+  //         },
+  //       },
+  //       {
+  //         headers: {
+  //           Accept: "application/json",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       // console.log("제발 보내져라 제발 제발 ");
+  //       console.log(response);
+  //       console.log(lat, lng);
+  //     })
+  //     .catch((error) => {
+  //       // console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
+  //       console.error(error);
+  //     });
+  // }
+  // useEffect(() => {
+  //   watchID();
+  // });
+  // useEffect(() => {
+  //   // const timer = setInterval(() => {
+  //   //   // console.log(location);
+  //   if (latlng == null) {
+  //     return;
+  //   }
+
+  //   const [lat, lng] = latlng;
+
+  //   sendLocation(lat, lng);
+  //   console.log(lat, lng);
+  //   //   // console.log(lat, lng);
+  //   // }, 5000);
+  //   // return () => {
+  //   //   clearInterval(timer);
+  //   // }; // 1분을 밀리초로 표현한 값
+  // }, [latlng]);
 
   return (
     <div>
@@ -148,7 +219,7 @@ export function KnightMap() {
       <div className="flex fixed bottom-10 right-10" style={{ zIndex: 1000 }}>
         <Button
           onClick={() => {
-            sendLocation();
+            // sendLocation();
           }}
         >
           지피에스 정보 쏘기

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Marker } from "react-leaflet";
 
 export function LiveLocation() {
@@ -24,7 +24,7 @@ export function LiveLocation() {
         // console.log("제발 보내져라 제발 제발 ");
         const rlt = response.data.data;
         setMarkerLocation([rlt.lat, rlt.lng]);
-        console.log("위치수신함");
+        console.log("위치수신함", rlt.lat, rlt.lng);
       })
       .catch((error) => {
         console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
@@ -35,6 +35,19 @@ export function LiveLocation() {
   // setInterval(() => {
   //   getLocation();
   // }, 3000); // 1분을 밀리초로 표현한 값
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      // console.log(location);
+
+      getLocation();
+      // console.log(lat, lng);
+    }, 3000);
+    return () => {
+      clearInterval(timer);
+    }; // 1분을 밀리초로 표현한 값
+  }, []);
+
   return (
     <>
       {markerLocation != null ? (

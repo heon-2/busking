@@ -90,7 +90,7 @@ export function LiveLocation() {
 
       getLocation();
       // console.log(lat, lng);
-    }, 2000);
+    }, 2500);
     return () => {
       clearInterval(timer);
     }; // 1분을 밀리초로 표현한 값

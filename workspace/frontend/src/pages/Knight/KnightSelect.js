@@ -2,8 +2,7 @@ import { Button } from "@material-tailwind/react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useBusStore } from "../../store";
-
-
+import axios from "axios";
 export function KnightSelect() {
   const navigate = useNavigate();
   let [choiceBus, setChoiceBus] = useState([false, false, false, false]);
@@ -14,6 +13,36 @@ export function KnightSelect() {
     copy[idx] = !copy[idx];
     setChoiceBus(copy);
   };
+
+  // 버스 기사님 드라이빙 시작
+  function startDrive(num) {
+    console.log(num);
+    axios
+      .post(
+        "/api/realtime/driving/begin",
+        {
+          bus: {
+            companyId: 1,
+            no: 1,
+          },
+          route: {
+            id: 1,
+          },
+        },
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <div className="grid grid-cols-2 grid-rows-5 h-screen bg-concept1">
       <div className="col-span-2 text-8xl flex items-center justify-center text-concept3 font-bold">
@@ -28,9 +57,10 @@ export function KnightSelect() {
               // className="gap-8"
               onClick={() => {
                 choiceButtonClick(idx);
-                setBusNumber(idx+1);
+                setBusNumber(idx + 1);
                 // navigate("/knightmap/"+(idx+1));
                 navigate("/knightmap/");
+                startDrive(idx + 1);
                 // useEffect 사용해서 바꿔야할듯. state값 변경하고, 그거에 맞는 경로 렌더링 하도록하기
                 // 이후에 뒤로가기를 누르거나, 운행종료 버튼을 누르면 state값 모두 false로 초기화 시켜줘야할듯?
                 // let copy = choiceBus;

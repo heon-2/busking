@@ -1,21 +1,21 @@
-import { useEffect } from 'react';
-import { useGeolocated } from 'react-geolocated';
-import { useMapStore } from '../store.js';
+import { useEffect } from "react";
+import { useGeolocated } from "react-geolocated";
+import { useMapStore } from "../store.js";
 
-function useLocation() {
+export default function useLocation() {
   const { setLocation } = useMapStore();
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
-    positionOptions: {
-      enableHighAccuracy: true,
-    },
-    userDecisionTimeout: 5000,
-  });
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+    useGeolocated({
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
+      userDecisionTimeout: 5000,
+    });
 
   useEffect(() => {
     if (coords !== undefined) {
-      console.log(coords)
+      // console.log(coords);
       setLocation([coords.latitude, coords.longitude]);
-      console.log(coords.latitude)
     }
   }, [coords]);
 
@@ -26,5 +26,3 @@ function useLocation() {
 
   return { getLocation };
 }
-
-export default useLocation;

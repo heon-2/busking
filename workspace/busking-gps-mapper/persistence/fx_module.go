@@ -10,6 +10,7 @@ import (
 var Module = fx.Module(
 	"persistence",
 
-	fx.Provide(fx.Annotate(persistence_outbound.NewSaveBusLocationAdapter, fx.As(new(portout.SaveBusLocationPort)))),
+	fx.Provide(fx.Annotate(persistence_outbound.NewSaveBusLocationAdapter, fx.As(new(portout.SaveLocationEstimationPort)))),
+	fx.Provide(fx.Annotate(persistence_outbound.NewDrivingRepository, fx.As(new(portout.ChangeDrivingStatePort)))),
 	fx.Provide(persistence_adapter.NewRedisClient),
 )

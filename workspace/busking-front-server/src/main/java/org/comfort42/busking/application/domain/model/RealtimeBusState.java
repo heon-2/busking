@@ -1,6 +1,6 @@
 package org.comfort42.busking.application.domain.model;
 
-public record LocationEstimation(
+public record RealtimeBusState(
         long at,
         double rawLatitude,
         double rawLongitude,

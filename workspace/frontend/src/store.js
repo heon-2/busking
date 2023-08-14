@@ -111,13 +111,32 @@ export const useBusStore = create(busStore)
 
 // ======================================================
 
+function isTimeInBound() {
+    const now = new Date();
+    const hours = now.getHours();
+    return hours >= 19 || hours < 10;
+}
+
+
+
 let qrStore = (set) => ({
+    // busNumList:[],
     selectedBus: [],
-    onStation: [],
-    offStation: ['SSAFY'],
+    isInBound: true,
+    inBoundDeparture: [],
+    inBoundDestination: 'SSAFY',
+    outBoundDeparture: 'SSAFY',
+    outBoundDestination: [],
+    // setBusNumList: (payload) => set({ busNumList: payload }),
     setSelectedBus: (payload) => set({ selectedBus: payload }),
-    setOnStation: (payload) => set({ onStation: payload }),
-    setOffStation: (payload) => set({ offStation: payload }),
+    setIsInBound: () =>
+    set((state) => ({
+    isInBound: isTimeInBound(),
+    })),
+    setInBoundDeparture: (payload) => set({ inBoundDeparture: payload }),
+    setInBoundDestination: (payload) => set({ inBoundDestination: payload }),
+    setOutBoundDeparture: (payload) => set({ outBoundDeparture: payload }),
+    setOutBoundDestination: (payload) => set({ outBoundDestination: payload }),
 })
 
 qrStore = persist(qrStore, { name: 'qr_settings' });

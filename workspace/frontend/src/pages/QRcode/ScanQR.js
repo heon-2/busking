@@ -13,7 +13,7 @@ import { useQrStore } from '../../store.js';
 export function ScanQR() {
   let navigate = useNavigate();
 
-  const { selectedBus, onStation, offStation ,setSelectedBus, setOnStation, setOffStation } = useQrStore();
+  const { selectedBus, isInBound , inBoundDeparture, inBoundDestination, outBoundDeparture, outBoundDestination } = useQrStore();
 
   return (
     <div className="flex flex-col items-center justify-center h-screen overflow-y-auto bg-blue-50">
@@ -24,14 +24,28 @@ export function ScanQR() {
     <CardHeader floated={false} className="h-80 md:h-96">
       <QR />
     </CardHeader>
+    {isInBound ? (
+
     <CardBody className="text-center">
       <Typography variant="h4" color="blue-gray" className="mb-2">
-        4-3 흑석사거리 (탑승 정류장)
+        {selectedBus}호차 {inBoundDeparture} 탑승
       </Typography>
       <Typography color="blue" className="font-medium" textGradient>
-        SSAFY 하차 (하차 정류장)
+        {inBoundDestination} 하차
       </Typography>
     </CardBody>
+
+    ) : (
+      
+    <CardBody className="text-center">
+      <Typography variant="h4" color="blue-gray" className="mb-2">
+        {selectedBus}호차 {outBoundDeparture} 탑승
+      </Typography>
+      <Typography color="blue" className="font-medium" textGradient>
+        {outBoundDestination} 하차
+      </Typography>
+    </CardBody>
+    )}
     <CardFooter className="flex flex-col gap-4 pt-2">
       <Button onClick={() => navigate("/setQR")}>QR 코드 재발급</Button>
       <Button onClick={() => navigate("/usermap")}>홈 화면 가기</Button>

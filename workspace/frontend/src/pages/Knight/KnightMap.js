@@ -98,6 +98,9 @@ export function KnightMap() {
             timestamp: new Date().getTime(),
             accuracy: "", // 추가 예정
             latlng: {
+              // 이거 lat,lng로 넣어야함.
+              // lat: 35.17433,
+              // lng: 126.81739,
               lat: lat,
               lng: lng,
             },
@@ -110,23 +113,24 @@ export function KnightMap() {
         }
       )
       .then((response) => {
-        console.log("제발 보내져라 제발 제발 ");
+        // console.log("제발 보내져라 제발 제발 ");
         console.log(response);
+        console.log(lat, lng);
       })
       .catch((error) => {
-        console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
+        // console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
         console.error(error);
       });
   }
 
   setInterval(() => {
-    console.log(location);
+    // console.log(location);
 
     const lat = location[0]; // 경도 값을 가져와서 설정
     const lng = location[1]; // 위도 값을 가져와서 설정
     sendLocation(lat, lng);
-    console.log(lat, lng);
-  }, 1000); // 1분을 밀리초로 표현한 값
+    // console.log(lat, lng);
+  }, 5000); // 1분을 밀리초로 표현한 값
 
   return (
     <div>

@@ -26,7 +26,8 @@ type DrivingService struct {
 	drivingWorkersLock sync.RWMutex
 	drivingWorkers     map[model.BusId]*DrivingWorker
 
-	saveBusLocationPort portout.SaveLocationEstimationPort
+	saveBusLocationPort    portout.SaveLocationEstimationPort
+	changeDrivingStatePort portout.ChangeDrivingStatePort
 }
 
 type BeginDrivingCommand struct {
@@ -172,6 +173,7 @@ func (s *DrivingService) BeginDriving(cmd *BeginDrivingCommand) error {
 		saveBusLocationPort: s.saveBusLocationPort,
 	}
 
+	s.changeDrivingStatePort.BeginDriving(cmd.BusId)
 	s.drivingWorkers[cmd.BusId] = worker
 	go worker.Run()
 
@@ -184,6 +186,7 @@ func (s *DrivingService) EndDriving(cmd *EndDrivingCommand) {
 
 	drivings := model.GetDrivingManager()
 	if driving, ok := drivings.GetAndDeleteDriving(cmd.BusId); ok {
+		s.changeDrivingStatePort.EndDriving(cmd.BusId)
 		s.deleteDrivingWorker(cmd.BusId)
 		model.GetRouteManager().DeleteRoute(driving.RouteId)
 	}
@@ -207,9 +210,13 @@ func (s *DrivingService) deleteDrivingWorker(busId model.BusId) {
 	}
 }
 
-func NewDrivingService(saveBusLocationPort portout.SaveLocationEstimationPort) *DrivingService {
+func NewDrivingService(
+	saveBusLocationPort portout.SaveLocationEstimationPort,
+	changeDrivingStatePort portout.ChangeDrivingStatePort,
+) *DrivingService {
 	return &DrivingService{
-		drivingWorkers:      map[model.BusId]*DrivingWorker{},
-		saveBusLocationPort: saveBusLocationPort,
+		drivingWorkers:         map[model.BusId]*DrivingWorker{},
+		saveBusLocationPort:    saveBusLocationPort,
+		changeDrivingStatePort: changeDrivingStatePort,
 	}
 }

@@ -122,15 +122,19 @@ export function KnightMap() {
         console.error(error);
       });
   }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      // console.log(location);
 
-  setInterval(() => {
-    // console.log(location);
-
-    const lat = location[0]; // 경도 값을 가져와서 설정
-    const lng = location[1]; // 위도 값을 가져와서 설정
-    sendLocation(lat, lng);
-    // console.log(lat, lng);
-  }, 5000); // 1분을 밀리초로 표현한 값
+      const lat = location[0]; // 경도 값을 가져와서 설정
+      const lng = location[1]; // 위도 값을 가져와서 설정
+      sendLocation(lat, lng);
+      // console.log(lat, lng);
+    }, 5000);
+    return () => {
+      clearInterval(timer);
+    }; // 1분을 밀리초로 표현한 값
+  }, []);
 
   return (
     <div>

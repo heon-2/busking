@@ -97,21 +97,41 @@ export function MapLayer(props) {
     setBusInfo,
   } = useMapStore();
   // 내 위치 받아올 함수
-  const fetchLocation = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation([position.coords.latitude, position.coords.longitude]);
-          // console.log(location);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        }
-      );
-    } else {
-      console.log("Geolocation is not available");
-    }
+  // const fetchLocation = () => {
+  //   if ("geolocation" in navigator) {
+  //     const options = {
+  //       enableHighAccuracy: true, // 여기서 true로 변경하면 정확한 위치 정보를 요청합니다.
+  //     };
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         setLocation([position.coords.latitude, position.coords.longitude]);
+  //         // console.log(location);
+  //       },
+  //       (error) => {
+  //         console.error("Error getting location:", error);
+  //       }
+  //     );
+  //   } else {
+  //     console.log("Geolocation is not available");
+  //   }
+  // };
+
+  function success(position) {
+    setLocation([position.coords.latitude, position.coords.longitude]);
+  }
+
+  function error() {
+    alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");
+  }
+
+  const options = {
+    enableHighAccuracy: true,
+    // maximumAge: 30000,
+    // timeout: 27000,
   };
+  function watchID() {
+    navigator.geolocation.watchPosition(success, error, options);
+  }
   const locationHook = useLocation();
   const [count, setCount] = useState(0);
   const [test, setTest] = useState([0, 0]);
@@ -119,7 +139,8 @@ export function MapLayer(props) {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      fetchLocation();
+      // fetchLocation();
+      watchID();
       setCount((prev) => prev + 1);
     }, 5000);
     return () => {

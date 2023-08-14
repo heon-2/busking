@@ -1,4 +1,11 @@
-import { Card, Input, Button, Typography, CardHeader,CardBody } from "@material-tailwind/react";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  CardHeader,
+  CardBody,
+} from "@material-tailwind/react";
 import { useState } from "react";
 import axios from "axios";
 import { useUserStore } from "../../store.js";
@@ -6,38 +13,45 @@ import { queries } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import Swal from "sweetalert2";
 
 export function LoginForm() {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
 
-  const { user, accessToken, setUser, setAccessToken, setRefreshToken, setFcmToken } =
-    useUserStore();
+  const {
+    user,
+    accessToken,
+    setUser,
+    setAccessToken,
+    setRefreshToken,
+    setFcmToken,
+  } = useUserStore();
   const navigate = useNavigate();
 
   return (
-      <div className="flex flex-col items-center justify-center flex-grow h-screen p-4 pl-4 pr-8">
+    <div className="flex flex-col items-center justify-center flex-grow h-screen p-4 pl-4 pr-8">
       <div className="bg-transparent shadow-none">
-      <div className="absolute h-[400px] transform bg-orange-200 shadow-lg w-[350px] card rounded-3xl rotate-12"></div>
-      <div className="absolute h-[400px] transform bg-blue-200 shadow-lg w-[350px] card rounded-3xl -rotate-12"></div>
-      <Card className="m-2 w-full max-w-[24rem]">
-      
-      
-      <CardHeader
+        <div className="absolute h-[400px] transform bg-orange-200 shadow-lg w-[350px] card rounded-3xl rotate-12"></div>
+        <div className="absolute h-[400px] transform bg-blue-200 shadow-lg w-[350px] card rounded-3xl -rotate-12"></div>
+        <Card className="m-2 w-full max-w-[24rem]">
+          <CardHeader
             variant="gradient"
             color="blue"
             className="grid mb-4 h-28 place-items-center"
           >
-        <Typography 
-        className="text-transparent bg-clip-text bg-gradient-to-r from-blue-100 to-white"
-        variant="h4" color="white">
-          SSABUS
-        </Typography>
-        </CardHeader>
-        <div className="inline-block text-sm font-medium text-transparent bg-clip-text bg-gradient-to-l from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400">
-                싸피에게 가는 길
-        </div>
-        <CardBody className="flex flex-col gap-4 ml-3 mr-2 w-80">
+            <Typography
+              className="text-transparent bg-clip-text bg-gradient-to-r from-blue-100 to-white"
+              variant="h4"
+              color="white"
+            >
+              SSABUS
+            </Typography>
+          </CardHeader>
+          <div className="inline-block text-sm font-medium text-transparent bg-clip-text bg-gradient-to-l from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400">
+            싸피에게 가는 길
+          </div>
+          <CardBody className="flex flex-col gap-4 ml-3 mr-2 w-80">
             <Input
               size="lg"
               label="아이디"
@@ -51,24 +65,24 @@ export function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          <Button
-            className="mt-6"
-            onClick={() =>
-              onLogin({
-                username,
-                password,
-                setUser,
-                setAccessToken,
-                setRefreshToken,
-                navigate,
-                setFcmToken,
-              })
-            }
-          >
-            로그인
-          </Button>
-        </CardBody>
-      </Card>
+            <Button
+              className="mt-6"
+              onClick={() =>
+                onLogin({
+                  username,
+                  password,
+                  setUser,
+                  setAccessToken,
+                  setRefreshToken,
+                  navigate,
+                  setFcmToken,
+                })
+              }
+            >
+              로그인
+            </Button>
+          </CardBody>
+        </Card>
       </div>
     </div>
   );
@@ -183,6 +197,8 @@ async function onLogin({
     }
   } catch (error) {
     console.log(error);
+    Swal.fire("로그인 실패!", "다시 시도해 주세요.", "error");
+    // Swal.fire("Good job!", "You clicked the button!", "success");
   }
 }
 ///////////////////////firebase//////////////////////////

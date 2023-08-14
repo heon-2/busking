@@ -14,9 +14,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUserStore, useMapStore } from "../../store";
+import Swal from "sweetalert2";
 
 export function Report() {
-  const [alert, setAlert] = useState(false);
+  // const [alert, setAlert] = useState(false);
   const navigate = useNavigate();
   const [reportContent, setReportContent] = useState("");
   // busStore에서 가져와야 하는 거 아닌가 체크해보자.
@@ -42,7 +43,7 @@ export function Report() {
   // busNum랑 companyId는 NULL값이 됨..
   function sendReport(reportContent) {
     console.log(reportContent);
-
+    // console.log(busNum); // undefined
     axios
       .post(
         "/api/reports",
@@ -50,7 +51,7 @@ export function Report() {
           description: reportContent,
           lng: lng,
           lat: lat,
-          busNum: 3,
+          busNum: 1,
           companyId: 1,
         },
 
@@ -81,7 +82,7 @@ export function Report() {
     <div className="bg-[#F0F4F9] flex justify-center h-screen overflow-y-scroll">
       <div className="absoulte fixed top-2 left-2 right-2 ">
         <TopBar content={"사용자 불편 신고"} page={"report"}></TopBar>
-        {alert && (
+        {/* {alert && (
           <Alert
             color="green"
             animate={{
@@ -91,7 +92,7 @@ export function Report() {
           >
             고객님의 신고 접수가 정상 처리되었습니다.
           </Alert>
-        )}
+        )} */}
         <div className="flex justify-center">
           <img
             className="mt-5 mb-7 h-[30vh] lg:h-[30vh] lg:object-fill lg:w-1/4 w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
@@ -144,10 +145,21 @@ export function Report() {
             onClick={
               () => {
                 sendReport(reportContent);
-                setAlert(true);
-                setTimeout(() => {
-                  navigate("/usermap");
-                }, 2000);
+                // setAlert(true);
+                Swal.fire(
+                  "접수 완료",
+                  "고객님의 신고 접수가 완료되었습니다.",
+                  "success"
+                ).then((result) => {
+                  if (result.isConfirmed) {
+                    // 만약 모달창에서 confirm 버튼을 눌렀다면
+                    navigate("/usermap");
+                  }
+                });
+
+                // setTimeout(() => {
+                //   navigate("/usermap");
+                // }, 2000);
               }
               // alert("신고가 완료됐습니다.");
             }

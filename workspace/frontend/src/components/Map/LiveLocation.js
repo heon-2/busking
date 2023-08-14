@@ -2,7 +2,9 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { Marker } from "react-leaflet";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import L from "leaflet";
 export function LiveLocation() {
+  // const [markerLocation, setMarkerLocation] = useState(null);
   const [markerLocation, setMarkerLocation] = useState(null);
 
   // r-query 공부해야할부분
@@ -38,7 +40,7 @@ export function LiveLocation() {
         {
           bus: {
             companyId: 1,
-            no: 1,
+            no: -1,
           },
         },
         {
@@ -49,7 +51,21 @@ export function LiveLocation() {
       )
       .then((response) => {
         console.log("제발 보내져라 제발 제발 ");
-        console.log(response);
+        console.log(response.data.data);
+        for (const k in response.data.data) {
+          const [_, companyId, busNo] = k.split(":");
+          const state = response.data.data[k];
+          console.log(state);
+          if (state.adj === null) {
+            console.log("진짜 내위치");
+            setMarkerLocation([state.raw.latlng.lat, state.raw.latlng.lng]);
+          } else {
+            console.log("보정된 내 위치");
+            setMarkerLocation([state.adj.latlng.lat, state.adj.latlng.lng]);
+          }
+          // console.log(state.raw.latlng);
+        }
+
         // const rlt = response.data.data;
         // setMarkerLocation([rlt.lat, rlt.lng]);
         // console.log("위치수신함", rlt.lat, rlt.lng);
@@ -76,8 +92,18 @@ export function LiveLocation() {
     }; // 1분을 밀리초로 표현한 값
   }, []);
 
+  const customIcon = L.icon({
+    iconUrl: "bus_512.png",
+    iconSize: [50, 50], // 아이콘 크기
+    iconAnchor: [16, 32], // 아이콘 기준점 위치
+    shadowSize: [50, 64],
+  });
+
   return (
     <>
+      {/* {markerLocation != null ? (
+        <Marker position={markerLocation} icon={customIcon}></Marker>
+      ) : null} */}
       {markerLocation != null ? (
         <Marker position={markerLocation}></Marker>
       ) : null}

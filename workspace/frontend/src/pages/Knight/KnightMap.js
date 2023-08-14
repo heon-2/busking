@@ -38,7 +38,7 @@ export function KnightMap() {
       
       navigator.geolocation.getCurrentPosition(success, error, options)
       // console.log(lat, lng);
-    }, 2500);
+    }, 2000);
     return () => {
       clearInterval(timer);
     }; // 1분을 밀리초로 표현한 값

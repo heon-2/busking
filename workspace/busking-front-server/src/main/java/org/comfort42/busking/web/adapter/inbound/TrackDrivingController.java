@@ -46,12 +46,10 @@ class TrackDrivingController {
                 final var realtimeBusState = realtimeBusStateMapper.mapToJsonObject(objectMapper, loadRealtimeBusState.loadRealtimeBusState(busId));
                 obj.set("data", realtimeBusState);
             } else {
-                final var data = obj.putArray("data");
+                final var data = obj.putObject("data");
                 loadRealtimeBusState
                         .loadAllRealtimeBusState(companyId)
-                        .stream()
-                        .map(v -> realtimeBusStateMapper.mapToJsonObject(objectMapper, v))
-                        .forEach(data::add);
+                        .forEach(pair -> data.set(pair.getFirst(), realtimeBusStateMapper.mapToJsonObject(objectMapper, pair.getSecond())));
             }
 
             return ResponseEntity

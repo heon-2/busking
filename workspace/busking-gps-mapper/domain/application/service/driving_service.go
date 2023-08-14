@@ -18,7 +18,7 @@ type DrivingWorker struct {
 	kill    chan interface{}
 	log     *deque.Deque[*model.Gps]
 
-	saveBusLocationPort portout.SaveBusLocationPort
+	saveBusLocationPort portout.SaveLocationEstimationPort
 }
 
 type DrivingService struct {
@@ -26,7 +26,7 @@ type DrivingService struct {
 	drivingWorkersLock sync.RWMutex
 	drivingWorkers     map[model.BusId]*DrivingWorker
 
-	saveBusLocationPort portout.SaveBusLocationPort
+	saveBusLocationPort portout.SaveLocationEstimationPort
 }
 
 type BeginDrivingCommand struct {
@@ -59,7 +59,7 @@ func continuous(args ...*model.Gps) bool { // u<-v<-w
 		vu := u.Loc.Sub(v.Loc)
 		wv := v.Loc.Sub(w.Loc)
 
-		dv := vu.Norm()/float64(u.Timestamp-v.Timestamp) - wv.Norm()/float64(v.Timestamp-w.Timestamp)
+		dv := vu.Norm()/float64(u.Timestamp-v.Timestamp)/1e-3 - wv.Norm()/float64(v.Timestamp-w.Timestamp)/1e-3
 		if 1.38889 < dv/dt { // a = 1.38889 m/s^2
 			return false
 		}
@@ -72,8 +72,33 @@ func continuous(args ...*model.Gps) bool { // u<-v<-w
 	return true
 }
 
-func (w *DrivingWorker) Run() {
+func findNearest(pt0 *alg.Vec2, fractions []*model.RouteFraction) *model.RoutePoint {
+	minDist := math.MaxFloat64
+	var minDistPoint *model.RoutePoint = nil
 
+	for _, fraction := range fractions {
+		one := fraction.Geometry.One()
+		two := fraction.Geometry.Two()
+
+		u := two.Sub(one)
+		pt := pt0.Sub(one)
+		projection := pt.ProjectTo(u, true)
+
+		dist := projection.Sub(pt).Norm()
+		if dist < minDist {
+			minDist = dist
+			minDistPoint = &model.RoutePoint{
+				Ref:   fraction,
+				Ratio: projection.Norm() / u.Norm(),
+				Point: projection.AddSelf(one),
+			}
+		}
+	}
+
+	return minDistPoint
+}
+
+func (w *DrivingWorker) Run() {
 	for {
 		select {
 		case gps := <-w.jobs:
@@ -83,60 +108,16 @@ func (w *DrivingWorker) Run() {
 			}
 			w.log.PushBack(gps)
 
-			dp := [16][2]int{}
-			dp[0][0] = 0
+			fractions := w.driving.Route.QueryRoute(alg.NewRectCWH(gps.Loc, 50.0, 50.0))
+			nearest := findNearest(gps.Loc, fractions)
 
-			for i := 0; i < w.log.Len(); i++ {
-				u := w.log.At(i)
-				for j := 0; j < i; j++ {
-					v := w.log.At(j)
-					k := dp[j][1]
-					if (k == 0 && continuous(u, v)) || (k != 0 && continuous(u, v, w.log.At(k-1))) {
-						if dp[i][0] < dp[j][0]+1 {
-							dp[i][0] = dp[j][0] + 1
-							dp[i][1] = j
-						}
-					}
-				}
-			}
-
-			target := 0
-			maxLen := 0
-			for i := 0; i < w.log.Len(); i++ {
-				if maxLen < dp[i][0] {
-					target = i
-					maxLen = dp[i][0]
-				}
-			}
-
-			if dp[target][1] == 0 {
-				continue
-			}
-
-			y := w.log.At(target)
-			x := w.log.At(dp[target][1] - 1) // y<-x
-
-			optimalDist := math.MaxFloat64
-			var optimalCandidate *alg.Vec2
-
-			for _, fraction := range w.driving.Route.QueryRoute(alg.NewRectCWH(gps.Loc, 50.0, 50.0)) {
-				u := fraction.Geometry.Two().Sub(fraction.Geometry.One())
-				if u.Radian(y.Loc.Sub(x.Loc)) <= math.Pi/2 {
-					candidate := y.Loc.Sub(fraction.Geometry.One()).ProjectTo(u, true)
-					norm := candidate.Norm()
-					if norm < optimalDist {
-						optimalDist = norm
-						optimalCandidate = candidate.AddSelf(fraction.Geometry.One())
-					}
-				}
-			}
-
-			if optimalCandidate != nil {
-				w.saveBusLocationPort.Save(w.driving.BusId, optimalCandidate)
+			if nearest != nil {
+				w.saveBusLocationPort.Save(w.driving.BusId, gps.Timestamp, gps.Loc, nearest.Point)
+			} else {
+				w.saveBusLocationPort.Save(w.driving.BusId, gps.Timestamp, gps.Loc, nil)
 			}
 
 		case <-w.kill:
-			fmt.Printf("goodbye")
 			return
 		}
 	}
@@ -226,7 +207,7 @@ func (s *DrivingService) deleteDrivingWorker(busId model.BusId) {
 	}
 }
 
-func NewDrivingService(saveBusLocationPort portout.SaveBusLocationPort) *DrivingService {
+func NewDrivingService(saveBusLocationPort portout.SaveLocationEstimationPort) *DrivingService {
 	return &DrivingService{
 		drivingWorkers:      map[model.BusId]*DrivingWorker{},
 		saveBusLocationPort: saveBusLocationPort,

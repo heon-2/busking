@@ -13,6 +13,12 @@ import (
 
 type RouteId int64
 
+type RoutePoint struct {
+	Ref   *RouteFraction
+	Ratio float64
+	Point *alg.Vec2
+}
+
 type RouteFraction struct {
 	Index    int
 	Geometry *alg.Line

@@ -98,8 +98,22 @@ export function KnightMap() {
   //   setLatlng([position.coords.latitude, position.coords.longitude]);
   //   console.log(position);
   // }
-  navigator.geolocation.watchPosition(success, error, options);
+  // navigator.geolocation.watchPosition(success, error, options);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      // console.log(location);
+
+      navigator.geolocation.getCurrentPosition(success, error, options)
+      // console.log(lat, lng);
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    }; // 1분을 밀리초로 표현한 값
+  },[]);
+
+
+  
   function success(position) {
     // setLocation([position.coords.latitude, position.coords.longitude]);
     const la = position.coords.latitude;
@@ -217,13 +231,6 @@ export function KnightMap() {
         {/* <RTC></RTC> */}
       </div>
       <div className="flex fixed bottom-10 right-10" style={{ zIndex: 1000 }}>
-        <Button
-          onClick={() => {
-            // sendLocation();
-          }}
-        >
-          지피에스 정보 쏘기
-        </Button>
         <Button
           className="w-96 h-28 text-4xl"
           onClick={() => {

@@ -2,8 +2,9 @@ package org.comfort42.busking.web.adapter.inbound;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.comfort42.busking.application.domain.model.Bus;
 import org.comfort42.busking.application.domain.model.Company;
-import org.comfort42.busking.application.port.inbound.LoadLocationEstimationUseCase;
+import org.comfort42.busking.application.port.inbound.LoadRealtimeBusState;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,45 +26,33 @@ class TrackDrivingController {
     record TrackDrivingRequestBody(BusId bus) {
     }
 
+    private static final RealtimeBusStateMapper realtimeBusStateMapper = RealtimeBusStateMapper.getInstance();
     private final ObjectMapper objectMapper;
-    private final LoadLocationEstimationUseCase loadLocationEstimationUseCase;
+    private final LoadRealtimeBusState loadRealtimeBusState;
 
     @PostMapping
     ResponseEntity trackDriving(@RequestBody TrackDrivingRequestBody payload) {
         try {
-            // loc is abbreviation for location
-            final var loc = loadLocationEstimationUseCase.loadLocationEstimation(
-                    Company.CompanyId.of(payload.bus().companyId()), payload.bus().no());
-
-            final var locJson = objectMapper.createObjectNode();
-
-            final var rawLatLng = objectMapper.createObjectNode();
-            rawLatLng.put("lat", loc.rawLatitude());
-            rawLatLng.put("lng", loc.rawLongitude());
-
-            final var raw = objectMapper.createObjectNode();
-            raw.put("timestamp", loc.at());
-            raw.set("latlng", rawLatLng);
-
-            locJson.set("raw", raw);
-
-            if (loc.adjustedAt() != -1) {
-                final var adjLatLng = objectMapper.createObjectNode();
-                adjLatLng.put("lat", loc.rawLatitude());
-                adjLatLng.put("lng", loc.rawLongitude());
-
-                final var adj = objectMapper.createObjectNode();
-                adj.put("timestamp", loc.adjustedAt());
-                adj.set("latlng", adjLatLng);
-
-                locJson.set("adj", adj);
-            } else {
-                locJson.set("adj", null);
+            if (payload.bus() == null) {
+                throw new IllegalArgumentException("bus object is required");
             }
 
+            final var companyId = Company.CompanyId.of(payload.bus().companyId);
             final var obj = objectMapper.createObjectNode();
             obj.put("status", "200 ok");
-            obj.set("data", locJson);
+
+            if (payload.bus().no() != -1) {
+                final var busId = Bus.BusId.of(companyId, payload.bus().no());
+                final var realtimeBusState = realtimeBusStateMapper.mapToJsonObject(objectMapper, loadRealtimeBusState.loadRealtimeBusState(busId));
+                obj.set("data", realtimeBusState);
+            } else {
+                final var data = obj.putArray("data");
+                loadRealtimeBusState
+                        .loadAllRealtimeBusState(companyId)
+                        .stream()
+                        .map(v -> realtimeBusStateMapper.mapToJsonObject(objectMapper, v))
+                        .forEach(data::add);
+            }
 
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -71,6 +60,11 @@ class TrackDrivingController {
                     .body(obj);
         } catch (NoSuchElementException e) {
             return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            final var obj = objectMapper.createObjectNode();
+            obj.put("status", "400 bad request");
+            obj.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(obj);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity

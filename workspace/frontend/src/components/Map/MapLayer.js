@@ -102,7 +102,7 @@ export function MapLayer(props) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLocation([position.coords.latitude, position.coords.longitude]);
-          console.log(location);
+          // console.log(location);
         },
         (error) => {
           console.error("Error getting location:", error);
@@ -116,17 +116,12 @@ export function MapLayer(props) {
   const [count, setCount] = useState(0);
   const [test, setTest] = useState([0, 0]);
   const position = [51.505, -0.09];
-  const geolocated = useGeolocated({
-    positionOptions: {
-      enableHighAccuracy: true,
-    },
-    userDecisionTimeout: 5000,
-  });
+
   useEffect(() => {
     const timer = setInterval(() => {
       fetchLocation();
       setCount((prev) => prev + 1);
-    }, 1000);
+    }, 5000);
     return () => {
       clearInterval(timer);
     };

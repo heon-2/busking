@@ -10,11 +10,16 @@ import { AdminPath } from "../../components/Map/AdminPath";
 import { CreateMarker } from "../../components/Map/CreateMarker";
 import { useAdminStore } from "../../store.js";
 import { IconButton, Button } from "@material-tailwind/react";
+import { LiveLocation } from "../../components/Map/LiveLocation.js";
 
 export function UserMap() {
   return (
     <div className="relative">
-      <MapLayer FindMe={<FindMe />} Dial={<Dial></Dial>}></MapLayer>
+      <MapLayer
+        FindMe={<FindMe />}
+        Dial={<Dial></Dial>}
+        Marker={<LiveLocation></LiveLocation>}
+      ></MapLayer>
       <div
         className="absoulte fixed top-2 left-2 right-2"
         style={{ zIndex: 400 }}

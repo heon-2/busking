@@ -6,7 +6,7 @@ import L from "leaflet";
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
   const [markerLocation, setMarkerLocation] = useState(null);
-  let [lat, lng] = [null, null];
+  // let [lat, lng] = [null, null];
   // r-query 공부해야할부분
   // const { data, error, isLoading } = useQuery("busLocation", getLocation);
   // const queryClient = useQueryClient();
@@ -58,14 +58,14 @@ export function LiveLocation() {
           console.log(state);
           if (state.adj === null) {
             console.log("진짜 내위치");
-            // setMarkerLocation([state.raw.latlng.lat, state.raw.latlng.lng]);
-            lat = state.raw.latlng.lat;
-            lng = state.raw.latlng.lng;
+            setMarkerLocation([state.raw.latlng.lat, state.raw.latlng.lng]);
+            // lat = state.raw.latlng.lat;
+            // lng = state.raw.latlng.lng;
           } else {
             console.log("보정된 내 위치");
-            lat = state.adj.latlng.lat;
-            lng = state.adj.latlng.lng;
-            // setMarkerLocation([state.adj.latlng.lat, state.adj.latlng.lng]);
+            // lat = state.adj.latlng.lat;
+            // lng = state.adj.latlng.lng;
+            setMarkerLocation([state.adj.latlng.lat, state.adj.latlng.lng]);
           }
           // console.log(state.raw.latlng);
         }
@@ -105,12 +105,12 @@ export function LiveLocation() {
 
   return (
     <>
-      {/* {markerLocation != null ? (
-        <Marker position={markerLocation} icon={customIcon}></Marker>
-      ) : null} */}
-      {lat != null ? (
-        <Marker position={[lat, lng]}></Marker>
+      {markerLocation != null ? (
+        <Marker position={markerLocation}></Marker>
       ) : null}
+      {/* {lat != null ? (
+        <Marker position={[lat, lng]}></Marker>
+      ) : null} */}
     </>
   );
 }

@@ -56,15 +56,14 @@ export function LiveLocation() {
           setMarkerLocations([null, null, null, null])
         }
         else {
+          let copy = [...markerLocations]
           for (const k in response.data.data) {
             const [_, companyId, busNo] = k.split(":");
             const state = response.data.data[k];
             console.log(state);
             if (state.adj === null) {
               // console.log("진짜 내위치");
-              let copy = [...markerLocations]
               copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
-              setMarkerLocations(copy);
               // lat = state.raw.latlng.lat;
               // lng = state.raw.latlng.lng;
             } else {
@@ -72,12 +71,12 @@ export function LiveLocation() {
               // lat = state.adj.latlng.lat;
               // lng = state.adj.latlng.lng;
               let copy = [...markerLocations]
-              copy[busNo - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
-              setMarkerLocations(copy);
+              copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
               // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);
             }
             // console.log(state.raw.latlng);
           }
+          setMarkerLocations(copy);
         }
 
         // const rlt = response.data.data;

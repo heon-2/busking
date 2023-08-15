@@ -68,6 +68,11 @@ let adminStore = (set) => ({
   newStation: [],
   items: {},
   stopCreate: false,
+
+  busInformation: [],
+
+  setBusInformation: (payload) => set({ busInformation: payload }),
+
   setBusNo: (payload) => set({ busNo: payload }),
   setDirection: () => set((state) => ({ direction: !state.direction })),
   setStationPath: (payload) => set({ stationPath: payload }),

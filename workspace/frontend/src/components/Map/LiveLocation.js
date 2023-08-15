@@ -50,19 +50,19 @@ export function LiveLocation() {
         }
       )
       .then((response) => {
-        console.log("제발 보내져라 제발 제발 ");
+        // console.log("제발 보내져라 제발 제발 ");
         console.log(response.data.data);
         for (const k in response.data.data) {
           const [_, companyId, busNo] = k.split(":");
           const state = response.data.data[k];
           console.log(state);
           if (state.adj === null) {
-            console.log("진짜 내위치");
+            // console.log("진짜 내위치");
             setMarkerLocation([state.raw.latlng.lat, state.raw.latlng.lng]);
             // lat = state.raw.latlng.lat;
             // lng = state.raw.latlng.lng;
           } else {
-            console.log("보정된 내 위치");
+            // console.log("보정된 내 위치");
             // lat = state.adj.latlng.lat;
             // lng = state.adj.latlng.lng;
             setMarkerLocation([state.adj.latlng.lat, state.adj.latlng.lng]);

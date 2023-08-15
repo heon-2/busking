@@ -12,27 +12,54 @@ import { useAdminStore, useMapStore, useUserStore } from "../../store.js";
 import { IconButton, Button } from "@material-tailwind/react";
 import { LiveLocation } from "../../components/Map/LiveLocation.js";
 import axios from "axios";
+import polyline from "@mapbox/polyline";
 
 export function UserMap() {
-  const { selectedBus, setSelectedBus } = usuUserStore();
+  const { selectedStations, selectedRoute, selectedBus, setSelectedStations, setSelectedRoute, setSelectedBus } = useUserStore();
   const { busInfo, setBusInfo } = useMapStore(); 
   useEffect(() => {
     axios.get('/api/companies/1/buses')
     .then((response) => {
       console.log(response.data)
-      setBusInfo(response.data)
-      console.log(response.data[0].routes[0])
+      setBusInfo(response.data[0])
+      // console.log(response.data[0].routes[0].stations)
+      // console.log(polyline.decode(response.data[0].routes[0].geometry))
     })
     .catch((error) => {
       console.log(error)
     })
   }, [])
+
+  useEffect(() => {
+    if (selectedBus == null) {
+      setSelectedStations([])
+      setSelectedRoute(null)
+    }
+    else {
+      if (busInfo.length < selectedBus) {
+        return;
+      }
+      else if (busInfo.length > 0) {
+        setSelectedRoute(polyline.decode(busInfo[selectedBus - 1].routes[0].geometry))
+        busInfo[selectedBus - 1].routes[0].stations.map((station, index) => {
+          // setSelectedStations([...selectedStations, [station.lat, station.lng]])
+        })
+      }
+    }
+  }, [selectedBus])
   return (
     <div className="relative">
       <MapLayer
         FindMe={<FindMe />}
         Dial={<Dial></Dial>}
         Marker={<LiveLocation></LiveLocation>}
+        UserPath={
+          <>
+          {
+            // selectedBus == null ? null : <Polyline positions={}></Polyline>
+          }
+          </>
+        }
       ></MapLayer>
       <div
         className="absoulte fixed top-2 left-2 right-2"
@@ -47,3 +74,28 @@ export function UserMap() {
     </div>
   );
 }
+
+
+// function setCoords({ hintPath, newPath, setNewPath, setGeometry, stopCreate }) {
+//   console.log(hintPath);
+//   if (stopCreate === true) {
+//     return;
+//   }
+//   if (hintPath.length < 2) {
+//     setNewPath([]);
+//     setGeometry("");
+//   } else {
+//     axios
+//       .post("/api/routes/generate", {
+//         hints: hintPath,
+//       })
+//       .then((res) => {
+//         console.log(res.data.route.geometry);
+//         setGeometry(res.data.route.geometry);
+//         setNewPath(polyline.decode(res.data.route.geometry));
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   }
+// }

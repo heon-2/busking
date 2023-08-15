@@ -45,7 +45,7 @@ export function LoginForm() {
               variant="h4"
               color="white"
             >
-              SSABUS
+              SSABUZY
             </Typography>
           </CardHeader>
           <div className="inline-block text-sm font-medium text-transparent bg-clip-text bg-gradient-to-l from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-400">

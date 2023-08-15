@@ -135,7 +135,7 @@ export function MapLayer(props) {
   const locationHook = useLocation();
   const [count, setCount] = useState(0);
   const [test, setTest] = useState([0, 0]);
-  const position = [51.505, -0.09];
+  const position = [35.18734, 126.81425];
 
   useEffect(() => {
     const timer = setInterval(() => {

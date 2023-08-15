@@ -1,7 +1,9 @@
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { useBusStore } from "../../store";
 import axios from "axios";
 export function KnightQuit() {
+  const { busNumber } = useBusStore();
   const navigate = useNavigate();
   function endDrive() {
     axios
@@ -10,7 +12,7 @@ export function KnightQuit() {
         {
           bus: {
             companyId: 1,
-            no: 1,
+            no: busNumber,
           },
         },
         {

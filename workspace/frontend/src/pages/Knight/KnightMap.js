@@ -57,7 +57,7 @@ export function KnightMap() {
       {
         bus: {
           companyId: 1,
-          no: 1,
+          no: busNumber,
         },
         gps: {
           timestamp: new Date().getTime(),

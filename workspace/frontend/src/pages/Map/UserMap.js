@@ -8,12 +8,13 @@ import { TopBar } from "../../components/Map/TopBar";
 import { DragMarker } from "../../components/Map/DragMarker";
 import { AdminPath } from "../../components/Map/AdminPath";
 import { CreateMarker } from "../../components/Map/CreateMarker";
-import { useAdminStore, useMapStore } from "../../store.js";
+import { useAdminStore, useMapStore, useUserStore } from "../../store.js";
 import { IconButton, Button } from "@material-tailwind/react";
 import { LiveLocation } from "../../components/Map/LiveLocation.js";
 import axios from "axios";
 
 export function UserMap() {
+  const { selectedBus, setSelectedBus } = usuUserStore();
   const { busInfo, setBusInfo } = useMapStore(); 
   useEffect(() => {
     axios.get('/api/companies/1/buses')

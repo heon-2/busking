@@ -60,11 +60,10 @@ export function LiveLocation() {
             const [_, companyId, busNo] = k.split(":");
             const state = response.data.data[k];
             console.log(state);
-            busNo = Number(busNo)
             if (state.adj === null) {
               // console.log("진짜 내위치");
               let copy = [...markerLocations]
-              copy[busNo - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
+              copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
               setMarkerLocations(copy);
               // lat = state.raw.latlng.lat;
               // lng = state.raw.latlng.lng;

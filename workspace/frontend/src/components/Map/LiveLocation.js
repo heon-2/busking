@@ -3,8 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import { Marker } from "react-leaflet";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
+import { useUserStore } from '../../store'
+
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
+  const { selectedBus, setSelectedBus } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   // let [lat, lng] = [null, null];
   // r-query 공부해야할부분
@@ -181,12 +184,15 @@ export function LiveLocation() {
   return (
     <>
       {
-        markerLocations.map((loc, index) => (
-          
-          loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
-          
-        ))
+        selectedBus == null || markerLocations[selectedBus-1] == null? 
+          markerLocations.map((loc, index) => (
+            
+            loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
+            
+          ))
+        : <Marker position={markerLocations[selectedBus-1]} icon={busIcon}></Marker>
       }
+      
       { 
       myLocate != null ? (
         <Marker position={myLocate} icon={personIcon}></Marker>

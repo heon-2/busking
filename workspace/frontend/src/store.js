@@ -17,6 +17,12 @@ let userStore = (set) => ({
   refreshToken: "",
   fcmToken: "",
   useBus: null,
+  selectedBus: null,
+  selectedStations: [],
+  selectedRoute: [],
+  setSelectedRoute: (payload) => set({ selectedRoute: payload }),
+  setSelectedStations: (payload) => set({ selectedStations: payload }),
+  setSelectedBus: (payload) => set({ selectedBus: payload }),
   setUseBus: (payload) => set({ useBus: payload }),
   setUser: (payload) => set({ user: payload }),
   setAccessToken: (payload) => set({ accessToken: payload }),
@@ -39,7 +45,7 @@ export const useUserStore = create(userStore);
 let mapStore = (set) => ({
   center: [26, 25],
   busPath: [1],
-  busInfo: [1],
+  busInfo: [],
   mapType: false,
   location: [20, 20],
   setCenter: (payload) => set({ center: payload }),
@@ -68,6 +74,11 @@ let adminStore = (set) => ({
   newStation: [],
   items: {},
   stopCreate: false,
+
+  busInformation: [],
+
+  setBusInformation: (payload) => set({ busInformation: payload }),
+
   setBusNo: (payload) => set({ busNo: payload }),
   setDirection: () => set((state) => ({ direction: !state.direction })),
   setStationPath: (payload) => set({ stationPath: payload }),

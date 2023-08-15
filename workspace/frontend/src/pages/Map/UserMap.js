@@ -21,7 +21,7 @@ export function UserMap() {
     axios.get('/api/companies/1/buses')
     .then((response) => {
       console.log(response.data)
-      setBusInfo(response.data[0])
+      setBusInfo(response.data)
       // console.log(response.data[0].routes[0].stations)
       // console.log(polyline.decode(response.data[0].routes[0].geometry))
     })
@@ -31,6 +31,7 @@ export function UserMap() {
   }, [])
 
   useEffect(() => {
+    console.log(busInfo)
     if (selectedBus == null) {
       setSelectedStations([])
       setSelectedRoute(null)
@@ -41,8 +42,9 @@ export function UserMap() {
       }
       else if (busInfo.length > 0) {
         setSelectedRoute(polyline.decode(busInfo[selectedBus - 1].routes[0].geometry))
+        console.log(selectedRoute)
         busInfo[selectedBus - 1].routes[0].stations.map((station, index) => {
-          // setSelectedStations([...selectedStations, [station.lat, station.lng]])
+        setSelectedStations([...selectedStations, [station.lat, station.lng]])
         })
       }
     }

@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
-  const [markerLocation, setMarkerLocation] = useState(null);
+  const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   // let [lat, lng] = [null, null];
   // r-query 공부해야할부분
   // const { data, error, isLoading } = useQuery("busLocation", getLocation);
@@ -52,22 +52,33 @@ export function LiveLocation() {
       .then((response) => {
         // console.log("제발 보내져라 제발 제발 ");
         console.log(response.data.data);
-        for (const k in response.data.data) {
-          const [_, companyId, busNo] = k.split(":");
-          const state = response.data.data[k];
-          console.log(state);
-          if (state.adj === null) {
-            // console.log("진짜 내위치");
-            setMarkerLocation([state.raw.latlng.lat, state.raw.latlng.lng]);
-            // lat = state.raw.latlng.lat;
-            // lng = state.raw.latlng.lng;
-          } else {
-            // console.log("보정된 내 위치");
-            // lat = state.adj.latlng.lat;
-            // lng = state.adj.latlng.lng;
-            setMarkerLocation([state.adj.latlng.lat, state.adj.latlng.lng]);
+        if (response.data.data == {}) {
+          setMarkerLocations([null, null, null, null])
+        }
+        else {
+          for (const k in response.data.data) {
+            const [_, companyId, busNo] = k.split(":");
+            const state = response.data.data[k];
+            console.log(state);
+            busNo = Number(busNo)
+            if (state.adj === null) {
+              // console.log("진짜 내위치");
+              let copy = [...markerLocations]
+              copy[busNo - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
+              setMarkerLocations(copy);
+              // lat = state.raw.latlng.lat;
+              // lng = state.raw.latlng.lng;
+            } else {
+              // console.log("보정된 내 위치");
+              // lat = state.adj.latlng.lat;
+              // lng = state.adj.latlng.lng;
+              let copy = [...markerLocations]
+              copy[busNo - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
+              setMarkerLocations(copy);
+              // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);
+            }
+            // console.log(state.raw.latlng);
           }
-          // console.log(state.raw.latlng);
         }
 
         // const rlt = response.data.data;
@@ -105,9 +116,16 @@ export function LiveLocation() {
 
   return (
     <>
-      {markerLocation != null ? (
+      {
+        markerLocations.map((loc, index) => (
+          
+          loc != null ? <Marker key={index} position={loc}></Marker> : null
+          
+        ))
+      }
+      {/* {markerLocation != null ? (
         <Marker position={markerLocation}></Marker>
-      ) : null}
+      ) : null} */}
       {/* {lat != null ? (
         <Marker position={[lat, lng]}></Marker>
       ) : null} */}

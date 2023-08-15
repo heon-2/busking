@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FindMe } from "../../common/FindMe.js";
 import { BusInfo } from "../../components/Map/BusInfo";
 import { BusNum } from "../../components/Map/BusNum";
@@ -8,11 +8,24 @@ import { TopBar } from "../../components/Map/TopBar";
 import { DragMarker } from "../../components/Map/DragMarker";
 import { AdminPath } from "../../components/Map/AdminPath";
 import { CreateMarker } from "../../components/Map/CreateMarker";
-import { useAdminStore } from "../../store.js";
+import { useAdminStore, useMapStore } from "../../store.js";
 import { IconButton, Button } from "@material-tailwind/react";
 import { LiveLocation } from "../../components/Map/LiveLocation.js";
+import axios from "axios";
 
 export function UserMap() {
+  const { busInfo, setBusInfo } = useMapStore(); 
+  useEffect(() => {
+    axios.get('/api/companies/1/buses')
+    .then((response) => {
+      console.log(response.data)
+      setBusInfo(response.data)
+      console.log(response.data[0].routes[0])
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }, [])
   return (
     <div className="relative">
       <MapLayer

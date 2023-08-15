@@ -64,12 +64,15 @@ export function LiveLocation() {
             const [_, companyId, busNo] = k.split(":");
             const state = response.data.data[k];
             console.log(state);
-            if (state.adj === null) {
+            console.log(state.adj)
+            if (state.adj == null) {
+              console.log("check1")
               // console.log("진짜 내위치");
               copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
               // lat = state.raw.latlng.lat;
               // lng = state.raw.latlng.lng;
             } else {
+              console.log("check2")
               // console.log("보정된 내 위치");
               // lat = state.adj.latlng.lat;
               // lng = state.adj.latlng.lng;

@@ -73,7 +73,6 @@ export function LiveLocation() {
               // console.log("보정된 내 위치");
               // lat = state.adj.latlng.lat;
               // lng = state.adj.latlng.lng;
-              let copy = [...markerLocations]
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
               // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);
             }

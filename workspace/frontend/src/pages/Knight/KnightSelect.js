@@ -26,7 +26,7 @@ export function KnightSelect() {
             no: num,
           },
           route: {
-            id: num,
+            id: 1,
           },
         },
         {

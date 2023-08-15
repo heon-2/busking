@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
-import { Marker } from "react-leaflet";
+import { Marker, Polyline } from "react-leaflet";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
 import { useUserStore } from '../../store'
 
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
-  const { selectedBus, setSelectedBus } = useUserStore();
+  const { selectedBus, selectedStations, selectedRoute, setSelectedBus, setSelectedStations, setSelectedRoute } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   // let [lat, lng] = [null, null];
   // r-query 공부해야할부분
@@ -183,6 +183,10 @@ export function LiveLocation() {
 
   return (
     <>
+      {
+        selectedBus == null || selectedRoute == null ?
+        <></> : <Polyline positions={selectedRoute}></Polyline>
+      }
       {
         selectedBus == null || markerLocations[selectedBus-1] == null? 
           markerLocations.map((loc, index) => (

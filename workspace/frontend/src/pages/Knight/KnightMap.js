@@ -50,7 +50,7 @@ export function KnightMap() {
     // setLocation([position.coords.latitude, position.coords.longitude]);
     const la = position.coords.latitude;
     const ln = position.coords.longitude;
-    
+    console.log(busNumber)
     axios
     .put(
       "/api/realtime/driving/drive",

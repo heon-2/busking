@@ -23,7 +23,7 @@ export function KnightSelect() {
         {
           bus: {
             companyId: 1,
-            no: 1,
+            no: num,
           },
           route: {
             id: 1,

@@ -49,9 +49,9 @@ export function BusNum() {
         return value && <BusInfo index={index+1}></BusInfo>;
     })}
 </div>
-<div className="bg-white-h-1/5">
+{/* <div className="bg-white-h-1/5">
     <StationDetail></StationDetail>
-</div>
+</div> */}
 
 <div className=""></div>
 

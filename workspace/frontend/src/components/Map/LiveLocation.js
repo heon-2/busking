@@ -112,18 +112,85 @@ export function LiveLocation() {
     shadowSize: [50, 64],
   });
 
+  // 버스 아이콘
+  const busIcon = L.icon({
+    iconUrl: "bus.png",
+    iconSize: [45, 45], // 아이콘 크기
+    iconAnchor: [23, 46], // 아이콘 기준점 위치
+  });
+
+  // 정류장 아이콘
+  const stationIcon = L.icon({
+    iconUrl: "station2.png",
+    iconSize: [45, 45], // 아이콘 크기
+    iconAnchor: [23, 46], // 아이콘 기준점 위치
+  });
+
+  // 사용자 아이콘
+
+  const personIcon = L.icon({
+    iconUrl: "person1.png",
+    iconSize: [45, 45], // 아이콘 크기
+    iconAnchor: [23, 46], // 아이콘 기준점 위치
+  });
+
+
+
+  /////////////////////////// 현재 내 위치 받아오기 /////////////////////////////////////////////////////
+  const options = {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    // timeout: 27000,
+  };
+  // function success(position) {
+  //   // setLocation([position.coords.latitude, position.coords.longitude]);
+  //   setLatlng([position.coords.latitude, position.coords.longitude]);
+  //   console.log(position);
+  // }
+  // navigator.geolocation.watchPosition(success, error, options);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      // console.log(location);
+
+      navigator.geolocation.getCurrentPosition(success, error, options)
+      // console.log(lat, lng);
+    }, 2000);
+    return () => {
+      clearInterval(timer);
+    }; // 1분을 밀리초로 표현한 값
+  },[]);
+
+
+  const [myLocate, setMyLocate] = useState(null);
+  function success(position) {
+    // setLocation([position.coords.latitude, position.coords.longitude]);
+    const userLat = position.coords.latitude;
+    const userLng = position.coords.longitude;
+    console.log('내위치 :' + [userLat, userLng])
+    setMyLocate([userLat, userLng]);
+  }
+
+  function error() {
+    alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");
+  }
+/////////////////////////
+
+
+
   return (
     <>
       {
         markerLocations.map((loc, index) => (
           
-          loc != null ? <Marker key={index} position={loc}></Marker> : null
+          loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
           
         ))
       }
-      {/* {markerLocation != null ? (
-        <Marker position={markerLocation}></Marker>
-      ) : null} */}
+      { 
+      myLocate != null ? (
+        <Marker position={myLocate} icon={personIcon}></Marker>
+      ) : null}
       {/* {lat != null ? (
         <Marker position={[lat, lng]}></Marker>
       ) : null} */}

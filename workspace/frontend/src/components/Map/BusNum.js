@@ -8,7 +8,10 @@ import {BusInfo} from './BusInfo';
 import { FindMe } from "../../common/FindMe.js";
 import { MapContainer } from 'react-leaflet';
 import { StationDetail } from './StationDetail.js';
+import { useUserStore } from '../../store'
+
 export function BusNum() {
+    const { selectedBus, setSelectedBus } = useUserStore();
     const navigate = useNavigate();
     const [num, setNum] = useState([false, false, false, false]);
 
@@ -25,11 +28,11 @@ export function BusNum() {
     {
         num.map((item, index) => {
             if (item === false) {
-                return <div className="w-1/4"><Button key={index} color="white" className="w-full h-full shadow-lg shadow-black/40" onClick={() => toggleBus({index, num, setNum})}><BiBus className="inline-block align-middle mr-2"></BiBus>
+                return <div className="w-1/4"><Button key={index} color="white" className="w-full h-full shadow-lg shadow-black/40" onClick={() => toggleBus({index, num, selectedBus, setNum, setSelectedBus})}><BiBus className="inline-block align-middle mr-2"></BiBus>
                     <span className="inline-block align-middle">{index+1}</span></Button></div>
             } else {
                 return <div className="w-1/4"> 
-                    <Button key={index} className="w-full h-full shadow-lg shadow-black/50" onClick={() => toggleBus({index, num, setNum})}>
+                    <Button key={index} className="w-full h-full shadow-lg shadow-black/50" onClick={() => toggleBus({index, num, selectedBus, setNum, setSelectedBus})}>
                         <BiBus className="inline-block align-middle mr-2"></BiBus>
                         <span className="inline-block align-middle">{index+1}</span>
                     </Button>
@@ -64,10 +67,16 @@ export function BusNum() {
     ) 
   }
 
-function toggleBus({index, num, setNum}) {
+function toggleBus({index, num, selectedBus, setNum, setSelectedBus}) {
     let copy = [...num]
     copy.map((item, i) => {
         if (i === index) {
+            if (selectedBus != i+1){
+                setSelectedBus(i+1)
+            }
+            else {
+                setSelectedBus(null)
+            }
             copy[i] = !item
         }
         else {

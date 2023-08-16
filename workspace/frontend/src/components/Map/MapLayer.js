@@ -159,8 +159,8 @@ export function MapLayer(props) {
         {/* 기본 맵 */}
         {mapType === false ? (
           <TileLayer
-          url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"
-            //  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          // url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"
+             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             // url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
             // url='https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png'
             // url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"

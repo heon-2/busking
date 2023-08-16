@@ -1,6 +1,7 @@
 package org.comfort42.busking.persistence.adapter.outbound;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Company;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 @RequiredArgsConstructor
@@ -51,4 +53,21 @@ public class StationRepository implements RegisterStationPort, LoadStationPort {
     public Station loadStationById(Station.StationId stationId) {
         return stationMapper.mapToDomainEntity(em.find(StationJpaEntity.class, stationId.value()));
     }
+
+    @Override
+    public Station loadStationByName(final String stationName) {
+        try {
+            final var stationJpaEntity = em
+                    .createQuery("""
+                            SELECT s
+                              FROM StationJpaEntity s
+                             WHERE s.name = :stationName""", StationJpaEntity.class)
+                    .setParameter("stationName", stationName)
+                    .getSingleResult();
+            return stationMapper.mapToDomainEntity(stationJpaEntity);
+        } catch (NoResultException e) {
+            throw new NoSuchElementException(e);
+        }
+    }
+
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
-import { Marker, Polyline } from "react-leaflet";
+import { Marker, Polyline, Popup } from "react-leaflet";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
 import { useUserStore } from '../../store'
@@ -198,7 +198,15 @@ export function LiveLocation() {
           ))
         : <Marker position={markerLocations[selectedBus-1]} icon={busIcon}></Marker>
       }
-      
+      {
+        selectedBus == null || selectedStations == [] ?
+        <></> : 
+        selectedStations.map((station, index) => ( 
+          <Marker key={index} position={station[0]}>
+            <Popup>{station[1]}</Popup>
+          </Marker>
+        ))
+      }
       { 
       myLocate != null ? (
         <Marker position={myLocate} icon={personIcon}></Marker>

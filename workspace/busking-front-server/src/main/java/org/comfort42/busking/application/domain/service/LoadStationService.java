@@ -30,4 +30,10 @@ public class LoadStationService implements LoadStationUseCase {
         }
         return stationList;
     }
+
+    @Override
+    public Station loadStationByName(final String stationName) {
+        return loadStationPort.loadStationByName(stationName);
+    }
+
 }

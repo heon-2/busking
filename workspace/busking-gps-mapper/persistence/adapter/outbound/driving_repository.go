@@ -17,7 +17,10 @@ func (repo *DrivingRepository) BeginDriving(busId model.BusId) {
 }
 
 func (repo *DrivingRepository) EndDriving(busId model.BusId) {
-	repo.Db.SRem(context.Background(), "company:"+strconv.FormatInt(busId.CompanyId, 10), "bus:"+busId.String())
+	pipeline := repo.Db.Pipeline()
+	pipeline.SRem(context.Background(), "company:"+strconv.FormatInt(busId.CompanyId, 10), "bus:"+busId.String())
+	pipeline.Del(context.Background(), "bus:"+busId.String())
+	pipeline.Exec(context.Background())
 }
 
 func NewDrivingRepository(db *redis.Client) *DrivingRepository {

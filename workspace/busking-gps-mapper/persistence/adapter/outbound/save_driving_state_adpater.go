@@ -12,35 +12,48 @@ import (
 type SaveDrivingStateAdapter struct{ Db *redis.Client }
 
 func (adpt *SaveDrivingStateAdapter) Save(busId model.BusId, state *model.DrivingState) {
+	var raw *map[string]any
 	var adj *map[string]any
-	if state.AdjLog.Back() != nil {
-		latlng := coord.GetProjector().ToWGS84(&state.AdjLog.Back().Vec2)
-		adj = &map[string]any{
-			"timestamp": state.AdjLog.Back().Timestamp,
+	if 0 < state.GpsLog.Len() {
+		latlng := coord.GetProjector().ToWGS84(&state.GpsLog.Back().Vec2)
+		raw = &map[string]any{
+			"timestamp": state.GpsLog.Back().Timestamp,
 			"latlng": map[string]any{
 				"lat": latlng.Lat,
 				"lng": latlng.Lng,
 			},
 		}
-	}
 
-	latlng := coord.GetProjector().ToWGS84(&state.GpsLog.Back().Vec2)
-	snapshot := map[string]any{
-		"loc": map[string]any{
-			"raw": map[string]any{
-				"timestamp": state.GpsLog.Back().Timestamp,
+		if state.AdjLog.Back() != nil {
+			latlng := coord.GetProjector().ToWGS84(&state.AdjLog.Back().Vec2)
+			adj = &map[string]any{
+				"timestamp": state.AdjLog.Back().Timestamp,
 				"latlng": map[string]any{
 					"lat": latlng.Lat,
 					"lng": latlng.Lng,
 				},
-			},
+			}
+		}
+
+	}
+
+	passengers := make([]int, len(state.Passengers))
+	for i := range passengers {
+		passengers[i] = int(state.Passengers[i].Load())
+	}
+
+	snapshot := map[string]any{
+		"loc": map[string]any{
+			"raw": raw,
 			"adj": adj,
 		},
+		"passengers": passengers,
 	}
 
 	data, err := json.Marshal(snapshot)
 	if err != nil {
 		println("SaveDrivingStateAdapter: " + err.Error())
+		return
 	}
 
 	adpt.Db.Set(context.Background(), "bus:"+busId.String(), data, redis.KeepTTL)

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"busking.org/gps-mapper/coord"
 	sentinel "busking.org/gps-mapper/domain/application/errors"
 	"busking.org/gps-mapper/domain/application/model"
 	"busking.org/gps-mapper/domain/application/service"
@@ -12,7 +13,7 @@ import (
 )
 
 type BeginDrivingRequestBody struct {
-	Bus   *BusObject   `json:"bus" binding:"required"`
+	Bus   *BusIdObject `json:"bus" binding:"required"`
 	Route *RouteObject `json:"route" binding:"required"`
 }
 
@@ -37,6 +38,13 @@ func BeginDrivingController(webAdapter *gin.Engine, drivingService *service.Driv
 			})
 			return
 		}
+		if payload.Route.Stations == nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, map[string]interface{}{
+				"status":  "400 bad request",
+				"message": PATH + ": $.route.stations is required.",
+			})
+			return
+		}
 
 		cmd := &service.BeginDrivingCommand{
 			BusId: model.BusId{
@@ -46,6 +54,10 @@ func BeginDrivingController(webAdapter *gin.Engine, drivingService *service.Driv
 			RouteId:       model.RouteId(*payload.Route.Id),
 			RouteGeometry: *payload.Route.Geometry,
 		}
+		for _, latlng := range *payload.Route.Stations {
+			cmd.RouteStations = append(cmd.RouteStations, coord.NewLatLng(*latlng.Lat, *latlng.Lng))
+		}
+
 		if err := drivingService.BeginDriving(cmd); err != nil {
 			if errors.Is(err, sentinel.ErrConflict) {
 				ctx.AbortWithStatusJSON(http.StatusConflict, map[string]interface{}{

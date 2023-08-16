@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { FindMe } from "../../common/FindMe.js";
 import { BusInfo } from "../../components/Map/BusInfo";
 import { BusNum } from "../../components/Map/BusNum";
@@ -15,9 +16,23 @@ import axios from "axios";
 import polyline from "@mapbox/polyline";
 
 export function UserMap() {
-  const { selectedStations, selectedRoute, selectedBus, setSelectedStations, setSelectedRoute, setSelectedBus } = useUserStore();
+  const { user, selectedStations, selectedRoute, selectedBus, setSelectedStations, setSelectedRoute, setSelectedBus } = useUserStore();
   const { busInfo, setBusInfo } = useMapStore(); 
+  const navigate = useNavigate();
   useEffect(() => {
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role != 'EMPLOYEE'){
+      if (user.role == 'DRIVER'){
+        navigate('/knightselect')
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    setSelectedBus(null)
     axios.get('/api/companies/1/buses')
     .then((response) => {
       console.log(response.data)
@@ -33,19 +48,24 @@ export function UserMap() {
   useEffect(() => {
     console.log(busInfo)
     if (selectedBus == null) {
+      console.log(selectedStations)
       setSelectedStations([])
       setSelectedRoute(null)
     }
     else {
       if (busInfo.length < selectedBus) {
+        setSelectedStations([])
+        setSelectedRoute(null)
         return;
       }
       else if (busInfo.length > 0) {
         setSelectedRoute(polyline.decode(busInfo[selectedBus - 1].routes[0].geometry))
-        console.log(selectedRoute)
+        let copy = []
         busInfo[selectedBus - 1].routes[0].stations.map((station, index) => {
-        setSelectedStations([...selectedStations, [station.lat, station.lng]])
+          console.log(station)
+          copy.push([[station.lat, station.lng], station.name])
         })
+        setSelectedStations(copy)
       }
     }
   }, [selectedBus])

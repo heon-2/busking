@@ -7,6 +7,8 @@ import (
 	"sync"
 
 	"busking.org/gps-mapper/alg"
+	"busking.org/gps-mapper/coord"
+	sentinel "busking.org/gps-mapper/domain/application/errors"
 	"busking.org/gps-mapper/domain/application/model"
 	portout "busking.org/gps-mapper/domain/port/outbound"
 )
@@ -28,10 +30,16 @@ type DrivingService struct {
 	changeDrivingStatePort portout.ChangeDrivingStatePort
 }
 
+type JoinDrivingCommand struct {
+	model.BusId
+	Destination int
+}
+
 type BeginDrivingCommand struct {
 	model.BusId
 	model.RouteId
 	RouteGeometry string
+	RouteStations []*coord.LatLng
 }
 
 type EndDrivingCommand struct {
@@ -121,6 +129,21 @@ func (s *DrivingService) GetDriving(busId model.BusId) (*model.Driving, bool) {
 	return driving, ok
 }
 
+func (s *DrivingService) JoinDriving(cmd *JoinDrivingCommand) error {
+	driving, ok := s.GetDriving(cmd.BusId)
+	if !ok {
+		return fmt.Errorf("JoinDriving(): %w", sentinel.ErrNotFound)
+	}
+
+	if cmd.Destination < 0 || len(driving.Stations) <= cmd.Destination {
+		return fmt.Errorf("JoinDriving(): invalid station index")
+	}
+
+	driving.State.Passengers[cmd.Destination].Add(1)
+	s.saveDrivingStatePort.Save(driving.BusId, driving.State)
+	return nil
+}
+
 func (s *DrivingService) BeginDriving(cmd *BeginDrivingCommand) error {
 	s.drivingLock.Lock()
 	defer s.drivingLock.Unlock()
@@ -129,7 +152,7 @@ func (s *DrivingService) BeginDriving(cmd *BeginDrivingCommand) error {
 	route, ok := routes.GetRoute(cmd.RouteId)
 	if !ok {
 		var err error
-		route, err = model.NewRouteWithPolyline(cmd.RouteId, cmd.RouteGeometry)
+		route, err = model.NewRouteWithPolyline(cmd.RouteId, cmd.RouteGeometry, cmd.RouteStations)
 		if err != nil {
 			return fmt.Errorf("BeginDriving(): %w", err)
 		}

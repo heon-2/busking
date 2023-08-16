@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Bus;
 import org.comfort42.busking.application.domain.model.Company;
 import org.comfort42.busking.application.port.inbound.LoadRealtimeBusState;
+import org.comfort42.busking.web.adapter.inbound.schema.BusIdObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 class TrackDrivingController {
 
-    record BusId(long companyId, long no) {
-    }
-
-    record TrackDrivingRequestBody(BusId bus) {
+    record TrackDrivingRequestBody(BusIdObject bus) {
     }
 
     private final ObjectMapper objectMapper;
@@ -38,7 +36,7 @@ class TrackDrivingController {
                 throw new IllegalArgumentException("bus object is required");
             }
 
-            final var companyId = Company.CompanyId.of(payload.bus().companyId);
+            final var companyId = Company.CompanyId.of(payload.bus().companyId());
             final var obj = objectMapper.createObjectNode();
             obj.put("status", "200 ok");
 

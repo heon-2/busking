@@ -5,12 +5,13 @@ type LatLngObject struct {
 	Lng *float64 `json:"lng" binding:"required"`
 }
 
-type BusObject struct {
+type BusIdObject struct {
 	CompanyId *int64 `json:"companyId" binding:"required"`
 	No        *int64 `json:"no" binding:"required"`
 }
 
 type RouteObject struct {
-	Id       *int64  `json:"id" binding:"required"`
-	Geometry *string `json:"geometry"`
+	Id       *int64          `json:"id" binding:"required"`
+	Geometry *string         `json:"geometry"`
+	Stations *[]LatLngObject `json:"stations"`
 }

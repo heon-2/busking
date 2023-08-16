@@ -62,7 +62,8 @@ export function UserMap() {
         setSelectedRoute(polyline.decode(busInfo[selectedBus - 1].routes[0].geometry))
         let copy = []
         busInfo[selectedBus - 1].routes[0].stations.map((station, index) => {
-          copy.push([station.lat, station.lng])
+          console.log(station)
+          copy.push([[station.lat, station.lng], station.name])
         })
         setSelectedStations(copy)
       }

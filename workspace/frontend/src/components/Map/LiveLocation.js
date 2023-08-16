@@ -3,12 +3,13 @@ import { useState, useEffect, useRef } from "react";
 import { Marker, Polyline, Popup } from "react-leaflet";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
-import { useUserStore } from '../../store'
+import { useUserStore, useMapStore } from '../../store'
 
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
   const { selectedBus, selectedStations, selectedRoute, setSelectedBus, setSelectedStations, setSelectedRoute } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
+  const { busInfo, setBusInfo } = useMapStore();
   // let [lat, lng] = [null, null];
   // r-query 공부해야할부분
   // const { data, error, isLoading } = useQuery("busLocation", getLocation);
@@ -160,7 +161,7 @@ export function LiveLocation() {
 
       navigator.geolocation.getCurrentPosition(success, error, options)
       // console.log(lat, lng);
-    }, 2000);
+    }, 500);
     return () => {
       clearInterval(timer);
     }; // 1분을 밀리초로 표현한 값
@@ -175,6 +176,28 @@ export function LiveLocation() {
     console.log('내위치 :' + [userLat, userLng])
     setMyLocate([userLat, userLng]);
   }
+
+  useEffect(() => {
+    if (selectedBus == null || markerLocations[selectedBus] == null) {
+      return;
+    }
+    else {
+      while (true) { 
+        console.log('잘되나')
+        if(selectedRoute.length <= 1) {
+          break;
+        }
+        let copy = [...selectedRoute]
+        if ((markerLocations[selectedBus - 1][0] - copy[0][0])*(markerLocations[selectedBus - 1][0] - copy[1][0]) <= 0 &&
+        (markerLocations[selectedBus - 1][1] - copy[0][1])*(markerLocations[selectedBus - 1][1] - copy[1][1])
+        ) {
+          break;
+        }
+        copy.shift()
+        setSelectedRoute(copy)
+      }
+    }
+  }, [markerLocations, selectedBus])
 
   function error() {
     alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");

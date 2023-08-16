@@ -36,8 +36,8 @@ export function Report() {
   const [reportList, setReportList] = useState([
     "난폭 운전",
     "예정 시간보다 빨리 출발",
-    "운전 중 위험한 행동 ( 휴대폰 사용 등 )",
-    "응급 상황 발생 ( 교통사고, 환자 발생 등 )",
+    "운전 중 휴대폰 사용",
+    "응급 상황 발생 ( 교통사고 등 )",
     "무정차 출발",
   ]);
   // busNum랑 companyId는 NULL값이 됨..
@@ -95,13 +95,13 @@ export function Report() {
         )} */}
         <div className="flex justify-center">
           <img
-            className="mt-5 mb-7 h-[30vh] lg:h-[30vh] lg:object-fill lg:w-1/4 w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
+            className="mt-5 mb-5 h-[30vh] lg:h-[30vh] lg:object-fill lg:w-1/4 w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
             src="report.jpg"
             alt="nature image"
           />
         </div>
         <div>
-          <Typography variant="h3" className="mb-7 text-[#0F6CBD]">
+          <Typography variant="h3" className="mb-3 text-[#0F6CBD]">
             신고 내용
           </Typography>
         </div>
@@ -140,7 +140,7 @@ export function Report() {
             })}
           </List>
         </Card>
-        <div className="mt-10">
+        <div className="mt-3">
           <Button
             onClick={
               () => {

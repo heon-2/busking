@@ -20,12 +20,12 @@ class LoadRealtimeBusStateService implements LoadRealtimeBusState {
     }
 
     @Override
-    public RealtimeBusState loadRealtimeBusState(final Bus.BusId busId) {
+    public String loadRealtimeBusState(final Bus.BusId busId) {
         return loadRealtimeBusStatePort.loadRealtimeBusState(busId);
     }
 
     @Override
-    public List<Pair<String, RealtimeBusState>> loadAllRealtimeBusState(Company.CompanyId companyId) {
+    public List<Pair<String, String>> loadAllRealtimeBusState(Company.CompanyId companyId) {
         return loadRealtimeBusStatePort.loadAllRealtimeBusState(companyId);
     }
 }

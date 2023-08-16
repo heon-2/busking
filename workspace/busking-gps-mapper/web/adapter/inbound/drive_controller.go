@@ -37,9 +37,9 @@ func DriveController(c *gin.Engine, drivingService *service.DrivingService) erro
 				No:        *payload.Bus.No,
 				CompanyId: *payload.Bus.CompanyId,
 			},
-			Gps: &model.Gps{
+			Location: &model.Location{
 				Timestamp: *payload.Gps.Timestamp,
-				Loc:       projector.FromWGS84(coord.NewLatLng(*payload.Gps.Latlng.Lat, *payload.Gps.Latlng.Lng)),
+				Vec2:      *projector.FromWGS84(coord.NewLatLng(*payload.Gps.Latlng.Lat, *payload.Gps.Latlng.Lng)),
 			},
 		}
 		if err := drivingService.FeedGpsToWorker(cmd); err != nil {

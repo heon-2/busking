@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#F0F4F9" />
     
-    <!-- 이거 뭔지 모르겠지만 추가함 -->
+    <!-- 아이폰에서 standalone -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     
     <meta
@@ -56,7 +56,16 @@
     }
   </style>
     <title>SSABUZY</title>
-    
+  
+    <script>
+      if (window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i)) {
+        // 핸드폰과 같은 모바일 기기일 경우
+        
+          document.body.style.zoom = "0.75"; // 원하는 배율 값 설정
+      }
+    </script>
+
+
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

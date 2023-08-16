@@ -135,7 +135,7 @@ export function MapLayer(props) {
   const locationHook = useLocation();
   const [count, setCount] = useState(0);
   const [test, setTest] = useState([0, 0]);
-  const position = [51.505, -0.09];
+  const position = [35.18734, 126.81425];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -159,7 +159,13 @@ export function MapLayer(props) {
         {/* 기본 맵 */}
         {mapType === false ? (
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"
+            //  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            // url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+            // url='https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png'
+            // url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            // url="http://xdworld.vwrold.kr:8080/2d/Base/201802/%7Bz%7D/%7Bx%7D/%7By%7D.png"
+            // url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
             // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
         ) : (
@@ -181,6 +187,7 @@ export function MapLayer(props) {
         {props.AdminPath}
         {props.MouseLocation}
         {props.CreateStop}
+        {props.UserPath}
         {/* <Dial />    */}
         {/* <TopBar style={{ zIndex: 1000 }}/> */}
         {/* <BusNum/> */}

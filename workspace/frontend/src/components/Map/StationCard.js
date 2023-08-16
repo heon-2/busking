@@ -147,7 +147,7 @@ export default function StationCard({ items, setItems }) {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className={
-                      "flex flex-col gap-3 rounded-xl bg-gray-200 p-4 ring-1 ring-gray-300 transition-shadow dark:bg-[#000000]" +
+                      "overflow-scroll h-96 flex flex-col gap-3 rounded-xl bg-gray-200 p-4 ring-1 ring-gray-300 transition-shadow dark:bg-[#000000]" +
                       (snapshot.isDraggingOver ? " shadow-lg" : " shadow")
                     }
                   >
@@ -177,7 +177,7 @@ export default function StationCard({ items, setItems }) {
                               {key === "노선" ? (
                                 <>
                                   ({index + 1}) &nbsp;&nbsp;&nbsp;
-                                  <Button
+                                  <Button className=""
                                     onClick={() =>
                                       deleteMarker(index, item.title)
                                     }

@@ -1,6 +1,8 @@
 package org.comfort42.busking.web.adapter.inbound;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.comfort42.busking.application.domain.model.Bus;
 import org.comfort42.busking.application.domain.model.Company;
@@ -26,12 +28,11 @@ class TrackDrivingController {
     record TrackDrivingRequestBody(BusId bus) {
     }
 
-    private static final RealtimeBusStateMapper realtimeBusStateMapper = RealtimeBusStateMapper.getInstance();
     private final ObjectMapper objectMapper;
     private final LoadRealtimeBusState loadRealtimeBusState;
 
     @PostMapping
-    ResponseEntity trackDriving(@RequestBody TrackDrivingRequestBody payload) {
+    ResponseEntity<?> trackDriving(@RequestBody TrackDrivingRequestBody payload) {
         try {
             if (payload.bus() == null) {
                 throw new IllegalArgumentException("bus object is required");
@@ -43,15 +44,18 @@ class TrackDrivingController {
 
             if (payload.bus().no() != -1) {
                 final var busId = Bus.BusId.of(companyId, payload.bus().no());
-                final var realtimeBusState = realtimeBusStateMapper.mapToJsonObject(objectMapper, loadRealtimeBusState.loadRealtimeBusState(busId));
-                obj.set("data", realtimeBusState);
+                obj.set("data", objectMapper.readValue(loadRealtimeBusState.loadRealtimeBusState(busId), ObjectNode.class));
             } else {
-                final var data = obj.putArray("data");
+                final var data = obj.putObject("data");
                 loadRealtimeBusState
                         .loadAllRealtimeBusState(companyId)
-                        .stream()
-                        .map(v -> realtimeBusStateMapper.mapToJsonObject(objectMapper, v))
-                        .forEach(data::add);
+                        .forEach(pair -> {
+                            try {
+                                data.set(pair.getFirst(), objectMapper.readValue(pair.getSecond(), ObjectNode.class));
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
             }
 
             return ResponseEntity

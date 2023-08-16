@@ -189,7 +189,7 @@ export function LiveLocation() {
         }
         let copy = [...selectedRoute]
         if ((markerLocations[selectedBus - 1][0] - copy[0][0])*(markerLocations[selectedBus - 1][0] - copy[1][0]) <= 0 &&
-        (markerLocations[selectedBus - 1][1] - copy[0][1])*(markerLocations[selectedBus - 1][1] - copy[1][1])
+        (markerLocations[selectedBus - 1][1] - copy[0][1])*(markerLocations[selectedBus - 1][1] - copy[1][1] <= 0)
         ) {
           break;
         }

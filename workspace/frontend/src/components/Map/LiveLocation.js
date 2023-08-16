@@ -5,6 +5,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
 import { useUserStore, useMapStore } from '../../store'
 
+function getNearPosition()
+
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
   const { selectedBus, selectedStations, selectedRoute, setSelectedBus, setSelectedStations, setSelectedRoute } = useUserStore();
@@ -86,14 +88,14 @@ export function LiveLocation() {
                   if(selectedRoute.length <= 1) {
                     break;
                   }
-                  let copy = [...selectedRoute]
-                  if ((markerLocations[selectedBus - 1][0] - copy[0][0])*(markerLocations[selectedBus - 1][0] - copy[1][0]) <= 0 &&
-                  (markerLocations[selectedBus - 1][1] - copy[0][1])*(markerLocations[selectedBus - 1][1] - copy[1][1] <= 0)
+                  let newcopy = [...selectedRoute]
+                  if ((copy[selectedBus - 1][0] - newcopy[0][0])*(copy[selectedBus - 1][0] - newcopy[1][0]) <= 0 &&
+                  (copy[selectedBus - 1][1] - newcopy[0][1])*(copy[selectedBus - 1][1] - newcopy[1][1] <= 0)
                   ) {
                     break;
                   }
-                  copy.shift()
-                  setSelectedRoute(copy)
+                  newcopy.shift()
+                  setSelectedRoute(newcopy)
                 }
               }
               // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);

@@ -10,4 +10,6 @@ public interface LoadStationPort {
     List<Station> loadStationList(Company.CompanyId companyId);
 
     Station loadStationById(Station.StationId stationId);
+
+    Station loadStationByName(String stationName);
 }

@@ -10,7 +10,7 @@ import (
 )
 
 type EndDrivingRequestBody struct {
-	Bus *BusObject `json:"bus" binding:"required"`
+	Bus *BusIdObject `json:"bus" binding:"required"`
 }
 
 func EndDrivingController(webApdatger *gin.Engine, drivingService *service.DrivingService) {

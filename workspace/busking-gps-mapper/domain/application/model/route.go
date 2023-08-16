@@ -28,6 +28,7 @@ type RouteFraction struct {
 type Route struct {
 	RouteId
 	RouteFractions []*RouteFraction
+	Stations       []*alg.Vec2
 	rtree.RTree
 }
 
@@ -57,8 +58,12 @@ func (r *Route) QueryRoute(targetArea *alg.Rect) []*RouteFraction {
 	return roads
 }
 
-func NewRoute(routeId RouteId, vertices []*alg.Vec2) *Route {
-	route := &Route{RouteId: routeId, RouteFractions: make([]*RouteFraction, 0, len(vertices))}
+func NewRoute(routeId RouteId, vertices []*alg.Vec2, stations []*alg.Vec2) *Route {
+	route := &Route{
+		RouteId:        routeId,
+		RouteFractions: make([]*RouteFraction, 0, len(vertices)),
+		Stations:       stations,
+	}
 
 	dist := 0.
 	for i := 0; i < len(vertices)-1; i++ {
@@ -79,7 +84,7 @@ func NewRoute(routeId RouteId, vertices []*alg.Vec2) *Route {
 	return route
 }
 
-func NewRouteWithPolyline(routeId RouteId, geometry string) (*Route, error) {
+func NewRouteWithPolyline(routeId RouteId, geometry string, stationLatlngs []*coord.LatLng) (*Route, error) {
 	data, _, err := polyline.DecodeCoords([]byte(geometry))
 	if err != nil {
 		return nil, fmt.Errorf("cache route: %w", err)
@@ -91,7 +96,12 @@ func NewRouteWithPolyline(routeId RouteId, geometry string) (*Route, error) {
 		vertices = append(vertices, projector.FromWGS84(coord.NewLatLng(data[i][0], data[i][1])))
 	}
 
-	route := NewRoute(routeId, vertices)
+	stations := make([]*alg.Vec2, 0, len(stationLatlngs))
+	for _, latlng := range stationLatlngs {
+		stations = append(stations, projector.FromWGS84(latlng))
+	}
+
+	route := NewRoute(routeId, vertices, stations)
 	return route, nil
 }
 

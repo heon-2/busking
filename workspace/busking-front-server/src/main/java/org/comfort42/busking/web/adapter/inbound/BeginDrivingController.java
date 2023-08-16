@@ -47,6 +47,15 @@ public class BeginDrivingController {
             final var route = loadRouteUseCase.loadRouteById(companyId, routeId);
 
             routeObj.put("geometry", route.getGeometry());
+            final var stationsObj = routeObj.putArray("stations");
+            for (int i = 0; i < route.getStations().size(); ++i) {
+                final var station = route.getStations().get(i);
+                final var latlngObj = objectMapper.createObjectNode();
+                latlngObj.put("lat", station.lat());
+                latlngObj.put("lng", station.lng());
+                stationsObj.add(latlngObj);
+            }
+
             requestMap.put("route", routeObj);
 
             String webclientResponse = WebClient.create()

@@ -3,14 +3,16 @@ package model
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 
 	err "busking.org/gps-mapper/domain/application/errors"
 	"github.com/gammazero/deque"
 )
 
 type DrivingState struct {
-	GpsLog *deque.Deque[*Location]
-	AdjLog *deque.Deque[*Location]
+	GpsLog     *deque.Deque[*Location]
+	AdjLog     *deque.Deque[*Location]
+	Passengers []atomic.Int32
 }
 
 type Driving struct {
@@ -31,8 +33,9 @@ func NewDriving(busId BusId, route *Route) *Driving {
 		BusId: busId,
 		Route: route,
 		State: &DrivingState{
-			GpsLog: deque.New[*Location](32),
-			AdjLog: deque.New[*Location](32),
+			GpsLog:     deque.New[*Location](32),
+			AdjLog:     deque.New[*Location](32),
+			Passengers: make([]atomic.Int32, len(route.Stations)),
 		},
 	}
 }

@@ -47,5 +47,5 @@ var Module = fx.Module(
 	serve(web_inbound.DriveController),
 	serve(web_inbound.BeginDrivingController),
 	serve(web_inbound.EndDrivingController),
-	serve(web_inbound.NearestRoadsController),
+	serve(web_inbound.JoinDrivingController),
 )

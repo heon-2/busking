@@ -10,7 +10,7 @@ import (
 )
 
 type DriveRequestBody struct {
-	Bus *BusObject `json:"bus" binding:"required"`
+	Bus *BusIdObject `json:"bus" binding:"required"`
 	Gps *struct {
 		Timestamp *int64        `json:"timestamp" binding:"required"`
 		Latlng    *LatLngObject `json:"latlng" binding:"required"`

@@ -79,7 +79,7 @@ useEffect(() => {
               </td>
               <td className="p-4">
                 <Typography variant="small" color="blue-gray" className="font-normal">
-                출근: {bus.routes[0]?.name || '미정'} / 퇴근: {bus.routes[1]?.name || '미정'}
+                {bus.routes[0]?.name || '미정'} / {bus.routes[1]?.name || '미정'}
                 </Typography>
               </td>
               <td className="p-4">

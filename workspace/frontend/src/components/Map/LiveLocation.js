@@ -5,7 +5,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
 import { useUserStore, useMapStore } from '../../store'
 
-function getNearPosition()
 
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);

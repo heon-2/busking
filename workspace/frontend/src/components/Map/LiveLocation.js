@@ -82,12 +82,12 @@ export function LiveLocation() {
               if (selectedBus == null || markerLocations[selectedBus - 1] == null) {
               }
               else {
+                let newcopy = [...selectedRoute]
                 while (true) { 
                   console.log('잘되나')
-                  if(selectedRoute.length <= 1) {
+                  if(newcopy.length <= 1) {
                     break;
                   }
-                  let newcopy = [...selectedRoute]
                   if ((copy[selectedBus - 1][0] - newcopy[0][0])*(copy[selectedBus - 1][0] - newcopy[1][0]) <= 0 &&
                   (copy[selectedBus - 1][1] - newcopy[0][1])*(copy[selectedBus - 1][1] - newcopy[1][1] <= 0)
                   ) {

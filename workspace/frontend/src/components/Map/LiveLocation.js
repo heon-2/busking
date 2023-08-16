@@ -178,7 +178,7 @@ export function LiveLocation() {
   }
 
   useEffect(() => {
-    if (selectedBus == null || markerLocations[selectedBus] == null) {
+    if (selectedBus == null || markerLocations[selectedBus - 1] == null) {
       return;
     }
     else {

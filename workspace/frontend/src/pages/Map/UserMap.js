@@ -20,6 +20,15 @@ export function UserMap() {
   const { busInfo, setBusInfo } = useMapStore(); 
   const navigate = useNavigate();
   useEffect(() => {
+    adjustZoom();
+  }, []); 
+
+  const adjustZoom = () => {
+    if (window.navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i)) {
+      document.body.style.zoom = '0.75'; 
+    }
+  };
+  useEffect(() => {
     console.log(user)
     if (user == null){
       navigate('/')

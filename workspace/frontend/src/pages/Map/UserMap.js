@@ -32,6 +32,7 @@ export function UserMap() {
   }, [])
 
   useEffect(() => {
+    setSelectedBus(null)
     axios.get('/api/companies/1/buses')
     .then((response) => {
       console.log(response.data)
@@ -47,19 +48,23 @@ export function UserMap() {
   useEffect(() => {
     console.log(busInfo)
     if (selectedBus == null) {
+      console.log(selectedStations)
       setSelectedStations([])
       setSelectedRoute(null)
     }
     else {
       if (busInfo.length < selectedBus) {
+        setSelectedStations([])
+        setSelectedRoute(null)
         return;
       }
       else if (busInfo.length > 0) {
         setSelectedRoute(polyline.decode(busInfo[selectedBus - 1].routes[0].geometry))
-        console.log(selectedRoute)
+        let copy = []
         busInfo[selectedBus - 1].routes[0].stations.map((station, index) => {
-        setSelectedStations([...selectedStations, [station.lat, station.lng]])
+          copy.push([station.lat, station.lng])
         })
+        setSelectedStations(copy)
       }
     }
   }, [selectedBus])

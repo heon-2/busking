@@ -87,7 +87,7 @@ export function LiveLocation() {
                       break;
                     }
                     console.log('제발...')
-                    if (Math.abs(copy[selectedBus - 1][0] - newcopy[0][0]) < 1e-10 && Math.abs(copy[selectedBus - 1][1] - newcopy[0][1]) < 1e-10){
+                    if (Math.abs(copy[selectedBus - 1][0] - newcopy[0][0]) < 1e-5 && Math.abs(copy[selectedBus - 1][1] - newcopy[0][1]) < 1e-5){
                       break;
                     }
                     newcopy.shift();

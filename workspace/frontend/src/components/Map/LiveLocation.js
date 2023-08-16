@@ -79,7 +79,6 @@ export function LiveLocation() {
               // lng = state.adj.latlng.lng;
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
               if (selectedBus == null || markerLocations[selectedBus - 1] == null) {
-                return;
               }
               else {
                 while (true) { 

@@ -2,7 +2,6 @@ package org.comfort42.busking.application.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.comfort42.busking.persistence.adapter.outbound.RouteStationJpaEntity;
 
 import java.util.ArrayList;
 import java.util.List;

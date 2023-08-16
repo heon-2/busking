@@ -79,22 +79,20 @@ export function LiveLocation() {
               // lat = state.adj.latlng.lat;
               // lng = state.adj.latlng.lng;
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
-              if (selectedBus == null || markerLocations[selectedBus - 1] == null) {
-              }
-              else {
-                let newcopy = [...selectedRoute]
-                while (true) { 
-                  console.log('잘되나')
-                  if(newcopy.length <= 1) {
-                    break;
+              if (selectedBus != null) {
+                if (selectedBus == Number(busNo)) {
+                  let newcopy = [...selectedRoute]
+                  while(true) {
+                    if (newcopy.length <= 1) {
+                      break;
+                    }
+                    console.log('제발...')
+                    if (Math.abs(copy[selectedBus - 1][0] - newcopy[0][0]) < 1e-10 && Math.abs(copy[selectedBus - 1][1] - newcopy[0][1]) < 1e-10){
+                      break;
+                    }
+                    newcopy.shift();
+                    setSelectedRoute(newcopy)
                   }
-                  if ((copy[selectedBus - 1][0] - newcopy[0][0])*(copy[selectedBus - 1][0] - newcopy[1][0]) <= 0 &&
-                  (copy[selectedBus - 1][1] - newcopy[0][1])*(copy[selectedBus - 1][1] - newcopy[1][1] <= 0)
-                  ) {
-                    break;
-                  }
-                  newcopy.shift()
-                  setSelectedRoute(newcopy)
                 }
               }
               // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);

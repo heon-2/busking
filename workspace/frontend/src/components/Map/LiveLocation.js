@@ -198,7 +198,13 @@ export function LiveLocation() {
           ))
         : <Marker position={markerLocations[selectedBus-1]} icon={busIcon}></Marker>
       }
-      
+      {
+        selectedBus == null || selectedStations == [] ?
+        <></> : 
+        selectedStations.map((station, index) => (
+          <Marker position={station}></Marker>
+        ))
+      }
       { 
       myLocate != null ? (
         <Marker position={myLocate} icon={personIcon}></Marker>

@@ -12,13 +12,18 @@ export const QRcodeScanner = (props) => {
 
       console.log("decodedData:", decodedData);
       console.log(decodedData.bus, decodedData.destination);
+      // const number1 = decodedData.bus.companyId;
+      // const number2 = decodedData.bus.no;
 
       axios.post("/api/realtime/driving/join", {
-        bus: decodedData.bus,
+        bus: 
+        {companyId: decodedData.bus.companyId, no: decodedData.bus.no},
         destination: decodedData.destination,
       });
-
-      console.log("QR코드 스캔 완료")
+      console.log(decodedData.bus);
+      console.log(decodedData.destination);
+      console.log("QR코드 스캔 완료");
+      
     } catch (error) {
       console.error(error);
     }

@@ -25,10 +25,7 @@ export function UserMap() {
       navigate('/')
     }
     else if (user.role != 'EMPLOYEE'){
-      if (user.role == 'COMPANY_ADMIN'){
-        navigate('/admin')
-      }
-      else if (user.role == 'DRIVER'){
+      if (user.role == 'DRIVER'){
         navigate('/knightselect')
       }
     }

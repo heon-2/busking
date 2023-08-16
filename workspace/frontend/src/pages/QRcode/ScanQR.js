@@ -9,11 +9,23 @@ import {
 import { useNavigate } from "react-router-dom";
 import { QR }  from "../../components/QRcode/QR";
 import { useQrStore } from '../../store.js';
+import { useUserStore } from '../../store.js';
+import { useEffect } from "react";
 
 export function ScanQR() {
   let navigate = useNavigate();
 
   const { selectedBus, isInBound , inBoundDeparture, inBoundDestination, outBoundDeparture, outBoundDestination } = useQrStore();
+  const { user } = useUserStore();
+  useEffect(() => { 
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role == 'DRIVER'){
+        navigate('/knightselect');
+    }
+  }, [])
 
   return (
     <div className="flex flex-col items-center justify-center h-screen overflow-y-auto bg-blue-50">

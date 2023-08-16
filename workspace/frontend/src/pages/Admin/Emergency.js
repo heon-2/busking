@@ -24,6 +24,17 @@ import { useNavigate } from "react-router-dom";
 const APPLICATION_SERVER_URL = "https://i9c108.p.ssafy.io/";
 export function Emergency() {
     const navigate = useNavigate();
+    const { user } = useUserStore();
+    useEffect(() => { 
+      console.log(user)
+      if (user == null){
+        navigate('/')
+      }
+      else if (user.role == 'EMPLOYEE'){
+          navigate('/usermap');
+        }
+    }, [])
+    
 
     useEffect(() => {
         joinSession(); // Automatically join the session when the component mounts
@@ -31,7 +42,7 @@ export function Emergency() {
       }, []);
 
   // 스토어에서 user를 불러와 user.fcmToken 사용하기
-  const { user } = useUserStore();
+  
   // 로컬 스토리지에서 accessToken 불러오기.
   const accessToken = localStorage.getItem("accessToken");
 
@@ -284,12 +295,12 @@ export function Emergency() {
 
   return (
     <div>
-      <div className="h-screen w-screen bg-transparent">
+      <div className="w-screen h-screen bg-transparent">
         
       </div>
       {/* {session === undefined ? (
         <div>
-          <Button className="w-80 h-20 text-3xl" onClick={() => {handleOpen("xl"); joinSession();}}>
+          <Button className="h-20 text-3xl w-80" onClick={() => {handleOpen("xl"); joinSession();}}>
             관리자와 화상채팅
           </Button>
         </div>
@@ -308,7 +319,7 @@ export function Emergency() {
         handler={handleOpen}
         className="bg-skyblue-50"
       >
-        <DialogHeader className="justify-center text-white text-4xl">
+        <DialogHeader className="justify-center text-4xl text-white">
           긴급 화상통화
         </DialogHeader>
         <DialogBody divider className="flex justify-center">
@@ -324,11 +335,11 @@ export function Emergency() {
               {subscribers.length === 0 ? (
                         <div>
                         <div>
-                        <Spinner className=" h-64 w-64 text-blue-500/10" />
+                        <Spinner className="w-64 h-64 text-blue-500/10" />
                         </div>
       
                         <div className="fixed mt-5">
-                        <Typography className="text-2xl font-semibold text-gray-100 mr-3"> 관리자와 연결 중입니다{dots} </Typography>
+                        <Typography className="mr-3 text-2xl font-semibold text-gray-100"> 관리자와 연결 중입니다{dots} </Typography>
                         </div>
                       </div>
               ) : (

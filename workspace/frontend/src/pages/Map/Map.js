@@ -26,6 +26,7 @@ import { CreateStop } from "../../components/Map/CreateStop.js";
 // import { StopList } from '../../components/Map/StopList.js'
 import StationContainer from "../../components/Map/StationContainer";
 import { CreateRoute } from "../../components/Map/CreateRoute";
+import { useUserStore } from "../../store.js";
 
 import {
   Card,
@@ -44,6 +45,27 @@ export function Map() {
   const [open, setOpen] = useState(false);
   const [pathName, setPathName] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
+
+  const { user } = useUserStore();
+  const navigate = useNavigate();
+  useEffect(() => { 
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role != 'COMPANY_ADMIN'){
+      if (user.role == 'EMPLOYEE'){
+        navigate('/usermap');
+      }
+      else if (user.role == 'DRIVER'){
+        navigate('/knightselect');
+      }
+    }
+  }, [])
+
+
+
+
   const handleCreate = () => {
     setCreateOpen(!createOpen);
   };
@@ -52,6 +74,10 @@ export function Map() {
   };
   const { hintPath, stopCreate, busNo, setStopCreate, setDirection, setBusNo } =
     useAdminStore();
+
+
+
+
   return (
     <div className="grid grid-cols-3">
       <div className="col-span-2">
@@ -103,7 +129,7 @@ export function Map() {
             <CardHeader
               variant="gradient"
               color="blue"
-              className="mb-4 grid h-28 place-items-center"
+              className="grid mb-4 h-28 place-items-center"
             >
               <Typography variant="h3" color="white">
                 노선 등록

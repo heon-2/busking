@@ -43,9 +43,14 @@ export function Page404() {
           {/* 삼항연산자 사용해서 루트 분리해요 */}
           {
             user?.role ? (
-              <Button to="/map" size="large" variant="contained" component={RouterLink}>
+              user.role == 'admin' ? (
+              <Button to="/admin" size="large" variant="contained" component={RouterLink}>
+                관리자 페이지로
+              </Button>) : (
+                <Button to="/map" size="large" variant="contained" component={RouterLink}>
                 홈으로
               </Button>
+              )
             ) : ( 
               <Button to="/" size="large" variant="contained" component={RouterLink}>
                 로그인 페이지로

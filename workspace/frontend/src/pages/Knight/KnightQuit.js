@@ -1,10 +1,28 @@
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { useBusStore } from "../../store";
+import { useBusStore, useUserStore } from "../../store";
 import axios from "axios";
+import { useEffect } from "react";
+
+
+
+
 export function KnightQuit() {
   const { busNumber } = useBusStore();
   const navigate = useNavigate();
+  const { user } = useUserStore();
+
+  useEffect(() => { 
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role == 'EMPLOYEE'){
+        navigate('/usermap');
+    }
+  }, [])
+
+
   function endDrive() {
     axios
       .post(

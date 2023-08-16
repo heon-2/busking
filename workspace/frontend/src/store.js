@@ -122,9 +122,14 @@ let qrStore = (set) => ({
   selectedBus: [],
   isInBound: true,
   inBoundDeparture: [],
-  inBoundDestination: "SSAFY",
+  inBoundDestination: [],
   outBoundDeparture: "SSAFY",
   outBoundDestination: [],
+  busbus: [],
+  destinationIndex: [],
+
+  setBusbus: (payload) => set({ busbus: payload }),
+  setDestinationIndex: (payload) => set({ destinationIndex: payload }),
   // setBusNumList: (payload) => set({ busNumList: payload }),
   setSelectedBus: (payload) => set({ selectedBus: payload }),
   setIsInBound: () =>

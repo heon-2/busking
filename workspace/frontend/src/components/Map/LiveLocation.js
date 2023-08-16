@@ -78,11 +78,31 @@ export function LiveLocation() {
               // lat = state.adj.latlng.lat;
               // lng = state.adj.latlng.lng;
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
+              if (selectedBus == null || markerLocations[selectedBus - 1] == null) {
+                return;
+              }
+              else {
+                while (true) { 
+                  console.log('잘되나')
+                  if(selectedRoute.length <= 1) {
+                    break;
+                  }
+                  let copy = [...selectedRoute]
+                  if ((markerLocations[selectedBus - 1][0] - copy[0][0])*(markerLocations[selectedBus - 1][0] - copy[1][0]) <= 0 &&
+                  (markerLocations[selectedBus - 1][1] - copy[0][1])*(markerLocations[selectedBus - 1][1] - copy[1][1] <= 0)
+                  ) {
+                    break;
+                  }
+                  copy.shift()
+                  setSelectedRoute(copy)
+                }
+              }
               // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);
             }
             // console.log(state.raw.latlng);
           }
           setMarkerLocations(copy);
+          
         }
 
         // const rlt = response.data.data;
@@ -176,28 +196,6 @@ export function LiveLocation() {
     console.log('내위치 :' + [userLat, userLng])
     setMyLocate([userLat, userLng]);
   }
-
-  useEffect(() => {
-    if (selectedBus == null || markerLocations[selectedBus - 1] == null) {
-      return;
-    }
-    else {
-      while (true) { 
-        console.log('잘되나')
-        if(selectedRoute.length <= 1) {
-          break;
-        }
-        let copy = [...selectedRoute]
-        if ((markerLocations[selectedBus - 1][0] - copy[0][0])*(markerLocations[selectedBus - 1][0] - copy[1][0]) <= 0 &&
-        (markerLocations[selectedBus - 1][1] - copy[0][1])*(markerLocations[selectedBus - 1][1] - copy[1][1] <= 0)
-        ) {
-          break;
-        }
-        copy.shift()
-        setSelectedRoute(copy)
-      }
-    }
-  }, [markerLocations, selectedBus])
 
   function error() {
     alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");

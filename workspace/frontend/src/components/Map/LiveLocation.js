@@ -62,7 +62,7 @@ export function LiveLocation() {
           let copy = [...markerLocations]
           for (const k in response.data.data) {
             const [_, companyId, busNo] = k.split(":");
-            const state = response.data.data[k];
+            const state = response.data.data[k].loc;
             console.log(state);
             console.log(state.adj)
             if (state.adj == null) {
@@ -104,7 +104,7 @@ export function LiveLocation() {
 
       getLocation();
       // console.log(lat, lng);
-    }, 2000);
+    }, 500);
     return () => {
       clearInterval(timer);
     }; // 1분을 밀리초로 표현한 값

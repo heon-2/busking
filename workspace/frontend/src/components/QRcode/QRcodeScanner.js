@@ -1,5 +1,6 @@
 import Html5QrcodePlugin from "../../Html5QrcodePlugin";
 import axios from "axios";
+import { useUserStore } from "../../store.js";
 
 export const QRcodeScanner = (props) => {
   const onNewScanResult = (decodedText, decodedResult) => {
@@ -7,16 +8,24 @@ export const QRcodeScanner = (props) => {
 
     try {
       const decodedData = JSON.parse(decodedText);
+      const accessToken = localStorage.getItem("accessToken");
+
       console.log("decodedData:", decodedData);
       alert(`Scan result = ${decodedText}`);
 
 
-      // axios 로 qr 에 담긴 정보랑 cnt도 어떻게 보내야할지 ?
+      // axios 로 qr코드 정보랑 헤더 담아서 accessToken 보내기
       // axios.post("/api/qr", {
       //   busId: decodedData.selectedBus,
       //   departure: decodedData.Departure,
       //   destination: decodedData.Destination,
-      // })
+      // },
+      // {
+      //   headers: {
+      //     Accept: "application/json",
+      //     Authorization: `Bearer ${accessToken}`,
+      //     },
+      // });
       // .then((res) => {
       //   console.log(res.data);
       // })

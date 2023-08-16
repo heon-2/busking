@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { FindMe } from "../../common/FindMe.js";
 import { BusInfo } from "../../components/Map/BusInfo";
 import { BusNum } from "../../components/Map/BusNum";
@@ -15,8 +16,24 @@ import axios from "axios";
 import polyline from "@mapbox/polyline";
 
 export function UserMap() {
-  const { selectedStations, selectedRoute, selectedBus, setSelectedStations, setSelectedRoute, setSelectedBus } = useUserStore();
+  const { user, selectedStations, selectedRoute, selectedBus, setSelectedStations, setSelectedRoute, setSelectedBus } = useUserStore();
   const { busInfo, setBusInfo } = useMapStore(); 
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role != 'EMPLOYEE'){
+      if (user.role == 'COMPANY_ADMIN'){
+        navigate('/admin')
+      }
+      else if (user.role == 'DRIVER'){
+        navigate('/knightselect')
+      }
+    }
+  }, [])
+
   useEffect(() => {
     axios.get('/api/companies/1/buses')
     .then((response) => {

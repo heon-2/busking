@@ -6,13 +6,7 @@ import { persist } from "zustand/middleware";
 // =======================================================
 
 let userStore = (set) => ({
-  user: {
-    email: "",
-    phoneNumber: "",
-    realName: "",
-    role: "",
-    username: "",
-  }, // JIRA.....
+  user: null, // JIRA.....  문제될시 원래대로
   accessToken: "",
   refreshToken: "",
   fcmToken: "",

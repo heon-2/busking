@@ -38,7 +38,7 @@ export function KnightMap() {
       
       navigator.geolocation.getCurrentPosition(success, error, options)
       // console.log(lat, lng);
-    }, 2000);
+    }, 500);
     return () => {
       clearInterval(timer);
     }; // 1분을 밀리초로 표현한 값
@@ -103,7 +103,7 @@ export function KnightMap() {
       </div>
       {/* 나중에 zindex 조정하기 */}
       <div className="flex fixed bottom-10 left-10" style={{ zIndex: 1000 }}>
-        <RTC></RTC>
+        {/* <RTC></RTC> */}
       </div>
       <div className="flex fixed bottom-10 right-10" style={{ zIndex: 1000 }}>
         <Button

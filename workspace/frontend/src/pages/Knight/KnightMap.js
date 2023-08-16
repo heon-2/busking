@@ -17,7 +17,6 @@ export function KnightMap() {
   const { busNumber } = useBusStore();
   const navigate = useNavigate();
   const { user, accessToken } = useUserStore();
-  let navigator = useNavigate();
 
   useEffect(() => { 
     console.log(user)

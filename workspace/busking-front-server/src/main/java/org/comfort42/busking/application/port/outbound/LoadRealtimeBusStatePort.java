@@ -8,7 +8,7 @@ import org.springframework.data.util.Pair;
 import java.util.List;
 
 public interface LoadRealtimeBusStatePort {
-    RealtimeBusState loadRealtimeBusState(final Bus.BusId busId);
+    String loadRealtimeBusState(final Bus.BusId busId);
 
-    List<Pair<String, RealtimeBusState>> loadAllRealtimeBusState(Company.CompanyId companyId);
+    List<Pair<String, String>> loadAllRealtimeBusState(Company.CompanyId companyId);
 }

@@ -9,16 +9,14 @@ import (
 	"busking.org/gps-mapper/alg"
 	"busking.org/gps-mapper/domain/application/model"
 	portout "busking.org/gps-mapper/domain/port/outbound"
-	"github.com/gammazero/deque"
 )
 
 type DrivingWorker struct {
 	driving *model.Driving
-	jobs    chan *model.Gps
+	jobs    chan *model.Location
 	kill    chan interface{}
-	log     *deque.Deque[*model.Gps]
 
-	saveBusLocationPort portout.SaveLocationEstimationPort
+	saveDrivingStatePort portout.SaveDrivingStatePort
 }
 
 type DrivingService struct {
@@ -26,7 +24,7 @@ type DrivingService struct {
 	drivingWorkersLock sync.RWMutex
 	drivingWorkers     map[model.BusId]*DrivingWorker
 
-	saveBusLocationPort    portout.SaveLocationEstimationPort
+	saveDrivingStatePort   portout.SaveDrivingStatePort
 	changeDrivingStatePort portout.ChangeDrivingStatePort
 }
 
@@ -42,35 +40,7 @@ type EndDrivingCommand struct {
 
 type FeedGpsCommand struct {
 	model.BusId
-	*model.Gps
-}
-
-func continuous(args ...*model.Gps) bool { // u<-v<-w
-	u := args[0]
-	v := args[1]
-
-	dt := float64(u.Timestamp-v.Timestamp) / 1e+3
-
-	if 3.0 < dt {
-		return false
-	}
-
-	if 3 <= len(args) {
-		w := args[2]
-		vu := u.Loc.Sub(v.Loc)
-		wv := v.Loc.Sub(w.Loc)
-
-		dv := vu.Norm()/float64(u.Timestamp-v.Timestamp)/1e-3 - wv.Norm()/float64(v.Timestamp-w.Timestamp)/1e-3
-		if 1.38889 < dv/dt { // a = 1.38889 m/s^2
-			return false
-		}
-
-		if dt*(math.Pi/4) < wv.Radian(vu) {
-			return false
-		}
-	}
-
-	return true
+	*model.Location
 }
 
 func findNearest(pt0 *alg.Vec2, fractions []*model.RouteFraction) *model.RoutePoint {
@@ -99,26 +69,34 @@ func findNearest(pt0 *alg.Vec2, fractions []*model.RouteFraction) *model.RoutePo
 	return minDistPoint
 }
 
-func (w *DrivingWorker) Run() {
+func (worker *DrivingWorker) Run() {
+	driving := worker.driving
+
 	for {
 		select {
-		case gps := <-w.jobs:
+		case loc := <-worker.jobs:
 
-			if w.log.Len() == w.log.Cap() {
-				w.log.PopFront()
+			fractions := driving.Route.QueryRoute(alg.NewRectCWH(&loc.Vec2, 50.0, 50.0))
+			nearest := findNearest(&loc.Vec2, fractions)
+
+			if driving.State.GpsLog.Len() == driving.State.GpsLog.Cap() {
+				driving.State.GpsLog.PopFront()
+				driving.State.AdjLog.PopFront()
 			}
-			w.log.PushBack(gps)
 
-			fractions := w.driving.Route.QueryRoute(alg.NewRectCWH(gps.Loc, 50.0, 50.0))
-			nearest := findNearest(gps.Loc, fractions)
-
-			if nearest != nil {
-				w.saveBusLocationPort.Save(w.driving.BusId, gps.Timestamp, gps.Loc, nearest.Point)
+			driving.State.GpsLog.PushBack(loc)
+			if nearest == nil {
+				driving.State.AdjLog.PushBack(nil)
 			} else {
-				w.saveBusLocationPort.Save(w.driving.BusId, gps.Timestamp, gps.Loc, nil)
+				driving.State.AdjLog.PushBack(&model.Location{
+					Timestamp: loc.Timestamp,
+					Vec2:      *nearest.Point,
+				})
 			}
 
-		case <-w.kill:
+			worker.saveDrivingStatePort.Save(driving.BusId, driving.State)
+
+		case <-worker.kill:
 			return
 		}
 	}
@@ -134,7 +112,7 @@ func (s *DrivingService) FeedGpsToWorker(cmd *FeedGpsCommand) error {
 		return errors.New("driving service: worker not found")
 	}
 
-	drivingWorker.jobs <- cmd.Gps
+	drivingWorker.jobs <- cmd.Location
 	return nil
 }
 
@@ -166,11 +144,10 @@ func (s *DrivingService) BeginDriving(cmd *BeginDrivingCommand) error {
 
 	worker := &DrivingWorker{
 		driving: driving,
-		jobs:    make(chan *model.Gps),
+		jobs:    make(chan *model.Location),
 		kill:    make(chan interface{}),
-		log:     deque.New[*model.Gps](16),
 
-		saveBusLocationPort: s.saveBusLocationPort,
+		saveDrivingStatePort: s.saveDrivingStatePort,
 	}
 
 	s.changeDrivingStatePort.BeginDriving(cmd.BusId)
@@ -211,12 +188,12 @@ func (s *DrivingService) deleteDrivingWorker(busId model.BusId) {
 }
 
 func NewDrivingService(
-	saveBusLocationPort portout.SaveLocationEstimationPort,
-	changeDrivingStatePort portout.ChangeDrivingStatePort,
-) *DrivingService {
+	saveDrivingStatePort portout.SaveDrivingStatePort,
+	changeDrivingStatePort portout.ChangeDrivingStatePort) *DrivingService {
+
 	return &DrivingService{
 		drivingWorkers:         map[model.BusId]*DrivingWorker{},
-		saveBusLocationPort:    saveBusLocationPort,
+		saveDrivingStatePort:   saveDrivingStatePort,
 		changeDrivingStatePort: changeDrivingStatePort,
 	}
 }

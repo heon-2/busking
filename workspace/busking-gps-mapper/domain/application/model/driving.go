@@ -5,12 +5,18 @@ import (
 	"sync"
 
 	err "busking.org/gps-mapper/domain/application/errors"
+	"github.com/gammazero/deque"
 )
+
+type DrivingState struct {
+	GpsLog *deque.Deque[*Location]
+	AdjLog *deque.Deque[*Location]
+}
 
 type Driving struct {
 	BusId
-
 	*Route
+	State *DrivingState
 }
 
 type DrivingManager struct {
@@ -21,7 +27,14 @@ type DrivingManager struct {
 var drivingManagerInstance *DrivingManager
 
 func NewDriving(busId BusId, route *Route) *Driving {
-	return &Driving{busId, route}
+	return &Driving{
+		BusId: busId,
+		Route: route,
+		State: &DrivingState{
+			GpsLog: deque.New[*Location](32),
+			AdjLog: deque.New[*Location](32),
+		},
+	}
 }
 
 func (dm *DrivingManager) GetDriving(busId BusId) (*Driving, bool) {

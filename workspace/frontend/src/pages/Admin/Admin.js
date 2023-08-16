@@ -21,7 +21,35 @@ import RTC from "./../../components/RTC/RTC";
 import { ReportList } from "./../../components/Admin/ReportList";
 import { BusList } from "./../../components/Admin/BusList";
 import { Map } from "./../../pages/Map/Map";
+import { useUserStore } from "../../store";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
+
+
 export function Admin() {
+
+  const { user } = useUserStore();
+  const navigate = useNavigate();
+  useEffect(() => { 
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role != 'COMPANY_ADMIN'){
+      if (user.role == 'EMPLOYEE'){
+        navigate('/usermap');
+      }
+      else if (user.role == 'DRIVER'){
+        navigate('/knightselect');
+      }
+    }
+  }, [])
+
+
+
   const [display, setDisplay] = useState("UserList");
 
   return (
@@ -29,7 +57,7 @@ export function Admin() {
       <div className="flex">
         <div className="LeftsideBar">
           <Card className="h-full min-h-[45rem] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-            <div className="mb-2 p-4 bg-blue-400 rounded-lg">
+            <div className="p-4 mb-2 bg-blue-400 rounded-lg">
               <Typography variant="h5" color="white">
                 관리자 메뉴
               </Typography>
@@ -45,13 +73,13 @@ export function Admin() {
               </ListItem>
               <ListItem onClick={() => setDisplay("BusList")}>
                 <ListItemPrefix>
-                  <LiaBusSolid className="h-5 w-5" />
+                  <LiaBusSolid className="w-5 h-5" />
                 </ListItemPrefix>
                 버스 정보 조회
               </ListItem>
               <ListItem onClick={() => setDisplay("RegisterBusRoute")}>
                 <ListItemPrefix>
-                  <GiBusStop className="h-5 w-5" />
+                  <GiBusStop className="w-5 h-5" />
                 </ListItemPrefix>
                 버스 노선 등록
               </ListItem>
@@ -75,7 +103,7 @@ export function Admin() {
               </ListItem>
               <ListItem onClick={() => setDisplay("RTC")}>
                 <ListItemPrefix>
-                  <UserCircleIcon className="h-5 w-5" />
+                  <UserCircleIcon className="w-5 h-5" />
                 </ListItemPrefix>
                 긴급 화상 통화
                 <ListItemSuffix>
@@ -92,12 +120,12 @@ export function Admin() {
           </Card>
         </div>
 
-        <div className="flex flex-col flex-grow pl-4 mt-1 pr-8 p-4">
+        <div className="flex flex-col flex-grow p-4 pl-4 pr-8 mt-1">
           {display === "UserList" && <UserList />}
           {display === "BusList" && <BusList />}
           {display === "RegisterBusRoute" && <Map />}
           {display === "ReportList" && <ReportList />}
-          <div className="flex items-center h-full justify-center">
+          <div className="flex items-center justify-center h-full">
             {display === "RTC" && <RTC />}
           </div>
         </div>

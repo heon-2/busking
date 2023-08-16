@@ -4,12 +4,13 @@ import { useQrStore } from '../../store.js';
 
 export function QR() {
 
-    const { selectedBus, isInBound ,inBoundDeparture, inBoundDestination, outBoundDeparture, outBoundDestination } = useQrStore();
+    const { busbus, destinationIndex ,selectedBus, isInBound ,inBoundDeparture, inBoundDestination, outBoundDeparture, outBoundDestination } = useQrStore();
 
     const data = {
-        selectedBus: selectedBus,
+        bus: busbus,
         Departure: isInBound ? inBoundDeparture : outBoundDeparture,
-        Destination: isInBound ? inBoundDestination : outBoundDestination
+        nameDestination: isInBound ? inBoundDestination : outBoundDestination,
+        destination: destinationIndex,
     };
 
     const qrCodeUrl = `https://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=${encodeURIComponent(JSON.stringify(data))}`;

@@ -5,7 +5,7 @@ import axios from "axios";
 
 export function SelectQR() {
 
-    const { selectedBus, isInBound, inBoundDeparture, inBoundDestination, outBoundDeparture, outBoundDestination ,setSelectedBus, setIsInBound , setInBoundDeparture, setInBoundDestination, setOutBoundDeparture, setOutBoundDestination } = useQrStore();
+    const { busbus, setBusbus, destinationIndex, setDestinationIndex ,selectedBus, isInBound, inBoundDeparture, inBoundDestination, outBoundDeparture, outBoundDestination ,setSelectedBus, setIsInBound , setInBoundDeparture, setInBoundDestination, setOutBoundDeparture, setOutBoundDestination } = useQrStore();
 
     const [busList, setBusList] = useState([]);  // 버스 호차 리스트
     const [inBoundStations, setInBoundStations] = useState([]);  // 출근 정류장 리스트
@@ -20,6 +20,8 @@ export function SelectQR() {
     console.log(isInBound)
     console.log(inBoundStations)
     console.log(outBoundStations)
+    console.log(destinationIndex)
+    console.log(busbus)
 
 
 
@@ -64,7 +66,12 @@ export function SelectQR() {
             const stations = inBoundRoute.stations.map(station => station.name);
                                         
             const inBoundStationsWithoutLast = stations.slice(0, -1);
+            setBusbus(res.data.id);
+            console.log(res.data.id);
             setInBoundStations(inBoundStationsWithoutLast);
+            setInBoundDestination(stations[stations.length - 1]);
+            const lastStationId = inBoundRoute.stations[inBoundRoute.stations.length - 1].id;
+            setDestinationIndex(lastStationId);
         })
         .catch((err) => {
             console.log(err);
@@ -80,7 +87,12 @@ export function SelectQR() {
             const outBoundRoute = res.data.routes[1];
             const stations = outBoundRoute.stations.map(station => station.name);
             const outBoundStationsWithoutFirst = stations.slice(1);
+            setBusbus(res.data.id);
             setOutBoundStations(outBoundStationsWithoutFirst);
+            setOutBoundDeparture(stations[0]);
+            const firstStationId = outBoundRoute.stations[0].id;
+            setDestinationIndex(firstStationId);
+
         })
         .catch((err) => {
             console.log(err);

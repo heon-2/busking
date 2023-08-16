@@ -17,6 +17,10 @@ import {
   CardFooter,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../../store";
+
+
+
 export function ReportDetail() {
   const navigate = useNavigate();
   const { reportId } = useParams();
@@ -32,6 +36,23 @@ export function ReportDetail() {
   //     const map = useMap();
   //     const { location } = { lng, lat };
   //   }
+  const { user } = useUserStore();
+  useEffect(() => { 
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role != 'COMPANY_ADMIN'){
+      if (user.role == 'EMPLOYEE'){
+        navigate('/usermap');
+      }
+      else if (user.role == 'DRIVER'){
+        navigate('/knightselect');
+      }
+    }
+  }, [])
+
+
 
   useEffect(() => {
     // console.log(props);
@@ -72,7 +93,7 @@ export function ReportDetail() {
           <MapLayer />
         </div>
         <div className="col-span-1 text-start">
-          <Card className="mt-10 w-full">
+          <Card className="w-full mt-10">
             <CardBody>
               <Typography variant="h3" color="blue-gray" className="mb-2">
                 상세 신고 내용

@@ -10,20 +10,32 @@ import {
 } from "@material-tailwind/react";
 
 import { TopBar } from "./../../components/Map/TopBar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUserStore, useMapStore } from "../../store";
 import Swal from "sweetalert2";
 
 export function Report() {
-  // const [alert, setAlert] = useState(false);
+  const { user } = useUserStore();
   const navigate = useNavigate();
+
+  useEffect(() => { 
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role == 'DRIVER'){
+        navigate('/knightselect');
+    }
+  }, [])
+  // const [alert, setAlert] = useState(false);
+  
   const [reportContent, setReportContent] = useState("");
   // busStore에서 가져와야 하는 거 아닌가 체크해보자.
   const { busNum } = useUserStore();
   const { location } = useMapStore();
-  const { user } = useUserStore();
+  
   const [reportCheck, setReportCheck] = useState(false);
   // 경도
   const lat = location[0];
@@ -80,7 +92,7 @@ export function Report() {
 
   return (
     <div className="bg-[#F0F4F9] flex justify-center h-screen overflow-y-scroll">
-      <div className="absoulte fixed top-2 left-2 right-2 ">
+      <div className="fixed absoulte top-2 left-2 right-2 ">
         <TopBar content={"사용자 불편 신고"} page={"report"}></TopBar>
         {/* {alert && (
           <Alert
@@ -105,7 +117,7 @@ export function Report() {
             신고 내용
           </Typography>
         </div>
-        <Card className="shadow-blue-gray-900/20 rounded-md">
+        <Card className="rounded-md shadow-blue-gray-900/20">
           <List className="flex justify-center">
             {reportList.map((item, idx) => {
               return (
@@ -118,7 +130,7 @@ export function Report() {
                 >
                   <label
                     htmlFor={`vertical-list-${idx}`}
-                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                    className="flex items-center w-full px-3 py-2 cursor-pointer"
                   >
                     <ListItemPrefix className="mr-3">
                       <Checkbox

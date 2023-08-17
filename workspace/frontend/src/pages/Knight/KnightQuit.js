@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { useBusStore, useUserStore } from "../../store";
+import { useBusStore, useUserStore, useQrStore } from "../../store";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -8,6 +8,7 @@ import { useEffect } from "react";
 
 
 export function KnightQuit() {
+  const { currentPeople, setCurrentPeople } = useQrStore();
   const { busNumber } = useBusStore();
   const navigate = useNavigate();
   const { user } = useUserStore();

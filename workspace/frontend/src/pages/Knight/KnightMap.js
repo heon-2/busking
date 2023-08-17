@@ -78,6 +78,9 @@ export function KnightMap() {
             // lng: 126.81739,
             lat: la,
             lng: ln,
+            // [35.20631, 126.81919]
+            // lat: 35.20631,
+            // lng: 126.81919,
           },
         },
       },

@@ -70,8 +70,11 @@ export function SelectQR() {
             console.log(res.data.id);
             setInBoundStations(inBoundStationsWithoutLast);
             setInBoundDestination(stations[stations.length - 1]);
-            const lastStationId = inBoundRoute.stations[inBoundRoute.stations.length - 1].id;
-            setDestinationIndex(lastStationId);
+            const lastStationId = inBoundRoute.stations[inBoundRoute.stations.length - 1];
+            const lastStationIndex = inBoundRoute.stations[lastStationId];
+            console.log(lastStationIndex)
+            setDestinationIndex(lastStationIndex);
+
         })
         .catch((err) => {
             console.log(err);
@@ -91,7 +94,9 @@ export function SelectQR() {
             setOutBoundStations(outBoundStationsWithoutFirst);
             setOutBoundDeparture(stations[0]);
             const firstStationId = outBoundRoute.stations[0].id;
-            setDestinationIndex(firstStationId);
+            console.log(outBoundDeparture)
+            console.log(destinationIndex)
+            // setDestinationIndex();
 
         })
         .catch((err) => {
@@ -150,7 +155,10 @@ export function SelectQR() {
         <Option></Option>
         </Select>
         <Select color="purple" label="하차지 선택" className="bg-white shadow-lg"
-        onChange={(e) => setOutBoundDestination(e)}>
+        onChange={(e) => {setOutBoundDestination(e);
+            const selectedStationIndex = outBoundStations.findIndex(station => station === e);
+            setDestinationIndex(selectedStationIndex);
+        console.log(outBoundDestination);}}>
         {outBoundStations.map((stationName, index) => (
         <Option key={index} value={stationName}>
         {stationName}

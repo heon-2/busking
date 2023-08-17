@@ -8,7 +8,7 @@ import { useUserStore, useMapStore } from '../../store'
 
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
-  const { selectedBus, selectedStations, selectedRoute, setSelectedBus, setSelectedStations, setSelectedRoute } = useUserStore();
+  const { selectedBuss, selectedStations, selectedRoute, setSelectedBuss, setSelectedStations, setSelectedRoute } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   const { busInfo, setBusInfo } = useMapStore();
   // let [lat, lng] = [null, null];
@@ -38,7 +38,7 @@ export function LiveLocation() {
   //   }, [delay]);
   // }
   //////////////////////
-  function getLocation() {
+  function getLocation(selectedBuss) {
     axios
       .post(
         "/api/realtime/driving/track",
@@ -56,7 +56,7 @@ export function LiveLocation() {
       )
       .then((response) => {
         // console.log("제발 보내져라 제발 제발 ");
-        console.log(response.data.data);
+        console.log(selectedBuss)
         if (response.data.data == {}) {
           setMarkerLocations([null, null, null, null])
         }
@@ -65,34 +65,38 @@ export function LiveLocation() {
           for (const k in response.data.data) {
             const [_, companyId, busNo] = k.split(":");
             const state = response.data.data[k].loc;
-            console.log(state);
-            console.log(state.adj)
+            // console.log(state);
+            // console.log(state.adj)
+            // console.log(selectedRoute)
             if (state.adj == null) {
-              console.log("check1")
+              // console.log("check1")
               // console.log("진짜 내위치");
               copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
               // lat = state.raw.latlng.lat;
               // lng = state.raw.latlng.lng;
             } else {
-              console.log("check2")
+              // console.log("check2")
               // console.log("보정된 내 위치");
               // lat = state.adj.latlng.lat;
               // lng = state.adj.latlng.lng;
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
-              if (selectedBus != null) {
-                if (selectedBus == Number(busNo)) {
+              console.log(selectedBuss)
+              // console.log(busNo)
+              if (selectedBuss != null) {
+                if (selectedBuss == Number(busNo)) {
                   let newcopy = [...selectedRoute]
+                  let i = 0;
                   while(true) {
-                    if (newcopy.length <= 1) {
+                    if (newcopy.length <= i) {
                       break;
                     }
                     console.log('제발...')
-                    if (Math.abs(copy[selectedBus - 1][0] - newcopy[0][0]) < 1e-5 && Math.abs(copy[selectedBus - 1][1] - newcopy[0][1]) < 1e-5){
+                    if (Math.abs(copy[selectedBuss - 1][0] - newcopy[i][0]) < 1e-5 && Math.abs(copy[selectedBuss - 1][1] - newcopy[i][1]) < 1e-5){
                       break;
                     }
-                    newcopy.shift();
-                    setSelectedRoute(newcopy)
+                    i++;
                   }
+                  setSelectedRoute(newcopy.splice(i));
                 }
               }
               // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);
@@ -120,14 +124,13 @@ export function LiveLocation() {
   useEffect(() => {
     const timer = setInterval(() => {
       // console.log(location);
-
-      getLocation();
+      getLocation(selectedBuss);
       // console.log(lat, lng);
     }, 500);
     return () => {
       clearInterval(timer);
     }; // 1분을 밀리초로 표현한 값
-  }, []);
+  }, [selectedRoute]);
 
   const customIcon = L.icon({
     iconUrl: "bus_512.png",
@@ -205,20 +208,20 @@ export function LiveLocation() {
   return (
     <>
       {
-        selectedBus == null || selectedRoute == null ?
+        selectedBuss == null || selectedRoute == null ?
         <></> : <Polyline positions={selectedRoute}></Polyline>
       }
       {
-        selectedBus == null || markerLocations[selectedBus-1] == null? 
+        selectedBuss == null || markerLocations[selectedBuss-1] == null? 
           markerLocations.map((loc, index) => (
             
             loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
             
           ))
-        : <Marker position={markerLocations[selectedBus-1]} icon={busIcon}></Marker>
+        : <Marker position={markerLocations[selectedBuss-1]} icon={busIcon}></Marker>
       }
       {
-        selectedBus == null || selectedStations == [] ?
+        selectedBuss == null || selectedStations == [] ?
         <></> : 
         selectedStations.map((station, index) => ( 
           <Marker key={index} position={station[0]}>

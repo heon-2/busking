@@ -78,6 +78,9 @@ export function KnightMap() {
             // lng: 126.81739,
             lat: la,
             lng: ln,
+            // [35.20631, 126.81919]
+            // lat: 35.20631,
+            // lng: 126.81919,
           },
         },
       },
@@ -113,7 +116,7 @@ export function KnightMap() {
       </div>
       {/* 나중에 zindex 조정하기 */}
       <div className="fixed flex bottom-10 left-10" style={{ zIndex: 1000 }}>
-        {/* <RTC></RTC> */}
+        <RTC></RTC>
       </div>
       <div className="fixed flex bottom-10 right-10" style={{ zIndex: 1000 }}>
         <Button

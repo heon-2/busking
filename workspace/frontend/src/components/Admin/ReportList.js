@@ -3,7 +3,6 @@ import { Card, Typography, Button } from "@material-tailwind/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { ReportDetail } from "./ReportDetail";
 export function ReportList() {
   // 토큰 불러와서
   const accessToken = localStorage.getItem("accessToken");
@@ -50,7 +49,6 @@ export function ReportList() {
           path="report/:reportId"
           element={<ReportDetail reportId={reportId} />}
         /> */}
-      {/* <ReportDetail></ReportDetail> */}
 
       <Card className="h-full w-full overflow-scroll mt-4">
         <table className="w-full min-w-max table-auto text-left">
@@ -86,7 +84,6 @@ export function ReportList() {
               // Object.values(row.reportId))
               <tr
                 onClick={() => {
-                  // <ReportDetail reportId={Object.values(row.reportId)} />;
                   navigate("/report/" + Object.values(row.reportId));
                 }}
                 key={index}

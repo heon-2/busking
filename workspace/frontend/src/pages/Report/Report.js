@@ -13,7 +13,7 @@ import { TopBar } from "./../../components/Map/TopBar";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useUserStore, useMapStore } from "../../store";
+import { useUserStore, useMapStore, useBusStore } from "../../store";
 import Swal from "sweetalert2";
 
 export function Report() {
@@ -29,19 +29,17 @@ export function Report() {
         navigate('/knightselect');
     }
   }, [])
-  // const [alert, setAlert] = useState(false);
-  
   const [reportContent, setReportContent] = useState("");
-  // busStore에서 가져와야 하는 거 아닌가 체크해보자.
+
   const { busNum } = useUserStore();
   const { location } = useMapStore();
   
   const [reportCheck, setReportCheck] = useState(false);
+  const {busNumber} = useBusStore();
   // 경도
   const lat = location[0];
   // 위도
   const lng = location[1];
-  // console.log(location);
   const accessToken = localStorage.getItem("accessToken");
 
   // 신고 항목들 변수로 담기
@@ -52,10 +50,7 @@ export function Report() {
     "응급 상황 발생 ( 교통사고 등 )",
     "무정차 출발",
   ]);
-  // busNum랑 companyId는 NULL값이 됨..
   function sendReport(reportContent) {
-    console.log(reportContent);
-    // console.log(busNum); // undefined
     axios
       .post(
         "/api/reports",
@@ -63,8 +58,8 @@ export function Report() {
           description: reportContent,
           lng: lng,
           lat: lat,
-          busNum: 1,
-          companyId: 1,
+          busNum: busNumber,
+          companyId: user.companyId,
         },
 
         {
@@ -76,16 +71,10 @@ export function Report() {
       )
       .then((response) => {
         console.log("성공");
-        // console.log(response)
-        // console.log(222)
-        console.log(response);
         console.log(response.data);
-        // console.log(response.data.reportContent)
-        // localStorage.setItem('accessToken', response.data.accessToken)
-        // setUser(response.data.user)
+
       })
       .catch((error) => {
-        console.log("되겠냐");
         console.log(error);
       });
   }
@@ -94,17 +83,6 @@ export function Report() {
     <div className="bg-[#F0F4F9] flex justify-center h-screen overflow-y-scroll">
       <div className="fixed absoulte top-2 left-2 right-2 ">
         <TopBar content={"사용자 불편 신고"} page={"report"}></TopBar>
-        {/* {alert && (
-          <Alert
-            color="green"
-            animate={{
-              mount: { y: 0 },
-              unmount: { y: 100 },
-            }}
-          >
-            고객님의 신고 접수가 정상 처리되었습니다.
-          </Alert>
-        )} */}
         <div className="flex justify-center">
           <img
             className="mt-5 mb-5 h-[30vh] lg:h-[30vh] lg:object-fill lg:w-1/4 w-full rounded-lg object-cover object-center shadow-lg shadow-blue-gray-900/30"
@@ -168,12 +146,7 @@ export function Report() {
                     navigate("/usermap");
                   }
                 });
-
-                // setTimeout(() => {
-                //   navigate("/usermap");
-                // }, 2000);
               }
-              // alert("신고가 완료됐습니다.");
             }
             className="bg-red-400 mr-10 w-[30vw]"
           >

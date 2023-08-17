@@ -11,9 +11,21 @@ import { StationDetail } from './StationDetail.js';
 import { useUserStore } from '../../store'
 
 export function BusNum() {
-    const { selectedBus, setSelectedBus } = useUserStore();
+    const { selectedBuss, setSelectedBuss } = useUserStore();
     const navigate = useNavigate();
     const [num, setNum] = useState([false, false, false, false]);
+
+    useEffect(() => {
+        let tmp = null
+        num.map((item, index) => {
+            if (item == true) {
+                tmp = index + 1
+            }
+        })
+        console.log(tmp)
+
+        setSelectedBuss(tmp)
+    }, [num])
 
     return (
         // 4개의 버스 번호를 표시하는 버튼. -> 열을 4개로 쪼개서 버튼 하나당 한 열에 배치. ( 이거 zIndex 400부터 표시됨.. )
@@ -28,11 +40,11 @@ export function BusNum() {
     {
         num.map((item, index) => {
             if (item === false) {
-                return <div className="w-1/4"><Button key={index} color="white" className="w-full h-full shadow-lg shadow-black/40" onClick={() => toggleBus({index, num, selectedBus, setNum, setSelectedBus})}><BiBus className="inline-block align-middle mr-2"></BiBus>
+                return <div className="w-1/4"><Button key={index} color="white" className="w-full h-full shadow-lg shadow-black/40" onClick={() => toggleBus({index, num, selectedBuss, setNum, setSelectedBuss})}><BiBus className="inline-block align-middle mr-2"></BiBus>
                     <span className="inline-block align-middle">{index+1}</span></Button></div>
             } else {
                 return <div className="w-1/4"> 
-                    <Button key={index} className="w-full h-full shadow-lg shadow-black/50" onClick={() => toggleBus({index, num, selectedBus, setNum, setSelectedBus})}>
+                    <Button key={index} className="w-full h-full shadow-lg shadow-black/50" onClick={() => toggleBus({index, num, selectedBuss, setNum, setSelectedBuss})}>
                         <BiBus className="inline-block align-middle mr-2"></BiBus>
                         <span className="inline-block align-middle">{index+1}</span>
                     </Button>
@@ -67,15 +79,17 @@ export function BusNum() {
     ) 
   }
 
-function toggleBus({index, num, selectedBus, setNum, setSelectedBus}) {
+function toggleBus({index, num, selectedBuss, setNum, setSelectedBuss}) {
     let copy = [...num]
+    let tmp = null
     copy.map((item, i) => {
-        if (i === index) {
-            if (selectedBus != i+1){
-                setSelectedBus(i+1)
+        console.log(typeof(i))
+        if (i == index) {
+            if (selectedBuss != i+1){
+                tmp = i + 1
             }
             else {
-                setSelectedBus(null)
+                tmp = null
             }
             copy[i] = !item
         }
@@ -83,6 +97,5 @@ function toggleBus({index, num, selectedBus, setNum, setSelectedBus}) {
             copy[i] = false
         }
     })
-    console.log(copy)
     setNum(copy)
 }

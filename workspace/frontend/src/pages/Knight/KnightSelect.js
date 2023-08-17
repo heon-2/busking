@@ -41,7 +41,7 @@ async function startDrive(num) {
       return;
     }
     else {
-      const rId = Number(response.data[num-1].routes[0].id)
+      const rId = Number(response.data[num-1].routes[1].id)
       console.log(rId)
       axios
         .post(

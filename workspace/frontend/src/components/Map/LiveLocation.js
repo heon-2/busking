@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Marker, Polyline, Popup } from "react-leaflet";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
-import { useUserStore, useMapStore } from '../../store'
+import { useUserStore, useMapStore, useQrStore } from '../../store'
 
 
 export function LiveLocation() {
@@ -11,33 +11,8 @@ export function LiveLocation() {
   const { selectedBuss, selectedStations, selectedRoute, setSelectedBuss, setSelectedStations, setSelectedRoute } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   const { busInfo, setBusInfo } = useMapStore();
-  // let [lat, lng] = [null, null];
-  // r-query 공부해야할부분
-  // const { data, error, isLoading } = useQuery("busLocation", getLocation);
-  // const queryClient = useQueryClient();
+  const { currentPeople,setCurrentPeople } = useQrStore();
 
-  // useInterval(() => {
-  //   queryClient.invalidateQueries("busLocation"); // Invalidate the query cache to refetch data
-  // }, 3000); // Update every 3 seconds
-
-  // function useInterval(callback, delay) {
-  //   const savedCallback = useRef();
-
-  //   useEffect(() => {
-  //     savedCallback.current = callback;
-  //   }, [callback]);
-
-  //   useEffect(() => {
-  //     function tick() {
-  //       savedCallback.current();
-  //     }
-  //     if (delay !== null) {
-  //       const id = setInterval(tick, delay);
-  //       return () => clearInterval(id);
-  //     }
-  //   }, [delay]);
-  // }
-  //////////////////////
   function getLocation(selectedBuss) {
     axios
       .post(
@@ -55,34 +30,36 @@ export function LiveLocation() {
         }
       )
       .then((response) => {
-        // console.log("제발 보내져라 제발 제발 ");
+
         console.log(selectedBuss)
         console.log(response.data.data)
         if (response.data.data == {}) {
           setMarkerLocations([null, null, null, null])
+          setCurrentPeople([0,0,0,0])
         }
         else {
           let copy = [...markerLocations]
           for (const k in response.data.data) {
             const [_, companyId, busNo] = k.split(":");
             const state = response.data.data[k].loc;
-            // console.log(state);
-            // console.log(state.adj)
-            // console.log(selectedRoute)
+            const passengers = response.data.data[k].passengers;
+
+          // 각 버스 호차마다 탑승객 수를 구함. 
+          const sumPassengers = passengers.reduce(function add(sum,currValue) {
+            return sum + currValue;
+          },0);
+          
+          let copy2 = [...currentPeople]
+          copy2[busNo-1] = sumPassengers
+          setCurrentPeople(copy2)
             if (state.adj == null) {
-              // console.log("check1")
-              // console.log("진짜 내위치");
+
               copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
-              // lat = state.raw.latlng.lat;
-              // lng = state.raw.latlng.lng;
+
             } else {
-              // console.log("check2")
-              // console.log("보정된 내 위치");
-              // lat = state.adj.latlng.lat;
-              // lng = state.adj.latlng.lng;
+
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
               console.log(selectedBuss)
-              // console.log(busNo)
               if (selectedBuss != null) {
                 if (selectedBuss == Number(busNo)) {
                   let newcopy = [...selectedRoute]
@@ -100,37 +77,26 @@ export function LiveLocation() {
                   setSelectedRoute(newcopy.splice(i));
                 }
               }
-              // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);
             }
-            // console.log(state.raw.latlng);
           }
           setMarkerLocations(copy);
           
         }
 
-        // const rlt = response.data.data;
-        // setMarkerLocation([rlt.lat, rlt.lng]);
-        // console.log("위치수신함", rlt.lat, rlt.lng);
       })
       .catch((error) => {
-        // console.log("안 보내졌따 ㅅㅄㅄㅄㅄㅄㅄ");
         console.error(error);
       });
   }
 
-  // setInterval(() => {
-  //   getLocation();
-  // }, 3000); // 1분을 밀리초로 표현한 값
 
   useEffect(() => {
     const timer = setInterval(() => {
-      // console.log(location);
       getLocation(selectedBuss);
-      // console.log(lat, lng);
     }, 500);
     return () => {
       clearInterval(timer);
-    }; // 1분을 밀리초로 표현한 값
+    };
   }, [selectedRoute]);
 
   const customIcon = L.icon({
@@ -170,19 +136,12 @@ export function LiveLocation() {
     maximumAge: 0,
     // timeout: 27000,
   };
-  // function success(position) {
-  //   // setLocation([position.coords.latitude, position.coords.longitude]);
-  //   setLatlng([position.coords.latitude, position.coords.longitude]);
-  //   console.log(position);
-  // }
-  // navigator.geolocation.watchPosition(success, error, options);
+
 
   useEffect(() => {
     const timer = setInterval(() => {
-      // console.log(location);
 
       navigator.geolocation.getCurrentPosition(success, error, options)
-      // console.log(lat, lng);
     }, 500);
     return () => {
       clearInterval(timer);
@@ -192,7 +151,6 @@ export function LiveLocation() {
 
   const [myLocate, setMyLocate] = useState(null);
   function success(position) {
-    // setLocation([position.coords.latitude, position.coords.longitude]);
     const userLat = position.coords.latitude;
     const userLng = position.coords.longitude;
     console.log('내위치 :' + [userLat, userLng])
@@ -200,7 +158,7 @@ export function LiveLocation() {
   }
 
   function error() {
-    alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");
+    console.log("죄송합니다. 위치 정보를 사용할 수 없습니다.");
   }
 /////////////////////////
 const stationPopup = {
@@ -209,8 +167,6 @@ const stationPopup = {
   className: 'custom-popup',
   offset: [0,-25],
     };
-
-
 
     const polylineOptions = {
       color: '#344A82',
@@ -254,9 +210,6 @@ const stationPopup = {
       myLocate != null ? (
         <Marker position={myLocate} icon={personIcon}></Marker>
       ) : null}
-      {/* {lat != null ? (
-        <Marker position={[lat, lng]}></Marker>
-      ) : null} */}
     </>
   );
 }

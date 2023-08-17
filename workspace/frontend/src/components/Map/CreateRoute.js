@@ -132,7 +132,19 @@ async function RegisterRoute({
     console.log(response3);
     const response4 = await axios.get("/api/companies/1/routes");
     console.log(response4.data);
-    const rId = response4.data[response4.data.length - 1].id;
+    let rId = 0;
+    
+    function fetchName() {
+      let check = 0;
+      for (let i =0; i<response4.data.length;i++){
+        if (response4.data[i].name == pName){
+          check = response4.data[i].id
+        }
+      }
+      return check;
+    }
+    rId = await fetchName();
+    console.log(rId)
     const response5 = await axios.post(
       `/api/companies/1/buses/${pNo}/assign`,
       {

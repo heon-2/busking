@@ -115,6 +115,7 @@ export function MapLayer(props) {
         {props.MouseLocation}
         {props.CreateStop}
         {props.UserPath}
+        {props.Bus}
         {/* <Dial />    */}
         {/* <TopBar style={{ zIndex: 1000 }}/> */}
         {/* <BusNum/> */}

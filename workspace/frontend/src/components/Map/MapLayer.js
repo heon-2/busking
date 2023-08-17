@@ -155,6 +155,8 @@ export function MapLayer(props) {
         zoom={11}
         style={{ width: "100vw", height: "100vh" }}
         zoomControl={false}
+        // 오른쪽 하단 Leaflet 없애는 설정
+        attributionControl={false} 
       >
         {/* 기본 맵 */}
         {mapType === false ? (

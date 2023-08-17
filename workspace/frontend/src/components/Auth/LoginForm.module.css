@@ -1,0 +1,15 @@
+/* LoginForm.module.css 
+버스 애니메이션을 위해 만든 css 페이지*/
+@keyframes slideRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  .animatedBus {
+    animation: slideRight 20s linear infinite;
+
+  }

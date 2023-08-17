@@ -114,7 +114,7 @@ export const useBusStore = create(busStore);
 function isTimeInBound() {
   const now = new Date();
   const hours = now.getHours();
-  return hours >= 3 || hours < 10;
+  return hours >= 3 && hours < 10;
 }
 
 let qrStore = (set) => ({

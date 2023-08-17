@@ -30,7 +30,6 @@ export function BusNum() {
     return (
         // 4개의 버스 번호를 표시하는 버튼. -> 열을 4개로 쪼개서 버튼 하나당 한 열에 배치. ( 이거 zIndex 400부터 표시됨.. )
         <div>
-    {/* <div className="flex fixed justify-center bottom-0 w-screen h-12 grid-cols-4 gap-3" style={{ zIndex: 400}}> */}
 <div className="flex w-screen h-10 grid-cols-4 gap-3 mb-3" style={{ zIndex: 400}}>
 
     <div className="pl-px">
@@ -64,9 +63,6 @@ export function BusNum() {
         return value && <BusInfo index={index+1}></BusInfo>;
     })}
 </div>
-{/* <div className="bg-white-h-1/5">
-    <StationDetail></StationDetail>
-</div> */}
 
 <div className=""></div>
 

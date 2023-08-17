@@ -7,7 +7,6 @@ import { useUserStore, useMapStore, useQrStore } from '../../store'
 
 
 export function LiveLocation() {
-  // const [markerLocation, setMarkerLocation] = useState(null);
   const { selectedBuss, selectedStations, selectedRoute, setSelectedBuss, setSelectedStations, setSelectedRoute } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   const { busInfo, setBusInfo } = useMapStore();

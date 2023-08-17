@@ -12,12 +12,8 @@ import {
 
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-// import "./App.css";
 import UserVideoComponent from "./UserVideoComponent";
 import { useUserStore } from "../../store";
-
-// const APPLICATION_SERVER_URL =
-//   process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
 
 const APPLICATION_SERVER_URL = "https://i9c108.p.ssafy.io/";
 export default function RTC() {
@@ -197,21 +193,6 @@ export default function RTC() {
     };
   }, [leaveSession]);
 
-  /**
-   * --------------------------------------------
-   * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-   * --------------------------------------------
-   * The methods below request the creation of a Session and a Token to
-   * your application server. This keeps your OpenVidu deployment secure.
-   *
-   * In this sample code, there is no user control at all. Anybody could
-   * access your application server endpoints! In a real production
-   * environment, your application server must identify the user to allow
-   * access to the endpoints.
-   *
-   * Visit https://docs.openvidu.io/en/stable/application-server to learn
-   * more about the integration of OpenVidu in your application server.
-   */
   const getToken = useCallback(async () => {
     return createSession(mySessionId).then((sessionId) =>
       createToken(sessionId)
@@ -242,11 +223,9 @@ export default function RTC() {
 
     const pushAlarm =() => axios.post(
       "/api/fcm/notification",
-      // 푸시 알람을 위해 admin 으로 고정.
-      // 그러면 반대에서 푸시 알람을 하려면 userId를 받아서 보내야 하는데?
+
       {
         userId : 'admin'
-        // userId : user.username
       },
       {
         headers: {
@@ -262,7 +241,7 @@ export default function RTC() {
       console.log('왜 안 되냐 대체');
     });
 
-  // 점 3개 왔다갔다 하기.
+  // 점 4개 움직이기 
   const [dots, setDots] = useState("....");
 
   useEffect(() => {
@@ -288,13 +267,7 @@ export default function RTC() {
           긴급 화상통화 연결
         </Button>
       </div>
-      {/* {session === undefined ? (
-        <div>
-          <Button className="w-80 h-20 text-3xl" onClick={() => {handleOpen("xl"); joinSession();}}>
-            관리자와 화상채팅
-          </Button>
-        </div>
-      ) : null} */}
+
 
       <Dialog
         open={
@@ -337,8 +310,6 @@ export default function RTC() {
                   {subscribers.map((sub, i) => (
                     <div
                       key={sub.id}
-                      // className="stream-container col-md-6 col-xs-6"
-                      // onClick={() => handleMainVideoStream(sub)}
                     >
                       <span>{sub.id}</span>
                       <UserVideoComponent streamManager={sub} />
@@ -346,16 +317,7 @@ export default function RTC() {
                   ))}
                 </div>
               )}
-              {/* {subscribers.map((sub, i) => (
-                <div
-                  key={sub.id}
-                  // className="stream-container col-md-6 col-xs-6"
-                  // onClick={() => handleMainVideoStream(sub)}
-                >
-                  <span>{sub.id}</span>
-                  <UserVideoComponent streamManager={sub} />
-                </div>
-              ))} */}
+      
             </div>
           </div>
         </DialogBody>

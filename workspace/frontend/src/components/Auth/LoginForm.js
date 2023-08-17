@@ -176,7 +176,6 @@ async function onLogin({
 
       if (fcmToken) console.log("token: ", fcmToken);
       else console.log("Can not get Token");
-      // console.log(accessToken)
       // FCM token을 서버에 전송
       const response3 = await axios.post(
         "/api/fcm",

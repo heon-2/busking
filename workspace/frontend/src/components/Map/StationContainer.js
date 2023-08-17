@@ -41,21 +41,3 @@ const StationContainer = () => {
 
 export default StationContainer;
 
-// useEffect(() => {
-//   // console.log(items)
-//   let copy = JSON.parse(JSON.stringify(items))
-//   console.log(markers)
-//   copy['routes'] = hintPath.map((_, i) => ({
-//     id: `${markers[i].title}`,
-//     title: `${markers[i].title}`,
-//     status: 'false',
-//     lat: markers[i].lat,
-//     lng: markers[i].lng,
-//   }))
-//   setItems(copy)
-//   console.log('이거 먹힘?')
-// }, [markers])
-
-// useEffect(() => {
-//   stations
-// }, [])

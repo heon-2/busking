@@ -6,7 +6,7 @@ export function StationDetail() {
     return (
         
         <div className="h-[15vh]">
-            이거 되냐?
+            정류장 디테일페이지
         </div>
     )
 }

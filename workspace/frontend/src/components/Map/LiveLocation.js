@@ -57,6 +57,7 @@ export function LiveLocation() {
       .then((response) => {
         // console.log("제발 보내져라 제발 제발 ");
         console.log(selectedBuss)
+        console.log(response.data.data)
         if (response.data.data == {}) {
           setMarkerLocations([null, null, null, null])
         }

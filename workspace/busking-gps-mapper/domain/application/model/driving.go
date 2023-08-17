@@ -9,9 +9,14 @@ import (
 	"github.com/gammazero/deque"
 )
 
+type DrivingLog struct {
+	Raw          *Location
+	AdjTimestamp int64
+	AdjDetails   *RoutePoint
+}
+
 type DrivingState struct {
-	GpsLog     *deque.Deque[*Location]
-	AdjLog     *deque.Deque[*Location]
+	Logs       *deque.Deque[*DrivingLog]
 	Passengers []atomic.Int32
 }
 
@@ -33,8 +38,7 @@ func NewDriving(busId BusId, route *Route) *Driving {
 		BusId: busId,
 		Route: route,
 		State: &DrivingState{
-			GpsLog:     deque.New[*Location](32),
-			AdjLog:     deque.New[*Location](32),
+			Logs:       deque.New[*DrivingLog](16),
 			Passengers: make([]atomic.Int32, len(route.Stations)),
 		},
 	}

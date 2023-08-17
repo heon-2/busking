@@ -14,7 +14,6 @@ export default function useLocation() {
 
   useEffect(() => {
     if (coords !== undefined) {
-      // console.log(coords);
       setLocation([coords.latitude, coords.longitude]);
     }
   }, [coords]);

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
+	"busking.org/gps-mapper/alg"
 	"busking.org/gps-mapper/coord"
 	"busking.org/gps-mapper/domain/application/model"
 	"github.com/redis/go-redis/v9"
@@ -11,30 +12,46 @@ import (
 
 type SaveDrivingStateAdapter struct{ Db *redis.Client }
 
+func mapToLatLngObj(xy *alg.Vec2) *map[string]any {
+	if xy == nil {
+		return nil
+	}
+
+	latlng := coord.GetProjector().ToWGS84(xy)
+	return &map[string]any{
+		"lat": latlng.Lat,
+		"lng": latlng.Lng,
+	}
+}
+
+func mapToAdjObj(timestamp int64, pt *model.RoutePoint) *map[string]any {
+	if timestamp == -1 {
+		return nil
+	}
+
+	return &map[string]any{
+		"timestamp": timestamp,
+		"latlng":    mapToLatLngObj(pt.Point),
+		"details": map[string]any{
+			"index": pt.Ref.Index,
+			"ratio": pt.Ratio,
+		},
+	}
+}
+
 func (adpt *SaveDrivingStateAdapter) Save(busId model.BusId, state *model.DrivingState) {
-	var raw *map[string]any
-	var adj *map[string]any
-	if 0 < state.GpsLog.Len() {
-		latlng := coord.GetProjector().ToWGS84(&state.GpsLog.Back().Vec2)
-		raw = &map[string]any{
-			"timestamp": state.GpsLog.Back().Timestamp,
-			"latlng": map[string]any{
-				"lat": latlng.Lat,
-				"lng": latlng.Lng,
+	var loc *map[string]any
+
+	if 0 < state.Logs.Len() {
+		latest := state.Logs.Back()
+
+		loc = &map[string]any{
+			"raw": map[string]any{
+				"timestamp": latest.Raw.Timestamp,
+				"latlng":    mapToLatLngObj(&latest.Raw.Vec2),
 			},
+			"adj": mapToAdjObj(latest.AdjTimestamp, latest.AdjDetails),
 		}
-
-		if state.AdjLog.Back() != nil {
-			latlng := coord.GetProjector().ToWGS84(&state.AdjLog.Back().Vec2)
-			adj = &map[string]any{
-				"timestamp": state.AdjLog.Back().Timestamp,
-				"latlng": map[string]any{
-					"lat": latlng.Lat,
-					"lng": latlng.Lng,
-				},
-			}
-		}
-
 	}
 
 	passengers := make([]int, len(state.Passengers))
@@ -43,10 +60,7 @@ func (adpt *SaveDrivingStateAdapter) Save(busId model.BusId, state *model.Drivin
 	}
 
 	snapshot := map[string]any{
-		"loc": map[string]any{
-			"raw": raw,
-			"adj": adj,
-		},
+		"loc":        loc,
 		"passengers": passengers,
 	}
 

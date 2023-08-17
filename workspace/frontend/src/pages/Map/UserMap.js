@@ -38,8 +38,6 @@ export function UserMap() {
     .then((response) => {
       console.log(response.data)
       setBusInfo(response.data)
-      // console.log(response.data[0].routes[0].stations)
-      // console.log(polyline.decode(response.data[0].routes[0].geometry))
     })
     .catch((error) => {
       console.log(error)
@@ -110,27 +108,3 @@ export function UserMap() {
   );
 }
 
-
-// function setCoords({ hintPath, newPath, setNewPath, setGeometry, stopCreate }) {
-//   console.log(hintPath);
-//   if (stopCreate === true) {
-//     return;
-//   }
-//   if (hintPath.length < 2) {
-//     setNewPath([]);
-//     setGeometry("");
-//   } else {
-//     axios
-//       .post("/api/routes/generate", {
-//         hints: hintPath,
-//       })
-//       .then((res) => {
-//         console.log(res.data.route.geometry);
-//         setGeometry(res.data.route.geometry);
-//         setNewPath(polyline.decode(res.data.route.geometry));
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   }
-// }

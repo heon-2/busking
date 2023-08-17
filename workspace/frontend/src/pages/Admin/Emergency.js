@@ -13,13 +13,11 @@ import {
 
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-// import "./App.css";
 import UserVideoComponent from "./../../components/RTC/UserVideoComponent";
 import { useUserStore } from "./../../store.js";
 import { useNavigate } from "react-router-dom";
 
-// const APPLICATION_SERVER_URL =
-//   process.env.NODE_ENV === "production" ? "" : "https://demos.openvidu.io/";
+
 
 const APPLICATION_SERVER_URL = "https://i9c108.p.ssafy.io/";
 export function Emergency() {
@@ -216,21 +214,6 @@ export function Emergency() {
     };
   }, [leaveSession]);
 
-  /**
-   * --------------------------------------------
-   * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-   * --------------------------------------------
-   * The methods below request the creation of a Session and a Token to
-   * your application server. This keeps your OpenVidu deployment secure.
-   *
-   * In this sample code, there is no user control at all. Anybody could
-   * access your application server endpoints! In a real production
-   * environment, your application server must identify the user to allow
-   * access to the endpoints.
-   *
-   * Visit https://docs.openvidu.io/en/stable/application-server to learn
-   * more about the integration of OpenVidu in your application server.
-   */
   const getToken = useCallback(async () => {
     return createSession(mySessionId).then((sessionId) =>
       createToken(sessionId)
@@ -261,11 +244,8 @@ export function Emergency() {
 
     const pushAlarm =() => axios.post(
       "/api/fcm/notification",
-      // 푸시 알람을 위해 admin 으로 고정.
-      // 그러면 반대에서 푸시 알람을 하려면 userId를 받아서 보내야 하는데?
       {
         userId : 'admin'
-        // userId : user.username
       },
       {
         headers: {
@@ -298,13 +278,7 @@ export function Emergency() {
       <div className="w-screen h-screen bg-transparent">
         
       </div>
-      {/* {session === undefined ? (
-        <div>
-          <Button className="h-20 text-3xl w-80" onClick={() => {handleOpen("xl"); joinSession();}}>
-            관리자와 화상채팅
-          </Button>
-        </div>
-      ) : null} */}
+
 
       <Dialog
         open={
@@ -347,8 +321,6 @@ export function Emergency() {
                   {subscribers.map((sub, i) => (
                     <div
                       key={sub.id}
-                      // className="stream-container col-md-6 col-xs-6"
-                      // onClick={() => handleMainVideoStream(sub)}
                     >
                       <span>{sub.id}</span>
                       <UserVideoComponent streamManager={sub} />
@@ -356,16 +328,7 @@ export function Emergency() {
                   ))}
                 </div>
               )}
-              {/* {subscribers.map((sub, i) => (
-                <div
-                  key={sub.id}
-                  // className="stream-container col-md-6 col-xs-6"
-                  // onClick={() => handleMainVideoStream(sub)}
-                >
-                  <span>{sub.id}</span>
-                  <UserVideoComponent streamManager={sub} />
-                </div>
-              ))} */}
+              
             </div>
           </div>
         </DialogBody>

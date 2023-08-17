@@ -25,64 +25,7 @@ import rbush from "rbush";
 import { useAdminStore } from "../../store.js";
 
 export function MapLayer(props) {
-  // const [markers, setMarkers] = useState([]);
-  // const [coordinates, setCoordinates] = useState([]);
-  // const [coordinatesList, setCoordinatesList] = useState([]);
 
-  // function MyComponent() {
-  //   const map = useMapEvents({
-  //     click: (e) => {
-  //       const { lat, lng } = e.latlng;
-
-  //       // 마커 아이콘 스타일 설정
-
-  //       // 마커에 적용될 스타일 설정
-  //       const markerOptions = {
-  //         draggable: true, // 마커를 드래그할 수 있도록 설정
-  //       };
-
-  //       // 마커 생성 및 스타일 적용
-  //       const newMarker = L.marker([lat, lng], markerOptions);
-  //       const markerId = markers.length; // 마커에 부여할 고유한 ID 또는 인덱스
-
-  //       // 드래그 이벤트 리스너 등록
-  //       newMarker.on('dragend', (event) => {
-  //         // const { lat, lng } = event.target.getLatLng();
-  //         // console.log('새로운 좌표:', lat, lng);
-  //         const { lat, lng } = event.target.getLatLng();
-  //         let copy = [...coordinates]
-  //         copy.push([lat, lng])
-  //         setCoordinates(copy)
-  //         console.log(copy)
-  //       });
-
-  //       let copy = [...coordinates]
-  //       copy.push([lat, lng])
-  //       setCoordinates(copy)
-  //       console.log(copy)
-  //       // 생성한 마커와 ID를 상태에 추가
-  //       setMarkers([...markers, { marker: newMarker }]);
-
-  //       console.log('클릭 좌표:', lat, lng);
-  //       console.log(newMarker)
-  //     }
-  //   });
-  // }
-
-  // const deleteMarker = (markerId) => {
-  //   let copy = [...markers]
-  //   copy.splice(markerId, 1)
-  //   setMarkers(copy);
-  //   copy = [...coordinates]
-  //   copy.splice(markerId, 1)
-  //   setCoordinates(copy)
-  // };
-
-  // useEffect(() => {
-  //   if (coordinates.length >= 2) {
-  //     setCoords({coordinates, coordinatesList, setCoordinatesList})
-  //   }
-  // }, [coordinates])
 
   // 현재 내 위치, 지도 타입(일반, 위성), 지도 중심, 버스 경로, 버스 정보(혼잡도 등)
   const {
@@ -96,25 +39,7 @@ export function MapLayer(props) {
     setBusPath,
     setBusInfo,
   } = useMapStore();
-  // 내 위치 받아올 함수
-  // const fetchLocation = () => {
-  //   if ("geolocation" in navigator) {
-  //     const options = {
-  //       enableHighAccuracy: true, // 여기서 true로 변경하면 정확한 위치 정보를 요청합니다.
-  //     };
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         setLocation([position.coords.latitude, position.coords.longitude]);
-  //         // console.log(location);
-  //       },
-  //       (error) => {
-  //         console.error("Error getting location:", error);
-  //       }
-  //     );
-  //   } else {
-  //     console.log("Geolocation is not available");
-  //   }
-  // };
+
 
   function success(position) {
     setLocation([position.coords.latitude, position.coords.longitude]);
@@ -217,18 +142,3 @@ export function MapLayer(props) {
   );
 }
 
-// function setCoords({coordinates, coordinatesList, setCoordinatesList}) {
-//   if (coordinates.length < 2) {
-//     alert("경유지를 2개 이상 설정해주세요.")
-//   }
-//   else {
-//     axios.post('/api/routes/generate', {
-//       hints: coordinates,
-//     })
-//     .then((res) => {
-//       console.log(res)
-//       setCoordinatesList(polyline.decode(res.data.route.geometry))
-//     })
-//   }
-
-// }

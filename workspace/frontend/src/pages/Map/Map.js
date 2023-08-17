@@ -23,7 +23,6 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { PathContainer } from "../../components/Map/PathContainer.js";
 import { MouseLocation } from "../../components/Map/MouseLocation";
 import { CreateStop } from "../../components/Map/CreateStop.js";
-// import { StopList } from '../../components/Map/StopList.js'
 import StationContainer from "../../components/Map/StationContainer";
 import { CreateRoute } from "../../components/Map/CreateRoute";
 import { useUserStore } from "../../store.js";
@@ -96,10 +95,6 @@ export function Map() {
       <div className="col-span-1 my-auto">
         <StationContainer></StationContainer>
 
-        {/* <DndProvider backend={HTML5Backend} >
-                <PathContainer className=""></PathContainer>
-                <PathContainer className=""></PathContainer>
-            </DndProvider> */}
         {stopCreate ? null : (
           <Button
             onClick={() => {
@@ -151,9 +146,7 @@ export function Map() {
               />
             </CardBody>
             <CardFooter className="pt-0">
-              {/* <Button variant="gradient" onClick={() => {handleCreate(); CreateRoute(); setPathName('')}} fullWidth>
-              등록
-            </Button> */}
+ 
               <CreateRoute
                 handleCreate={handleCreate}
                 setPathName={setPathName}

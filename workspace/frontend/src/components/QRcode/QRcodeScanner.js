@@ -1,9 +1,16 @@
 import Html5QrcodePlugin from "../../Html5QrcodePlugin";
 import axios from "axios";
 import { useUserStore } from "../../store.js";
+import { useEffect } from "react";
 
 export const QRcodeScanner = (props) => {
+  let isThrottled = false;
+
+
   const onNewScanResult = (decodedText, decodedResult) => {
+    if (!isThrottled) {
+      isThrottled = true;
+      
     console.log(`Scan result = ${decodedText}`, decodedResult);
 
     try {
@@ -12,8 +19,6 @@ export const QRcodeScanner = (props) => {
 
       console.log("decodedData:", decodedData);
       console.log(decodedData.bus, decodedData.destination);
-      // const number1 = decodedData.bus.companyId;
-      // const number2 = decodedData.bus.no;
 
       axios.post("/api/realtime/driving/join", {
         bus: 
@@ -27,7 +32,13 @@ export const QRcodeScanner = (props) => {
     } catch (error) {
       console.error(error);
     }
+
+    setTimeout(() => {
+      isThrottled = false;
+    }, 2000);
+  }
   };
+
 
   return (
     <div className="w-full h-full">

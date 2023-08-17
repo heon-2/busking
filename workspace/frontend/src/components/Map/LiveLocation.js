@@ -34,7 +34,7 @@ export function LiveLocation() {
         console.log(response.data.data)
         if (response.data.data == {}) {
           setMarkerLocations([null, null, null, null])
-          setCurrentPeople([0,0,0,0])
+          // setCurrentPeople([0,0,0,0])
         }
         else {
           let copy = [...markerLocations]

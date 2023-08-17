@@ -63,7 +63,7 @@ export function UserMap() {
         let nPath = []
         console.log(selectedBuss)
         console.log(busInfo[selectedBuss - 1])
-        let tmp = [...polyline.decode(busInfo[selectedBuss - 1].routes[0].geometry)]
+        let tmp = [...polyline.decode(busInfo[selectedBuss - 1].routes[1].geometry)]
         console.log(tmp)
         for (let i = 0; i < tmp.length - 1; i++) {
           nPath.push(tmp[i])
@@ -74,7 +74,7 @@ export function UserMap() {
         console.log(nPath)
         setSelectedRoute(nPath)
         let copy = []
-        busInfo[selectedBuss - 1].routes[0].stations.map((station, index) => {
+        busInfo[selectedBuss - 1].routes[1].stations.map((station, index) => {
           console.log(station)
           copy.push([[station.lat, station.lng], station.name])
         })

@@ -9,9 +9,6 @@ export function FindMe() {
   const { location } = useMapStore();
 
   return location ? (
-    // <IconButton size="lg" className="rounded-full top-20 flex justify-end ml-3" onClick={() => {map.flyTo(location, 17,{
-    //   duration: 2,
-    // });}} style={{zIndex: 2000}}>
 <div className="fixed top-20 left-4 " style={{ zIndex: 1000}}>
     <IconButton
       size="lg"

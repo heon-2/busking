@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import Swal from "sweetalert2";
-
+import styles from './LoginForm.module.css';
 export function LoginForm() {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -30,11 +30,25 @@ export function LoginForm() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center flex-grow h-screen p-4 pl-4 pr-8">
-      <div className="bg-transparent shadow-none">
-        <div className="absolute h-[400px] transform bg-orange-200 shadow-lg w-[350px] card rounded-3xl rotate-12"></div>
+    
+    <div className="flex flex-col items-center  justify-center flex-grow h-screen p-4 pl-4 pr-8">
+<div className={`${styles.animatedBus} flex fixed desktop:top-20 top-7`} >
+      <img
+          src="bus_512.png"
+          alt="Bus"
+          className="w-28 h-28 z-50"
+          style={{zIndex:4000}}
+        />
+         </div>
+      <div className="-mt-1 bg-transparent shadow-none relative">
+      
+      <div className={`absolute h-[400px] transform bg-orange-200 shadow-lg w-[350px] card rounded-3xl rotate-12 `}>
+       
+      </div>
+        
         <div className="absolute h-[400px] transform bg-blue-200 shadow-lg w-[350px] card rounded-3xl -rotate-12"></div>
         <Card className="m-2 w-full max-w-[24rem]">
+        
           <CardHeader
             variant="gradient"
             color="blue"
@@ -198,34 +212,5 @@ async function onLogin({
   } catch (error) {
     console.log(error);
     Swal.fire("로그인 실패!", "다시 시도해 주세요.", "error");
-    // Swal.fire("Good job!", "You clicked the button!", "success");
   }
 }
-///////////////////////firebase//////////////////////////
-
-// function onUser(){
-//    const accessToken = localStorage.getItem('accessToken')
-//    console.log(accessToken)
-//    axios.get('/api/users',
-// //    {
-// //     description: "adsdadasaffasfwf111sd",
-// //     lng: 1,
-// //     lat: 1,
-// //     busNum: 3,
-// //     companyId: 1
-// //    },
-//    {headers: {
-//     'Accept': 'application/json',
-//     'Authorization' : `Bearer ${accessToken}`,
-//    }}
-// //    {queries:{
-// //     'Authorization': `Bearer ${accessToken}`
-// //    }}
-//    )
-//    .then((response) => {
-//     console.log(response)
-//    })
-//    .catch((error) => {
-//     console.log(error)
-//    })
-// }

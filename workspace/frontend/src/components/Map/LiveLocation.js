@@ -213,8 +213,8 @@ const stationPopup = {
 
     const polylineOptions = {
       color: '#344A82',
-      weight: 6,
-      opacity: 0.9,
+      weight: 9,
+      // opacity: 1,
       // dashArray: '5,6,7,8, 10', // 점선 스타일
       lineJoin: 'miter', // 선의 연결 부분 스타일 ( miter, bevel, round,miter-clip )
     };

@@ -12,7 +12,7 @@ export function LiveLocation() {
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   const { busInfo, setBusInfo } = useMapStore();
   const { currentPeople,setCurrentPeople } = useQrStore();
-
+  console.log(currentPeople)
   function getLocation(selectedBuss) {
     axios
       .post(
@@ -50,7 +50,7 @@ export function LiveLocation() {
           },0);
           
           let copy2 = [...currentPeople]
-          copy2[busNo-1] = sumPassengers
+          copy2[Number(busNo)-1] = sumPassengers
           setCurrentPeople(copy2)
             if (state.adj == null) {
 

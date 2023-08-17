@@ -127,7 +127,7 @@ let qrStore = (set) => ({
   outBoundDestination: [],
   busbus: [],
   destinationIndex: [],
-
+  currentPeople : [0,0,0,0],
   setBusbus: (payload) => set({ busbus: payload }),
   setDestinationIndex: (payload) => set({ destinationIndex: payload }),
   // setBusNumList: (payload) => set({ busNumList: payload }),
@@ -140,6 +140,7 @@ let qrStore = (set) => ({
   setInBoundDestination: (payload) => set({ inBoundDestination: payload }),
   setOutBoundDeparture: (payload) => set({ outBoundDeparture: payload }),
   setOutBoundDestination: (payload) => set({ outBoundDestination: payload }),
+  setCurrentPeople: (payload) => set({ currentPeople: payload }),
 });
 
 qrStore = persist(qrStore, { name: "qr_settings" });

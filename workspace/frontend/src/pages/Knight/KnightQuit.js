@@ -43,6 +43,9 @@ export function KnightQuit() {
       .then((response) => {
         console.log("보내졌다");
         console.log(response);
+        let copy = [...currentPeople]
+        copy[busNumber-1] = 0;
+        setCurrentPeople(copy)
       })
       .catch((error) => {
         console.error(error);

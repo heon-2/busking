@@ -1,4 +1,5 @@
 import { MapLayer } from "./../../components/Map/MapLayer";
+import { Polyline, Marker } from 'react-leaflet'
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,7 +15,7 @@ import {
 export function KnightMap() {
   const [latlng, setLatlng] = useState(null);
   const { location } = useMapStore();
-  const { busNumber } = useBusStore();
+  const { busNumber, busPath, busStations } = useBusStore();
   const navigate = useNavigate();
   const { user, accessToken } = useUserStore();
 
@@ -95,7 +96,14 @@ export function KnightMap() {
     return (
       <div>
       <div className="z-0">
-        <MapLayer></MapLayer>
+        <MapLayer
+        UserPath={<Polyline positions={busPath}></Polyline>}
+        Marker={
+          busStations.map((station, index) => (
+            <Marker position={station}></Marker>
+          ))
+        }
+        ></MapLayer>
       </div>
       {/* 나중에 zindex 조정하기 */}
       <div className="fixed flex bottom-10 left-10" style={{ zIndex: 1000 }}>

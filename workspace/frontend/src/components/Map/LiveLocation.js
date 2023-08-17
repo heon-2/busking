@@ -202,14 +202,29 @@ export function LiveLocation() {
     alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");
   }
 /////////////////////////
+const stationPopup = {
+  minWidth: 5, // 최소 너비
+  closeButton: false, // 닫기 버튼 숨김
+  className: 'custom-popup',
+  offset: [0,-25],
+    };
 
+
+
+    const polylineOptions = {
+      color: '#344A82',
+      weight: 6,
+      opacity: 0.9,
+      // dashArray: '5,6,7,8, 10', // 점선 스타일
+      lineJoin: 'miter', // 선의 연결 부분 스타일 ( miter, bevel, round,miter-clip )
+    };
 
 
   return (
     <>
       {
         selectedBuss == null || selectedRoute == null ?
-        <></> : <Polyline positions={selectedRoute}></Polyline>
+        <></> : <Polyline positions={selectedRoute} {...polylineOptions}></Polyline>
       }
       {
         selectedBuss == null || markerLocations[selectedBuss-1] == null? 
@@ -224,9 +239,14 @@ export function LiveLocation() {
         selectedBuss == null || selectedStations == [] ?
         <></> : 
         selectedStations.map((station, index) => ( 
-          <Marker key={index} position={station[0]}>
-            <Popup>{station[1]}</Popup>
-          </Marker>
+          <Marker key={index} position={station[0]} icon={stationIcon}>
+          <Popup {...stationPopup}>
+            <div className="text-md font-bold text-concept3">
+            {station[1]}
+            </div>
+            </Popup>
+            
+        </Marker>
         ))
       }
       { 

@@ -9,7 +9,6 @@ import { SetQR } from "./pages/QRcode/SetQR";
 import { Report } from "./pages/Report/Report";
 import { Page404 } from "./pages/Page404";
 import { Admin } from "./pages/Admin/Admin";
-import { ReportDetail } from "./components/Admin/ReportDetail";
 import { UserMap } from "./pages/Map/UserMap";
 import { QRreader } from "./pages/QRcode/QRreader";
 import { Emergency } from "./pages/Admin/Emergency";
@@ -42,7 +41,6 @@ function App() {
         <Route path="/knightquit" element={<KnightQuit />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Page404 />} />
-        <Route path="/report/:reportId" element={<ReportDetail />} />
         <Route path="/emergency" element={<Emergency />} />
 
 

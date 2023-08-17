@@ -24,9 +24,7 @@ export function MouseLocation() {
   const { mouseLocation, setMouseLocation } = useAdminStore();
   const map = useMapEvents({
     mousemove: (e) => {
-      // console.log(mouseLocation)
       setMouseLocation([e.latlng.lat, e.latlng.lng]);
-      // console.log(mouseLocation)
     },
   });
 }

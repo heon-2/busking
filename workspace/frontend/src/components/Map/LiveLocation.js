@@ -7,7 +7,6 @@ import { useUserStore, useMapStore, useQrStore } from '../../store'
 
 
 export function LiveLocation() {
-  // const [markerLocation, setMarkerLocation] = useState(null);
   const { selectedBuss, selectedStations, selectedRoute, setSelectedBuss, setSelectedStations, setSelectedRoute } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   const { busInfo, setBusInfo } = useMapStore();
@@ -31,11 +30,9 @@ export function LiveLocation() {
       )
       .then((response) => {
 
-        console.log(selectedBuss)
-        console.log(response.data.data)
         if (response.data.data == {}) {
           setMarkerLocations([null, null, null, null])
-          setCurrentPeople([0,0,0,0])
+          // setCurrentPeople([0,0,0,0])
         }
         else {
           let copy = [...markerLocations]
@@ -43,7 +40,6 @@ export function LiveLocation() {
             const [_, companyId, busNo] = k.split(":");
             const state = response.data.data[k].loc;
             const passengers = response.data.data[k].passengers;
-
           // 각 버스 호차마다 탑승객 수를 구함. 
           const sumPassengers = passengers.reduce(function add(sum,currValue) {
             return sum + currValue;
@@ -57,6 +53,7 @@ export function LiveLocation() {
               copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
 
             } else {
+              console.log(state.adj.details)
 
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
               console.log(selectedBuss)
@@ -184,16 +181,16 @@ const stationPopup = {
         <></> : <Polyline positions={selectedRoute} {...polylineOptions}></Polyline>
       }
       {
-        selectedBuss == null || markerLocations[selectedBuss-1] == null? 
-          markerLocations.map((loc, index) => (
+        selectedBuss == null? markerLocations.map((loc, index) => (
             
-            loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
-            
-          ))
+          loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
+          
+        )) : markerLocations[selectedBuss-1] == null ?
+          null
         : <Marker position={markerLocations[selectedBuss-1]} icon={busIcon}></Marker>
       }
       {
-        selectedBuss == null || selectedStations == [] ?
+        selectedBuss == null ? null : selectedStations == [] ?
         <></> : 
         selectedStations.map((station, index) => ( 
           <Marker key={index} position={station[0]} icon={stationIcon}>

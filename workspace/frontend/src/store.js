@@ -99,6 +99,8 @@ let busStore = (set) => ({
   stations: [],
   busPath: [],
   passengers: [],
+  busStations: [],
+  setBusStations: (payload) => set({ busStations: payload}),
   setBusNumber: (payload) => set({ busNumber: payload }),
   setStations: (payload) => set({ stations: payload }),
   setBusPath: (payload) => set({ busPath: payload }),

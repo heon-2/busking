@@ -43,13 +43,6 @@ export function ReportList() {
   ];
   return (
     <div>
-      {/* <Button onClick={() => getReport()}>정보조회</Button> */}
-
-      {/* <Route
-          path="report/:reportId"
-          element={<ReportDetail reportId={reportId} />}
-        /> */}
-
       <Card className="h-full w-full overflow-scroll mt-4">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
@@ -74,14 +67,6 @@ export function ReportList() {
           </thead>
           <tbody>
             {report.map((row, index) => (
-              // var datetime = row.localDateTime.toString().substring(0, 12);
-              // var year = datetime.substring(0, 4);
-              // var month = datetime.substring(5, 6);
-              // var day = datetime.substring(6, 7);
-              // var hour = datetime.substring(7, 8)-3;
-              // var minute = datetime.substring(8, 10);
-              // var second = datetime.substring(10, 12);
-              // Object.values(row.reportId))
               <tr
                 onClick={() => {
                   navigate("/report/" + Object.values(row.reportId));
@@ -97,7 +82,6 @@ export function ReportList() {
                   >
                     {index + 1}
 
-                    {/* {row.createdAt} */}
                   </Typography>
                 </td>
                 <td className="p-4">
@@ -136,20 +120,6 @@ export function ReportList() {
                     className="font-medium"
                   >
                     {row.localDateTime.at(0)}년 {row.localDateTime.at(1)}월{" "} {row.localDateTime.at(2)}일{" "} {row.localDateTime.at(3)}시{" "} {row.localDateTime.at(4)}분{" "} {row.localDateTime.at(5)}초{" "}
-                    {/* <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                      />
-                    </svg> */}
                   </Typography>
                 </td>
               </tr>

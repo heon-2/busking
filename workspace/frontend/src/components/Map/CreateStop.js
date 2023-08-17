@@ -254,22 +254,11 @@ export function CreateStop() {
                 copy["노선"][copy["노선"].length - 1].id = stationName;
                 let flag = 0;
                 console.log(copy);
-                // copy['stations'].map((item, index) => {
-                //   if (item.title === markerName) {
-                //     flag = 1;
-                //   }
-                // })
-                // copy['routes'].map((item, index) => {
-                //   if (item.title === markerName && index != copy['routes'].length - 1) {
-                //     flag = 1;
-                //   }
-                // })
+               
                 if (stationName === "") {
                   alert("경유지 이름을 지정해 주세요.");
                 }
-                // else if (flag == 1){
-                //   alert('이미 있는 이름입니다. 다시 입력해 주세요.')
-                // }
+         
                 else {
                   setMarkers(_markers);
                   setItems(copy);

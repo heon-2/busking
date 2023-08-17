@@ -87,20 +87,28 @@ func (worker *DrivingWorker) Run() {
 			fractions := driving.Route.QueryRoute(alg.NewRectCWH(&loc.Vec2, 50.0, 50.0))
 			nearest := findNearest(&loc.Vec2, fractions)
 
-			if driving.State.GpsLog.Len() == driving.State.GpsLog.Cap() {
-				driving.State.GpsLog.PopFront()
-				driving.State.AdjLog.PopFront()
+			if driving.State.Logs.Len() == driving.State.Logs.Cap() {
+				driving.State.Logs.PopFront()
 			}
 
-			driving.State.GpsLog.PushBack(loc)
-			if nearest == nil {
-				driving.State.AdjLog.PushBack(nil)
-			} else {
-				driving.State.AdjLog.PushBack(&model.Location{
-					Timestamp: loc.Timestamp,
-					Vec2:      *nearest.Point,
-				})
+			adjTimestamp := int64(-1)
+			var adjDetails *model.RoutePoint = nil
+			if nearest == nil && 0 < driving.State.Logs.Len() {
+				latest := driving.State.Logs.Back()
+				adjTimestamp = latest.AdjTimestamp
+				adjDetails = latest.AdjDetails
 			}
+
+			if nearest != nil {
+				adjTimestamp = loc.Timestamp
+				adjDetails = nearest
+			}
+
+			driving.State.Logs.PushBack(&model.DrivingLog{
+				Raw:          loc,
+				AdjTimestamp: adjTimestamp,
+				AdjDetails:   adjDetails,
+			})
 
 			worker.saveDrivingStatePort.Save(driving.BusId, driving.State)
 

@@ -30,8 +30,6 @@ export function LiveLocation() {
       )
       .then((response) => {
 
-        console.log(selectedBuss)
-        console.log(response.data.data)
         if (response.data.data == {}) {
           setMarkerLocations([null, null, null, null])
           // setCurrentPeople([0,0,0,0])
@@ -42,7 +40,6 @@ export function LiveLocation() {
             const [_, companyId, busNo] = k.split(":");
             const state = response.data.data[k].loc;
             const passengers = response.data.data[k].passengers;
-
           // 각 버스 호차마다 탑승객 수를 구함. 
           const sumPassengers = passengers.reduce(function add(sum,currValue) {
             return sum + currValue;
@@ -56,6 +53,7 @@ export function LiveLocation() {
               copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
 
             } else {
+              console.log(state.adj.details)
 
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
               console.log(selectedBuss)
@@ -205,10 +203,10 @@ const stationPopup = {
         </Marker>
         ))
       }
-      {/* { 
+      { 
       myLocate != null ? (
         <Marker position={myLocate} icon={personIcon}></Marker>
-      ) : null} */}
+      ) : null}
     </>
   );
 }

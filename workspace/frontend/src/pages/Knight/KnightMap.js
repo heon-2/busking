@@ -18,6 +18,16 @@ export function KnightMap() {
   const navigate = useNavigate();
   const { user, accessToken } = useUserStore();
 
+  useEffect(() => { 
+    console.log(user)
+    if (user == null){
+      navigate('/')
+    }
+    else if (user.role == 'EMPLOYEE'){
+        navigate('/usermap');
+    }
+  }, [])
+
   
   
   const options = {
@@ -102,12 +112,12 @@ export function KnightMap() {
         <MapLayer></MapLayer>
       </div>
       {/* 나중에 zindex 조정하기 */}
-      <div className="flex fixed bottom-10 left-10" style={{ zIndex: 1000 }}>
+      <div className="fixed flex bottom-10 left-10" style={{ zIndex: 1000 }}>
         {/* <RTC></RTC> */}
       </div>
-      <div className="flex fixed bottom-10 right-10" style={{ zIndex: 1000 }}>
+      <div className="fixed flex bottom-10 right-10" style={{ zIndex: 1000 }}>
         <Button
-          className="w-96 h-28 text-4xl"
+          className="text-4xl w-96 h-28"
           onClick={() => {
             navigate("/knightquit");
             // sendLocation();

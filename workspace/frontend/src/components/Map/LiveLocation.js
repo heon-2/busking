@@ -3,12 +3,14 @@ import { useState, useEffect, useRef } from "react";
 import { Marker, Polyline, Popup } from "react-leaflet";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import L from "leaflet";
-import { useUserStore } from '../../store'
+import { useUserStore, useMapStore } from '../../store'
+
 
 export function LiveLocation() {
   // const [markerLocation, setMarkerLocation] = useState(null);
   const { selectedBus, selectedStations, selectedRoute, setSelectedBus, setSelectedStations, setSelectedRoute } = useUserStore();
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
+  const { busInfo, setBusInfo } = useMapStore();
   // let [lat, lng] = [null, null];
   // r-query 공부해야할부분
   // const { data, error, isLoading } = useQuery("busLocation", getLocation);
@@ -77,11 +79,28 @@ export function LiveLocation() {
               // lat = state.adj.latlng.lat;
               // lng = state.adj.latlng.lng;
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
+              if (selectedBus != null) {
+                if (selectedBus == Number(busNo)) {
+                  let newcopy = [...selectedRoute]
+                  while(true) {
+                    if (newcopy.length <= 1) {
+                      break;
+                    }
+                    console.log('제발...')
+                    if (Math.abs(copy[selectedBus - 1][0] - newcopy[0][0]) < 1e-5 && Math.abs(copy[selectedBus - 1][1] - newcopy[0][1]) < 1e-5){
+                      break;
+                    }
+                    newcopy.shift();
+                    setSelectedRoute(newcopy)
+                  }
+                }
+              }
               // setMarkerLocations([state.adj.latlng.lat, state.adj.latlng.lng]);
             }
             // console.log(state.raw.latlng);
           }
           setMarkerLocations(copy);
+          
         }
 
         // const rlt = response.data.data;
@@ -160,7 +179,7 @@ export function LiveLocation() {
 
       navigator.geolocation.getCurrentPosition(success, error, options)
       // console.log(lat, lng);
-    }, 2000);
+    }, 500);
     return () => {
       clearInterval(timer);
     }; // 1분을 밀리초로 표현한 값

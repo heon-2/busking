@@ -19,6 +19,7 @@ export function UserMap() {
   const { user, selectedStations, selectedRoute, selectedBus, setSelectedStations, setSelectedRoute, setSelectedBus } = useUserStore();
   const { busInfo, setBusInfo } = useMapStore(); 
   const navigate = useNavigate();
+
   useEffect(() => {
     console.log(user)
     if (user == null){

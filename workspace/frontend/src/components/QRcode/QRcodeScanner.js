@@ -11,28 +11,19 @@ export const QRcodeScanner = (props) => {
       const accessToken = localStorage.getItem("accessToken");
 
       console.log("decodedData:", decodedData);
-      alert(`Scan result = ${decodedText}`);
+      console.log(decodedData.bus, decodedData.destination);
+      // const number1 = decodedData.bus.companyId;
+      // const number2 = decodedData.bus.no;
 
-
-      // axios 로 qr코드 정보랑 헤더 담아서 accessToken 보내기
-      // axios.post("/api/qr", {
-      //   busId: decodedData.selectedBus,
-      //   departure: decodedData.Departure,
-      //   destination: decodedData.Destination,
-      // },
-      // {
-      //   headers: {
-      //     Accept: "application/json",
-      //     Authorization: `Bearer ${accessToken}`,
-      //     },
-      // });
-      // .then((res) => {
-      //   console.log(res.data);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
-
+      axios.post("/api/realtime/driving/join", {
+        bus: 
+        {companyId: decodedData.bus.companyId, no: decodedData.bus.no},
+        destination: decodedData.destination,
+      });
+      console.log(decodedData.bus);
+      console.log(decodedData.destination);
+      console.log("QR코드 스캔 완료");
+      
     } catch (error) {
       console.error(error);
     }

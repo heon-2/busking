@@ -2,9 +2,24 @@ import React from 'react';
 import { SelectQR } from '../../components/QRcode/SelectQR';
 import { Button } from '@material-tailwind/react';
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from '../../store.js';
+import { useEffect } from 'react';
 
 export function SetQR() {
     let navigate = useNavigate();
+    const { user } = useUserStore();
+    useEffect(() => { 
+    console.log(user)
+    if (user == null){
+        navigate('/')
+    }
+    else if (user.role == 'DRIVER'){
+        navigate('/knightselect');
+    }
+    }, [])
+
+
+
     return (
         <div className='h-full overflow-y-auto bg-opacity-50 bg-blue-50'>
             <div className="h-20 mt-10 text-2xl font-bold">

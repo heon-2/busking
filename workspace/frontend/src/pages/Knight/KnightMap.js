@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RTC from "../../components/RTC/RTC";
 import { useMapStore, useBusStore, useUserStore } from "../../store";
+import L from "leaflet";
 import {
   QueryClient,
   QueryClientProvider,
@@ -13,6 +14,7 @@ import {
 } from "@tanstack/react-query";
 
 export function KnightMap() {
+  const [myPosition, setMyPosition] = useState(null)
   const [latlng, setLatlng] = useState(null);
   const { location } = useMapStore();
   const { busNumber, busPath, busStations } = useBusStore();
@@ -52,6 +54,7 @@ export function KnightMap() {
   function success(position) {
     const la = position.coords.latitude;
     const ln = position.coords.longitude;
+    setMyPosition([la, ln])
     console.log(busNumber)
     axios
     .put(
@@ -87,21 +90,50 @@ export function KnightMap() {
     }
     
     function error() {
+      setMyPosition(null)
       alert("죄송합니다. 위치 정보를 사용할 수 없습니다.");
     }
+    const stationPopup = {
+      minWidth: 5, // 최소 너비
+      closeButton: false, // 닫기 버튼 숨김
+      className: 'custom-popup',
+      offset: [0,-25],
+        };
     
-    
+        const polylineOptions = {
+          color: '#344A82',
+          weight: 9,
+          // opacity: 1,
+          // dashArray: '5,6,7,8, 10', // 점선 스타일
+          lineJoin: 'miter', // 선의 연결 부분 스타일 ( miter, bevel, round,miter-clip )
+        };
+      // 버스 아이콘
+  const busIcon = L.icon({
+    iconUrl: "/bus.png",
+    iconSize: [45, 45], // 아이콘 크기
+    iconAnchor: [23, 46], // 아이콘 기준점 위치
+  });
+
+  // 정류장 아이콘
+  const stationIcon = L.icon({
+    iconUrl: "/station2.png",
+    iconSize: [45, 45], // 아이콘 크기
+    iconAnchor: [23, 46], // 아이콘 기준점 위치
+  });
     
     
     return (
       <div>
       <div className="z-0">
         <MapLayer
-        UserPath={<Polyline positions={busPath}></Polyline>}
+        UserPath={<Polyline positions={busPath} {...polylineOptions}></Polyline>}
         Marker={
           busStations.map((station, index) => (
-            <Marker position={station}></Marker>
+            <Marker key={index} position={station} icon={stationIcon}></Marker>
           ))
+        }
+        Bus={
+          myPosition == null ? null : <Marker position={myPosition} icon={busIcon}></Marker>
         }
         ></MapLayer>
       </div>

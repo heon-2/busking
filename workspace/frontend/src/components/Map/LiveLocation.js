@@ -183,16 +183,16 @@ const stationPopup = {
         <></> : <Polyline positions={selectedRoute} {...polylineOptions}></Polyline>
       }
       {
-        selectedBuss == null || markerLocations[selectedBuss-1] == null? 
-          markerLocations.map((loc, index) => (
+        selectedBuss == null? markerLocations.map((loc, index) => (
             
-            loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
-            
-          ))
+          loc != null ? <Marker key={index} position={loc} icon={busIcon}></Marker> : null
+          
+        )) : markerLocations[selectedBuss-1] == null ?
+          null
         : <Marker position={markerLocations[selectedBuss-1]} icon={busIcon}></Marker>
       }
       {
-        selectedBuss == null || selectedStations == [] ?
+        selectedBuss == null ? null : selectedStations == [] ?
         <></> : 
         selectedStations.map((station, index) => ( 
           <Marker key={index} position={station[0]} icon={stationIcon}>
@@ -205,10 +205,10 @@ const stationPopup = {
         </Marker>
         ))
       }
-      { 
+      {/* { 
       myLocate != null ? (
         <Marker position={myLocate} icon={personIcon}></Marker>
-      ) : null}
+      ) : null} */}
     </>
   );
 }

@@ -67,6 +67,7 @@ export function LiveLocation() {
             const state = response.data.data[k].loc;
             console.log(state);
             console.log(state.adj)
+            console.log(selectedRoute)
             if (state.adj == null) {
               console.log("check1")
               // console.log("진짜 내위치");

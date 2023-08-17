@@ -60,7 +60,17 @@ export function UserMap() {
         return;
       }
       else if (busInfo.length > 0) {
-        setSelectedRoute(polyline.decode(busInfo[selectedBus - 1].routes[0].geometry))
+        let nPath = []
+        let tmp = [...polyline.decode(busInfo[selectedBus - 1].routes[0].geometry)]
+        console.log(tmp)
+        for (let i = 0; i < tmp.length - 1; i++) {
+          nPath.push(tmp[i])
+          for (let j =1; j < 100; j++) {
+            nPath.push([tmp[i][0] + ((tmp[i+1][0] - tmp[i][0])/100)*j, tmp[i][1] + ((tmp[i+1][1] - tmp[i][1])/100)*j])
+          }
+        }
+        console.log(nPath)
+        setSelectedRoute(nPath)
         let copy = []
         busInfo[selectedBus - 1].routes[0].stations.map((station, index) => {
           console.log(station)

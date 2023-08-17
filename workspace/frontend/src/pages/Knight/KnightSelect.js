@@ -6,11 +6,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useUserStore } from "../../store";
+import polyline from "@mapbox/polyline";
 
 export function KnightSelect() {
   const navigate = useNavigate();
   let [choiceBus, setChoiceBus] = useState([false, false, false, false]);
-  const { busNumber, setBusNumber } = useBusStore();
+  const { busNumber, busPath, busStations, setBusStations, setBusNumber, setBusPath } = useBusStore();
   const { user } = useUserStore();
 
   useEffect(() => { 
@@ -35,14 +36,21 @@ export function KnightSelect() {
 async function startDrive(num) {
     console.log(num);
     const response = await axios.get('/api/companies/1/buses')
-    console.log(response.data.length)
+    console.log()
     if (response.data.length < num) {
       Swal.fire("배차되지 않은 차량입니다.", "다시 시도해 주세요.", "error");
       return;
     }
     else {
+      setBusPath(polyline.decode(response.data[num-1].routes[1].geometry))
+      console.log(response.data[num-1].routes[1].stations)
       const rId = Number(response.data[num-1].routes[1].id)
       console.log(rId)
+      let stationsCopy = []
+      response.data[num-1].routes[1].stations.map((station, index) => {
+        stationsCopy.push([station.lat, station.lng])
+      })
+      setBusStations(stationsCopy)
       axios
         .post(
           "/api/realtime/driving/begin",

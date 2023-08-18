@@ -86,26 +86,16 @@ export function MapLayer(props) {
         {/* 기본 맵 */}
         {mapType === false ? (
           <TileLayer
-          // url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"
              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            // url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-            // url='https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png'
-            // url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-            // url="http://xdworld.vwrold.kr:8080/2d/Base/201802/%7Bz%7D/%7Bx%7D/%7By%7D.png"
-            // url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-            // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
         ) : (
           <TileLayer
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-            // attribution='Tiles &copy; Esri'
           />
         )}
         {/* 위성 맵 */}
         {props.Marker}
         {props.FindMe}
-        {/* <Marker position={location} /> */}
-        {/* <Test location={location} ></Test> */}
         {props.Dial}
         {props.TopBar}
         {props.BusNum}
@@ -116,29 +106,7 @@ export function MapLayer(props) {
         {props.CreateStop}
         {props.UserPath}
         {props.Bus}
-        {/* <Dial />    */}
-        {/* <TopBar style={{ zIndex: 1000 }}/> */}
-        {/* <BusNum/> */}
-        {/* </div> */}
-        {/* <MyComponent>
-    
-    </MyComponent>
-    {markers.map(({marker}, id) => (
-        <Marker key={id} position={marker.getLatLng()} draggable={true} icon={marker.options.icon} eventHandlers={{
-          dragend: (e) => {
-            const { lat, lng } = e.target.getLatLng();
-            let copy = [...coordinates];
-            copy[id] = [lat, lng];
-            setCoordinates(copy);
-            console.log(copy);
-          },
-        }}>
-          <Popup>Marker {id}<IconButton onClick={(e) => {e.stopPropagation(); deleteMarker(id);}}>x</IconButton></Popup>
-        </Marker>
-      ))} */}
-        {/* <Polyline pathOptions={{color: 'red'}} positions={coordinatesList} /> */}
       </MapContainer>
-      {/* <Button style={{ zIndex: 2000}} onClick={(e) => {e.stopPropagation(); setCoords({coordinates, coordinatesList, setCoordinatesList})}}>fasdfas</Button> */}
     </div>
   );
 }

@@ -15,7 +15,6 @@ export function KnightSelect() {
   const { user } = useUserStore();
 
   useEffect(() => { 
-    console.log(user)
     if (user == null){
       navigate('/')
     }
@@ -34,18 +33,14 @@ export function KnightSelect() {
 
   // 버스 기사님 드라이빙 시작
 async function startDrive(num) {
-    console.log(num);
     const response = await axios.get('/api/companies/1/buses')
-    console.log()
     if (response.data.length < num) {
       Swal.fire("배차되지 않은 차량입니다.", "다시 시도해 주세요.", "error");
       return;
     }
     else {
       setBusPath(polyline.decode(response.data[num-1].routes[1].geometry))
-      console.log(response.data[num-1].routes[1].stations)
       const rId = Number(response.data[num-1].routes[1].id)
-      console.log(rId)
       let stationsCopy = []
       response.data[num-1].routes[1].stations.map((station, index) => {
         stationsCopy.push([station.lat, station.lng])
@@ -70,7 +65,7 @@ async function startDrive(num) {
           }
         )
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
         })
         .then(() => {
           navigate("/knightmap/");

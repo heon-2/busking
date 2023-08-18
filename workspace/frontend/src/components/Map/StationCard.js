@@ -29,7 +29,6 @@ export default function StationCard({ items, setItems }) {
   const { stations, setStations } = useBusStore();
 
   const deleteMarker = (markerId, title) => {
-    console.log(markerId);
     let copy = [...markers];
     copy.splice(markerId, 1);
     setMarkers(copy);
@@ -39,14 +38,12 @@ export default function StationCard({ items, setItems }) {
     copy = JSON.parse(JSON.stringify(items));
     let targetItem = null;
     let targetNum = 0;
-    console.log(copy);
     for (let i = 0; i < copy["노선"].length; i++) {
       if (copy["노선"][i].title === title) {
         targetItem = copy["노선"][i];
         targetNum = i;
       }
     }
-    console.log(targetItem);
     copy["노선"].splice(targetNum, 1);
     if (targetItem.isExist === true) {
       copy["정류장"].push(targetItem);
@@ -61,16 +58,13 @@ export default function StationCard({ items, setItems }) {
     const destinationKey = destination.droppableId;
     if (destinationKey === "정류장" && scourceKey !== destinationKey) {
       const t = items[scourceKey][source.index];
-      console.log(t);
       if (t.status === false) {
         return;
       }
     }
     const _items = JSON.parse(JSON.stringify(items));
     const [targetItem] = _items[scourceKey].splice(source.index, 1);
-    console.log(source);
     _items[destinationKey].splice(destination.index, 0, targetItem);
-    console.log(_items);
     setItems(_items); // 여기서 items가 업데이트가 안됨
     // 경로에 추가
     if (destinationKey === "노선" && destinationKey != scourceKey) {
@@ -81,7 +75,6 @@ export default function StationCard({ items, setItems }) {
       ]);
       setHintPath(_hintPath);
       const _markers = [...markers];
-      console.log(targetItem.lat);
       _markers.splice(destination.index, 0, {
         marker: 1,
         title: `${targetItem.title}`,
@@ -100,20 +93,15 @@ export default function StationCard({ items, setItems }) {
       const _markers = [...markers];
       _markers.splice(source.index, 1);
       setMarkers(_markers);
-      console.log(source.index);
     } else if (destinationKey === "노선" && destinationKey === scourceKey) {
       const _hintPath = [...hintPath];
       const targetPath = _hintPath.splice(source.index, 1);
-      console.log(...targetPath);
       _hintPath.splice(destination.index, 0, ...targetPath);
-      console.log(_hintPath);
       setHintPath(_hintPath);
       const _markers = [...markers];
       const targetMarker = _markers.splice(source.index, 1);
-      console.log(targetMarker);
       _markers.splice(destination.index, 0, ...targetMarker);
       setMarkers(_markers);
-      console.log(_markers);
     }
     // setHintPath()
   };

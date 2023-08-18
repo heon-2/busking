@@ -21,7 +21,6 @@ export function Report() {
   const navigate = useNavigate();
 
   useEffect(() => { 
-    console.log(user)
     if (user == null){
       navigate('/')
     }
@@ -71,7 +70,6 @@ export function Report() {
       )
       .then((response) => {
         console.log("성공");
-        console.log(response.data);
 
       })
       .catch((error) => {

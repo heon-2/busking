@@ -18,7 +18,6 @@ export function ScanQR() {
   const { selectedBus, isInBound , inBoundDeparture, inBoundDestination, outBoundDeparture, outBoundDestination } = useQrStore();
   const { user } = useUserStore();
   useEffect(() => { 
-    console.log(user)
     if (user == null){
       navigate('/')
     }

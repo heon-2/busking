@@ -11,23 +11,17 @@ export const QRcodeScanner = (props) => {
     if (!isThrottled) {
       isThrottled = true;
       
-    console.log(`Scan result = ${decodedText}`, decodedResult);
 
     try {
       const decodedData = JSON.parse(decodedText);
       const accessToken = localStorage.getItem("accessToken");
 
-      console.log("decodedData:", decodedData);
-      console.log(decodedData.bus, decodedData.destination);
 
       axios.post("/api/realtime/driving/join", {
         bus: 
         {companyId: decodedData.bus.companyId, no: decodedData.bus.no},
         destination: decodedData.destination,
       });
-      console.log(decodedData.bus);
-      console.log(decodedData.destination);
-      console.log("QR코드 스캔 완료");
       
     } catch (error) {
       console.error(error);

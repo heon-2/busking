@@ -22,7 +22,6 @@ export function KnightMap() {
   const { user, accessToken } = useUserStore();
 
   useEffect(() => { 
-    console.log(user)
     if (user == null){
       navigate('/')
     }
@@ -55,7 +54,6 @@ export function KnightMap() {
     const la = position.coords.latitude;
     const ln = position.coords.longitude;
     setMyPosition([la, ln])
-    console.log(busNumber)
     axios
     .put(
       "/api/realtime/driving/drive",
@@ -80,8 +78,7 @@ export function KnightMap() {
       }
       )
       .then((response) => {
-        console.log(response);
-        console.log(la, ln);
+        console.log('성공');
       })
       .catch((error) => {
         console.error(error);

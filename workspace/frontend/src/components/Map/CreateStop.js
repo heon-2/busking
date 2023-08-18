@@ -170,18 +170,6 @@ export function CreateStop() {
           return;
         } else {
           const [lat, lng] = closestPoint;
-          console.log(closestPoint);
-          console.log(lat);
-          console.log(lng);
-          console.log({
-            marker: 1,
-            title: `경로${markers.length + 1}`,
-            drag: false,
-            lat: lat,
-            lng: lng,
-            stop: true,
-            isExist: false,
-          });
           setMarkers([
             ...markers,
             {
@@ -253,7 +241,6 @@ export function CreateStop() {
                 copy["노선"][copy["노선"].length - 1].title = stationName;
                 copy["노선"][copy["노선"].length - 1].id = stationName;
                 let flag = 0;
-                console.log(copy);
                
                 if (stationName === "") {
                   alert("경유지 이름을 지정해 주세요.");
@@ -264,7 +251,6 @@ export function CreateStop() {
                   setItems(copy);
                   handleOpen();
                   const accessToken = localStorage.getItem("accessToken");
-                  console.log(_markers[_markers.length - 1].lng);
                   axios
                     .post(
                       "/api/companies/1/stations",
@@ -281,7 +267,6 @@ export function CreateStop() {
                       }
                     )
                     .then((response) => {
-                      console.log(response);
                       setStationName("");
                     })
                     .catch((error) => {

@@ -125,7 +125,6 @@ async function onLogin({
         },
       }
     );
-    console.log(response);
     setAccessToken(response.data.accessToken);
     setRefreshToken(response.data.refreshToken);
     localStorage.setItem("accessToken", response.data.accessToken);
@@ -139,7 +138,6 @@ async function onLogin({
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(response2.data);
 
     //// FCM 부분 ////
     const firebaseConfig = {
@@ -156,15 +154,12 @@ async function onLogin({
     const messaging = getMessaging(app);
 
     async function requestPermission() {
-      console.log("권한 요청 중...");
 
       const permission = await Notification.requestPermission();
       if (permission === "denied") {
-        console.log("알림 권한 허용 안됨");
         return;
       }
 
-      console.log("알림 권한이 허용됨");
 
       const fcmToken = await getToken(messaging, {
         vapidKey:
@@ -190,7 +185,6 @@ async function onLogin({
         }
       );
 
-      console.log(response3);
 
       onMessage(messaging, (payload) => {
         console.log("메시지가 도착했습니다.", payload);

@@ -76,35 +76,25 @@ async function RegisterRoute({
   try {
     const accessToken = localStorage.getItem("accessToken");
     const response = await axios.get("/api/companies/1/stations");
-    console.log(response.data);
     const response1 = await axios.get("/api/companies/1/buses");
-    console.log(response1);
     function numCheck() {
       response1.data.map((bus) => {
-        console.log(pNo);
-        console.log(bus.id.no);
         if (bus.id.no == pNo) {
           flag = 1;
         }
       });
     }
     await numCheck();
-    console.log(flag);
     if (flag === 0) {
       const response2 = await axios.post("/api/companies/1/buses/register", {
         busNum: pNo,
       });
     }
-    console.log(bound);
-    console.log(geometry);
-    console.log(typeof pName);
-    console.log(accessToken);
     function fetchData() {
       items["노선"].forEach((item, index) => {
         if (item.stop === true) {
           response.data.forEach((st, idx) => {
             if (st.name === item.title) {
-              console.log(1);
               sIds.push(st.stationId);
             }
           });
@@ -113,7 +103,6 @@ async function RegisterRoute({
     }
 
     await fetchData();
-    console.log(sIds);
     const response3 = await axios.post(
       "/api/companies/1/routes",
       {
@@ -129,9 +118,7 @@ async function RegisterRoute({
         },
       }
     );
-    console.log(response3);
     const response4 = await axios.get("/api/companies/1/routes");
-    console.log(response4.data);
     let rId = 0;
     
     function fetchName() {
@@ -144,7 +131,6 @@ async function RegisterRoute({
       return check;
     }
     rId = await fetchName();
-    console.log(rId)
     const response5 = await axios.post(
       `/api/companies/1/buses/${pNo}/assign`,
       {
@@ -157,14 +143,12 @@ async function RegisterRoute({
         },
       }
     );
-    console.log(response5);
     const response6 = await axios.get(`/api/companies/1/buses/${pNo}`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(response6);
   } catch (error) {
     console.log(error);
   }

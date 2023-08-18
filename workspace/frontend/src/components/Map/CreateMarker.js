@@ -64,13 +64,10 @@ export function CreateMarker() {
 
         // 드래그 이벤트 리스너 등록
         newMarker.on("dragend", (event) => {
-          // const { lat, lng } = event.target.getLatLng();
-          // console.log('새로운 좌표:', lat, lng);
           const { lat, lng } = event.target.getLatLng();
           let copy = [...hintPath];
           copy.push([lat, lng]);
           setHintPath(copy);
-          console.log(copy);
         });
 
         let copy = [...hintPath];
@@ -91,9 +88,6 @@ export function CreateMarker() {
             stop: false,
           },
         ]);
-        console.log("클릭 좌표:", lat, lng);
-        console.log(newMarker);
-        console.log(markers);
         copy = JSON.parse(JSON.stringify(items));
         copy["노선"].push({
           id: `경로${markers.length}`,
@@ -111,7 +105,6 @@ export function CreateMarker() {
   }
 
   const deleteMarker = (markerId, title) => {
-    console.log(markerId);
     let copy = [...markers];
     copy.splice(markerId, 1);
     setMarkers(copy);
@@ -124,14 +117,12 @@ export function CreateMarker() {
     copy = JSON.parse(JSON.stringify(items));
     let targetItem = null;
     let targetNum = 0;
-    console.log(copy);
     for (let i = 0; i < copy["노선"].length; i++) {
       if (copy["노선"][i].title === title) {
         targetItem = copy["노선"][i];
         targetNum = i;
       }
     }
-    console.log(targetItem);
     copy["노선"].splice(targetNum, 1);
     if (targetItem.isExist === true) {
       copy["정류장"].push(targetItem);
@@ -179,23 +170,11 @@ export function CreateMarker() {
                 copy["노선"][copy["노선"].length - 1].title = markerName;
                 copy["노선"][copy["노선"].length - 1].id = markerName;
                 let flag = 0;
-                console.log(copy);
-                // copy['stations'].map((item, index) => {
-                //   if (item.title === markerName) {
-                //     flag = 1;
-                //   }
-                // })
-                // copy['routes'].map((item, index) => {
-                //   if (item.title === markerName && index != copy['routes'].length - 1) {
-                //     flag = 1;
-                //   }
-                // })
+            
                 if (markerName === "") {
                   alert("경유지 이름을 지정해 주세요.");
                 }
-                // else if (flag == 1){
-                //   alert('이미 있는 이름입니다. 다시 입력해 주세요.')
-                // }
+
                 else {
                   setMarkers(_markers);
                   setItems(copy);
@@ -226,7 +205,6 @@ export function CreateMarker() {
                       let copy = [...hintPath];
                       copy[index] = [lat, lng];
                       setHintPath(copy);
-                      console.log(copy);
                       copy = [...stationPath];
                       copy[index] = [lat, lng];
                       setStationPath(copy);
@@ -259,7 +237,6 @@ export function CreateMarker() {
                   let copy = [...hintPath];
                   copy[index] = [lat, lng];
                   setHintPath(copy);
-                  console.log(copy);
                   copy = [...stationPath];
                   copy[index] = [lat, lng];
                   setStationPath(copy);
@@ -285,7 +262,6 @@ export function CreateMarker() {
 }
 
 function setCoords({ hintPath, newPath, setNewPath, setGeometry, stopCreate }) {
-  console.log(hintPath);
   if (stopCreate === true) {
     return;
   }
@@ -298,7 +274,6 @@ function setCoords({ hintPath, newPath, setNewPath, setGeometry, stopCreate }) {
         hints: hintPath,
       })
       .then((res) => {
-        console.log(res.data.route.geometry);
         setGeometry(res.data.route.geometry);
         setNewPath(polyline.decode(res.data.route.geometry));
       })

@@ -11,7 +11,6 @@ export function QRreader() {
   let navigate = useNavigate();
   const { user } = useUserStore();
   useEffect(() => { 
-  console.log(user)
   if (user == null){
       navigate('/')
   }

@@ -11,17 +11,7 @@ export function SelectQR() {
     const [inBoundStations, setInBoundStations] = useState([]);  // 출근 정류장 리스트
     const [outBoundStations, setOutBoundStations] = useState([]);  // 퇴근 정류장 리스트
 
-    console.log(selectedBus)
-    console.log(inBoundDeparture)
-    console.log(inBoundDestination)
-    console.log(outBoundDeparture)
-    console.log(outBoundDestination)
-    console.log(busList)
-    console.log(isInBound)
-    console.log(inBoundStations)
-    console.log(outBoundStations)
-    console.log(destinationIndex)
-    console.log(busbus)
+
 
 
 
@@ -35,7 +25,6 @@ export function SelectQR() {
         axios
         .get("/api/companies/1/buses")
         .then((res) => {
-            console.log(res.data);
             const busNumbers = res.data.map(bus => bus.id.no);
             setBusList(busNumbers);
 
@@ -61,18 +50,15 @@ export function SelectQR() {
         axios
         .get("/api/companies/1/buses/" + selectedBus)  
         .then((res) => {
-            console.log(res.data);
             const inBoundRoute = res.data.routes[0];
             const stations = inBoundRoute.stations.map(station => station.name);
                                         
             const inBoundStationsWithoutLast = stations.slice(0, -1);
             setBusbus(res.data.id);
-            console.log(res.data.id);
             setInBoundStations(inBoundStationsWithoutLast);
             setInBoundDestination(stations[stations.length - 1]);
             const lastStationId = inBoundRoute.stations[inBoundRoute.stations.length - 1];
             const lastStationIndex = inBoundRoute.stations[lastStationId];
-            console.log(lastStationIndex)
             setDestinationIndex(lastStationIndex);
 
         })
@@ -86,7 +72,6 @@ export function SelectQR() {
         axios
         .get("/api/companies/1/buses/" + selectedBus)  // 버스 정보 조회  (버스의 정류장과 노선 정보가 다 오려나 ?)
         .then((res) => {
-            console.log(res.data);
             const outBoundRoute = res.data.routes[1];
             const stations = outBoundRoute.stations.map(station => station.name);
             const outBoundStationsWithoutFirst = stations.slice(1);
@@ -94,8 +79,6 @@ export function SelectQR() {
             setOutBoundStations(outBoundStationsWithoutFirst);
             setOutBoundDeparture(stations[0]);
             const firstStationId = outBoundRoute.stations[0].id;
-            console.log(outBoundDeparture)
-            console.log(destinationIndex)
             // setDestinationIndex();
 
         })

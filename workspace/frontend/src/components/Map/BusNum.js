@@ -22,7 +22,6 @@ export function BusNum() {
                 tmp = index + 1
             }
         })
-        console.log(tmp)
 
         setSelectedBuss(tmp)
     }, [num])
@@ -79,7 +78,6 @@ function toggleBus({index, num, selectedBuss, setNum, setSelectedBuss}) {
     let copy = [...num]
     let tmp = null
     copy.map((item, i) => {
-        console.log(typeof(i))
         if (i == index) {
             if (selectedBuss != i+1){
                 tmp = i + 1

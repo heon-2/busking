@@ -24,9 +24,6 @@ export function ReportList() {
         },
       })
       .then((response) => {
-        console.log(accessToken);
-
-        console.log(response.data);
         setReport(response.data);
       })
       .catch((error) => {
@@ -48,9 +45,7 @@ export function ReportList() {
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
-                // const reportId = row.reportId;
                 <th
-                  // onClick={() => console.log(123)}
                   key={head}
                   className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
                 >

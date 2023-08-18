@@ -11,12 +11,10 @@ const StationContainer = () => {
   //                   {name: "국민은행 사거리", lat: 35.19019048804865, lng: 126.82341592439369}]
   useEffect(() => {
     axios.get("api/companies/1/stations").then((response) => {
-      console.log(response);
       setStations(response.data);
     });
   }, []);
   useEffect(() => {
-    console.log("왜안돼");
     setItems({
       정류장: stations.map((_, i) => ({
         id: `${_.name}`,
@@ -29,7 +27,6 @@ const StationContainer = () => {
       })),
       노선: [],
     });
-    console.log(items);
   }, [stations]);
 
   return (

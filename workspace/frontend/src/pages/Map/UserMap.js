@@ -21,7 +21,6 @@ export function UserMap() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(user)
     if (user == null){
       navigate('/')
     }
@@ -36,7 +35,6 @@ export function UserMap() {
     setSelectedBuss(null)
     axios.get('/api/companies/1/buses')
     .then((response) => {
-      console.log(response.data)
       setBusInfo(response.data)
     })
     .catch((error) => {
@@ -45,9 +43,7 @@ export function UserMap() {
   }, [])
 
   useEffect(() => {
-    console.log(busInfo)
     if (selectedBuss == null) {
-      console.log(selectedStations)
       setSelectedStations([])
       setSelectedRoute(null)
     }
@@ -59,21 +55,16 @@ export function UserMap() {
       }
       else if (busInfo.length > 0) {
         let nPath = []
-        console.log(selectedBuss)
-        console.log(busInfo[selectedBuss - 1])
         let tmp = [...polyline.decode(busInfo[selectedBuss - 1].routes[1].geometry)]
-        console.log(tmp)
         for (let i = 0; i < tmp.length - 1; i++) {
           nPath.push(tmp[i])
           for (let j =1; j < 300; j++) {
             nPath.push([tmp[i][0] + ((tmp[i+1][0] - tmp[i][0])/300)*j, tmp[i][1] + ((tmp[i+1][1] - tmp[i][1])/300)*j])
           }
         }
-        console.log(nPath)
         setSelectedRoute(nPath)
         let copy = []
         busInfo[selectedBuss - 1].routes[1].stations.map((station, index) => {
-          console.log(station)
           copy.push([[station.lat, station.lng], station.name])
         })
         setSelectedStations(copy)

@@ -235,10 +235,10 @@ export default function RTC() {
       }
     )
     .then((response) => {
-      console.log(' 하.. 됐다');
+      console.log('성공')
     })
     .catch((error) => {
-      console.log('왜 안 되냐 대체');
+      console.log(error)
     });
 
   // 점 4개 움직이기 

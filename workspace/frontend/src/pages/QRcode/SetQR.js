@@ -9,7 +9,6 @@ export function SetQR() {
     let navigate = useNavigate();
     const { user } = useUserStore();
     useEffect(() => { 
-    console.log(user)
     if (user == null){
         navigate('/')
     }

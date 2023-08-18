@@ -2,7 +2,6 @@ import { useQrStore } from "../../store"
 import { useEffect } from "react";
 export function BusInfo(props) {
     const { currentPeople } = useQrStore();
-    console.log(currentPeople)
 
     useEffect(() => {
         // store에 담겨있는 currentPeople이 변할 때마다 렌더링

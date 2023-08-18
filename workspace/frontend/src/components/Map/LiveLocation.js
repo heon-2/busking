@@ -11,7 +11,6 @@ export function LiveLocation() {
   const [markerLocations, setMarkerLocations] = useState([null, null, null, null]);
   const { busInfo, setBusInfo } = useMapStore();
   const { currentPeople,setCurrentPeople } = useQrStore();
-  console.log(currentPeople)
   function getLocation(selectedBuss) {
     axios
       .post(
@@ -53,10 +52,8 @@ export function LiveLocation() {
               copy[Number(busNo) - 1] = [state.raw.latlng.lat, state.raw.latlng.lng]
 
             } else {
-              console.log(state.adj.details)
 
               copy[Number(busNo) - 1] = [state.adj.latlng.lat, state.adj.latlng.lng]
-              console.log(selectedBuss)
               if (selectedBuss != null) {
                 if (selectedBuss == Number(busNo)) {
                   let newcopy = [...selectedRoute]
@@ -65,7 +62,6 @@ export function LiveLocation() {
                     if (newcopy.length <= i) {
                       break;
                     }
-                    console.log('제발...')
                     if (Math.abs(copy[selectedBuss - 1][0] - newcopy[i][0]) < 1e-5 && Math.abs(copy[selectedBuss - 1][1] - newcopy[i][1]) < 1e-5){
                       break;
                     }
@@ -150,7 +146,6 @@ export function LiveLocation() {
   function success(position) {
     const userLat = position.coords.latitude;
     const userLng = position.coords.longitude;
-    console.log('내위치 :' + [userLat, userLng])
     setMyLocate([userLat, userLng]);
   }
 

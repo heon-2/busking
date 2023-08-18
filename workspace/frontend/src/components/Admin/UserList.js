@@ -44,10 +44,8 @@ export function UserList() {
     axios
       .get("/api/users/list/1")
       .then((res) => {
-        console.log(res.data);
         setTABLE_ROWS(res.data.list);
         setTotalPageNum(res.data.totalPageNum);
-        console.log(res.data.totalPageNum);
       })
       .catch((err) => {
         console.log(err);
@@ -74,11 +72,8 @@ export function UserList() {
       axios
         .get("/api/users/list/" + param)
         .then((res) => {
-          console.log(res.data);
           setTABLE_ROWS(res.data.list);
-          console.log(param);
           setActive(param);
-          console.log(active);
         })
         .catch((err) => {
           console.log(err);
